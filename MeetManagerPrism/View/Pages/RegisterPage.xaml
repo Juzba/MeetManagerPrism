@@ -1,0 +1,86 @@
+﻿<Page
+    x:Class="MeetManagerPrism.View.Pages.RegisterPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:UserControls="clr-namespace:MeetManagerPrism.View.UserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:MeetManagerPrism.View.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="RegisterPage"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    FontSize="30"
+    mc:Ignorable="d">
+
+    <Grid Background="#20448C">
+
+        <Grid.RowDefinitions>
+            <RowDefinition MinHeight="90" />
+            <RowDefinition MinHeight="40" />
+            <RowDefinition Height="330" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition MinWidth="400" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            VerticalAlignment="Top"
+            FontSize="60"
+            Foreground="#FFBC24"
+            Text="Register"
+            TextAlignment="Center" />
+
+        <TextBlock
+            Grid.Row="1"
+            Grid.ColumnSpan="3"
+            HorizontalAlignment="Center"
+            FontSize="20"
+            Foreground="red"
+            Text="{Binding ErrorMessage}" />
+
+        <StackPanel
+            Grid.Row="2"
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top">
+            <UserControls:Input
+                Width="350"
+                Margin="10"
+                Placeholder="Email"
+                TextInp="{Binding Email, Mode=TwoWay}" />
+
+            <UserControls:Input
+                Width="350"
+                Margin="10"
+                Placeholder="Heslo"
+                TextInp="{Binding PasswordA, Mode=TwoWay}" />
+
+
+            <UserControls:Input
+                Width="350"
+                Margin="10"
+                Placeholder="Opakovat heslo"
+                TextInp="{Binding PasswordB, Mode=TwoWay}" />
+
+            <Button
+                Width="200"
+                Height="50"
+                Margin="20"
+                HorizontalAlignment="Center"
+                Background="#FFBC24"
+                Command="{Binding RegisterCommand}"
+                Content="Registrovat"
+                FontSize="30"
+                Foreground="#20448C" />
+
+
+
+        </StackPanel>
+    </Grid>
+</Page>
