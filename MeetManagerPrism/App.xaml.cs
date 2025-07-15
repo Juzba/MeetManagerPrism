@@ -1,68 +1,53 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MeetManagerPrism.View.Pages;
+using MeetManagerWPF.ViewModel;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
 using System.Windows;
 
-namespace MeetManagerPrism
+namespace MeetManagerPrism;
+
+
+public partial class App : PrismApplication
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    public static IHost AppHost { get; private set; } = null!;
+
+    protected override void OnStartup(StartupEventArgs e)
     {
-
-        public static IHost AppHost { get; private set; } = null!;
-
-        public App()
-        {
-            AppHost = Host.CreateDefaultBuilder().ConfigureServices((_, services) =>
+        AppHost = Host.CreateDefaultBuilder().ConfigureServices((hostContext, services) =>
             {
-                services.AddSingleton<MainWindow>();
+                services.AddTransient<MainWindow>();
 
+                //ViewModels
+                services.AddTransient<MainViewModel>();
+            })
+            .Build();
 
-
-
-
-            }).Build();
-
-
-
-
-        }
-
-
-
-        protected override async void OnStartup(StartupEventArgs e)
-        {
-            await AppHost.StartAsync();
-
-            var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
-            mainWindow.Show();
-
-
-            base.OnStartup(e);
-        }
-
-        protected override async void OnExit(ExitEventArgs e)
-        {
-            await AppHost.StopAsync();
-            AppHost.Dispose();
-
-
-
-            base.OnExit(e);
-        }
-
-
-
-
-
-
-
-
-
-
-
+        base.OnStartup(e);
     }
 
+    protected override async void OnInitialized()
+    {
+        await AppHost.StartAsync();
+        base.OnInitialized();
+    }
+
+    protected override Window CreateShell()
+    {
+        var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
+        mainWindow.DataContext = AppHost.Services.GetRequiredService<MainViewModel>();
+        return mainWindow;
+    }
+
+    protected override async void OnExit(ExitEventArgs e)
+    {
+        await AppHost.StopAsync();
+        AppHost.Dispose();
+        base.OnExit(e);
+    }
+
+    protected override void RegisterTypes(IContainerRegistry containerRegistry)
+    {
+        containerRegistry.RegisterForNavigation<RegisterPage>();
+        containerRegistry.RegisterForNavigation<LoginPage>();
+    }
 }

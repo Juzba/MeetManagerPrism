@@ -1,12 +1,15 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿/*
+
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace MeetManagerPrism.Services
 {
     public class AppBootstraper : PrismApplication
     {
-        public static IHost AppHost { get; private set; }
+        public static IHost AppHost { get; private set; } = null!;
 
 
         public AppBootstraper()
@@ -14,14 +17,10 @@ namespace MeetManagerPrism.Services
             AppHost = Host.CreateDefaultBuilder().ConfigureServices((_, services) =>
             {
                 services.AddTransient<MainWindow>();
-
-
-
             }).Build();
         }
 
-
-
+        protected override void RegisterTypes(IContainerRegistry containerRegistry) { }
 
 
         protected override Window CreateShell()
@@ -29,21 +28,11 @@ namespace MeetManagerPrism.Services
             return AppHost.Services.GetRequiredService<MainWindow>();
         }
 
-
-        protected override void OnInitialized()
+        protected override async void OnInitialized()
         {
             base.OnInitialized();
-
-            var mainVindow = CreateShell();
-            mainVindow.Show();
-        }
-
-        protected override async void OnStartup(StartupEventArgs e)
-        {
+       
             await AppHost.StartAsync();
-
-
-            base.OnStartup(e);
         }
 
         protected override async void OnExit(ExitEventArgs e)
@@ -54,10 +43,6 @@ namespace MeetManagerPrism.Services
             base.OnExit(e);
         }
 
-
-
-
-
-
     }
 }
+*/

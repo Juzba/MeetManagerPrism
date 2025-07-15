@@ -2,7 +2,7 @@
 
 namespace MeetManagerPrism.View.Pages
 {
-    public partial class LoginPage : Page
+    public partial class LoginPage : UserControl
     {
         public LoginPage()
         {
