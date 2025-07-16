@@ -1,13 +1,42 @@
-﻿using MeetManagerPrism.View.Pages;
+﻿using MeetManagerPrism.Data;
+using MeetManagerPrism.Services;
+using MeetManagerPrism.Views;
 using MeetManagerPrism.ViewModels;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using System.Windows;
+using MeetManagerPrism.ViewModel;
 
 namespace MeetManagerPrism;
 
 
 public partial class App : PrismApplication
 {
+    protected override void RegisterTypes(IContainerRegistry containerRegistry)
+    {
+        // SERVICES //
+        containerRegistry.Register<AppDbContext>(() =>
+        new AppDbContext(new DbContextOptionsBuilder<AppDbContext>()
+            .UseSqlServer("Server=(localdb)\\mssqllocaldb; Database=LearningDB; Trusted_Connection=True;")
+            .Options
+        ));
+        containerRegistry.Register<UserStore>();
+        containerRegistry.Register<ILoginService, LoginService>();
+        containerRegistry.Register<MainWindow>();
+
+
+
+        // VIEWMODELS //
+        containerRegistry.Register<MainViewModel>();
+        //containerRegistry.Register<LoginPageViewModel>();
+        //containerRegistry.Register<RegisterPageViewModel>();
+
+
+
+        // VIEWS //
+        containerRegistry.RegisterForNavigation<RegisterPage, RegisterPageViewModel>();
+        containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
+        containerRegistry.RegisterForNavigation<HomePage>();
+    }
 
 
     protected override Window CreateShell()
@@ -32,12 +61,4 @@ public partial class App : PrismApplication
     }
 
 
-    protected override void RegisterTypes(IContainerRegistry containerRegistry)
-    {
-        containerRegistry.RegisterForNavigation<RegisterPage>();
-        containerRegistry.RegisterForNavigation<LoginPage>();
-
-        containerRegistry.Register<MainViewModel>();
-        containerRegistry.Register<MainWindow>();
-    }
 }

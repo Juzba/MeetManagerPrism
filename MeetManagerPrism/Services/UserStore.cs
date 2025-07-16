@@ -1,20 +1,11 @@
-﻿/*
-
-using CommunityToolkit.Mvvm.ComponentModel;
-using MeetManagerWPF.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MeetManagerPrism.Data.Model;
 
 namespace MeetManagerPrism.Services
 {
-    public class UserStore: ObservableObject
+    public class UserStore : BindableBase
     {
-
+        // IS USER LOGGED? //
         private bool _isUserLogged;
-
         public bool IsUserLogged
         {
             get { return _isUserLogged; }
@@ -22,21 +13,12 @@ namespace MeetManagerPrism.Services
         }
 
 
-
+        // USER STORAGE //
         private User? _user;
-
         public User? User
         {
             get { return _user; }
             set { SetProperty(ref _user, value); }
         }
-
-
-
-
-
-
-
     }
 }
-*/

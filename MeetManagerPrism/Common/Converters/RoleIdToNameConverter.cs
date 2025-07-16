@@ -1,4 +1,4 @@
-﻿using MeetManagerPrism.Model;
+﻿using MeetManagerPrism.Data.Model;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Data;

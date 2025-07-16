@@ -1,4 +1,6 @@
-﻿using MeetManagerPrism.View.Pages;
+﻿using MeetManagerPrism.Services;
+using MeetManagerPrism.Views;
+using MeetManagerPrism.Common;
 using System.Windows;
 
 namespace MeetManagerPrism.ViewModels
@@ -6,15 +8,41 @@ namespace MeetManagerPrism.ViewModels
     public partial class MainViewModel : BindableBase
     {
         private readonly IRegionManager _regionManager;
-        
+        private readonly UserStore _userStore;
+        const string MainRegion = "MainRegion";
+
         public DelegateCommand LogoutCommand { get; }
+        public DelegateCommand NavLoginCommand { get; }
+        public DelegateCommand NavRegisterCommand { get; }
+        public DelegateCommand NavHomeCommand { get; }
 
 
-        public MainViewModel(IRegionManager regionManager)
+        public MainViewModel(IRegionManager regionManager, UserStore userStore)
         {
             _regionManager = regionManager;
+            _userStore = userStore;
 
             LogoutCommand = new DelegateCommand(Logout);
+
+            // TO LOGIN PAGE //
+            NavLoginCommand = new DelegateCommand(() => _regionManager.RequestNavigate(MainRegion, nameof(LoginPage)));
+            // TO REGISTER PAGE //
+            NavRegisterCommand = new DelegateCommand(() => _regionManager.RequestNavigate(MainRegion, nameof(RegisterPage)));
+            //// TO HOME PAGE //
+            NavHomeCommand = new DelegateCommand(() => _regionManager.RequestNavigate(MainRegion, nameof(HomePage)));
+
+            //// TO EVENTS PAGE //
+            //[RelayCommand]
+            //private void NavigateToEventsPage() => _navigation.NavigateTo<EventsPage>();
+
+            //// TO ADD EVENT PAGE //
+            //[RelayCommand]
+            //private void NavigateToAddEventPage() => _navigation.NavigateTo<ManagerPage>();
+
+
+
+
+
 
 
         }
@@ -87,33 +115,17 @@ namespace MeetManagerPrism.ViewModels
             set { SetProperty(ref managerPageVisibility, value); }
         }
 
+        // LOGOUT //
         private void Logout()
         {
-            //_userStore.IsUserLogged = false;
-            //_userStore.User = null;
-            //_navigation.NavigateTo<LoginPage>();
+            _userStore.IsUserLogged = false;
+            _userStore.User = null;
 
-            //AdminPageVisibility = Visibility.Collapsed;
-            //ManagerPageVisibility = Visibility.Collapsed;
-            //_regionManager.RequestNavigate(constants)
+            AdminPageVisibility = Visibility.Collapsed;
+            ManagerPageVisibility = Visibility.Collapsed;
+            _regionManager.RequestNavigate(MainRegion, nameof(LoginPage));
         }
 
-
-        /// <summary>
-        /// NAVIGATION
-        /// </summary>
-
-        //// TO LOGIN PAGE //
-        //[RelayCommand]
-        //private void NavigateToLogin() => _navigation.NavigateTo<LoginPage>();
-
-        //// TO REGISTER PAGE //
-        //[RelayCommand]
-        //private void NavigateToRegister() => _navigation.NavigateTo<RegisterPage>();
-
-        //// TO HOME PAGE //
-        //[RelayCommand]
-        //private void NavigateToHomePage() => _navigation.NavigateTo<HomePage>();
 
         //// TO EVENTS PAGE //
         //[RelayCommand]
@@ -131,7 +143,7 @@ namespace MeetManagerPrism.ViewModels
         //        _navigation.NavigateTo<AdminPage>();
         //}
 
-        // LOGOUT //
+        
 
     }
 }

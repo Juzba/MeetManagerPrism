@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace MeetManagerPrism.View.Pages
+namespace MeetManagerPrism.Views
 {
     /// <summary>
     /// Interakční logika pro RegisterPage.xaml

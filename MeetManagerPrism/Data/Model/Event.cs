@@ -1,4 +1,4 @@
-﻿namespace MeetManagerPrism.Model
+﻿namespace MeetManagerPrism.Data.Model
 {
     public class Event
     {

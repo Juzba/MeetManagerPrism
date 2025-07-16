@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace MeetManagerPrism.View.UserControls;
+namespace MeetManagerPrism.Views.UserControls;
 
 public partial class Input : UserControl
 {

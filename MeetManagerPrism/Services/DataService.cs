@@ -1,5 +1,5 @@
 ﻿using MeetManagerPrism.Data;
-using MeetManagerPrism.Model;
+using MeetManagerPrism.Data.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace MeetManagerPrism.Services

@@ -1,4 +1,4 @@
-﻿using MeetManagerPrism.Model;
+﻿using MeetManagerPrism.Data.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace MeetManagerPrism.Data
@@ -17,11 +17,11 @@ namespace MeetManagerPrism.Data
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
         }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
