@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MeetManagerPrism.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250716163845_InitialCreate")]
+    [Migration("20250716211221_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

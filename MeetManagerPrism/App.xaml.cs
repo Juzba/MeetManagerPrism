@@ -1,10 +1,10 @@
 ﻿using MeetManagerPrism.Data;
 using MeetManagerPrism.Services;
-using MeetManagerPrism.Views;
+using MeetManagerPrism.ViewModel;
 using MeetManagerPrism.ViewModels;
+using MeetManagerPrism.Views;
 using Microsoft.EntityFrameworkCore;
 using System.Windows;
-using MeetManagerPrism.ViewModel;
 
 namespace MeetManagerPrism;
 
@@ -16,25 +16,18 @@ public partial class App : PrismApplication
         // SERVICES //
         containerRegistry.Register<AppDbContext>(() =>
         new AppDbContext(new DbContextOptionsBuilder<AppDbContext>()
-            .UseSqlServer("Server=(localdb)\\mssqllocaldb; Database=LearningDB; Trusted_Connection=True;")
+            .UseSqlServer("Server=(localdb)\\mssqllocaldb; Database=MeetManagerPrism; Trusted_Connection=True;")
             .Options
         ));
         containerRegistry.Register<UserStore>();
+        containerRegistry.Register<IDataService, DataService>();
         containerRegistry.Register<ILoginService, LoginService>();
         containerRegistry.Register<MainWindow>();
 
 
-
-        // VIEWMODELS //
-        containerRegistry.Register<MainViewModel>();
-        //containerRegistry.Register<LoginPageViewModel>();
-        //containerRegistry.Register<RegisterPageViewModel>();
-
-
-
         // VIEWS //
-        containerRegistry.RegisterForNavigation<RegisterPage, RegisterPageViewModel>();
-        containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
+        containerRegistry.RegisterForNavigation<RegisterPage, RegisterViewModel>();
+        containerRegistry.RegisterForNavigation<LoginPage, LoginViewModel>();
         containerRegistry.RegisterForNavigation<HomePage>();
     }
 

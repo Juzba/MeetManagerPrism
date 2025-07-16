@@ -1,13 +1,19 @@
-﻿<UserControl x:Class="MeetManagerPrism.Views.LoginPage"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MeetManagerPrism.Views"
-             xmlns:uc="clr-namespace:MeetManagerPrism.Views.UserControls" xmlns:viewmodels="clr-namespace:MeetManagerPrism.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:LoginPageViewModel}"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    
+﻿<UserControl
+    x:Class="MeetManagerPrism.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:MeetManagerPrism.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:uc="clr-namespace:MeetManagerPrism.Views.UserControls"
+    xmlns:viewmodels="clr-namespace:MeetManagerPrism.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodels:LoginPageViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    mc:Ignorable="d">
+
     <Grid Background="#20448C">
 
         <Grid.RowDefinitions>
@@ -24,57 +30,57 @@
         </Grid.ColumnDefinitions>
 
         <Button
-        Grid.Column="2"
-        Width="150"
-        Height="40"
-        Panel.ZIndex="10"
-        Command="{Binding InstaAccessCommand}"
-        Content="Instant Access" />
+            Grid.Column="2"
+            Width="150"
+            Height="40"
+            Panel.ZIndex="10"
+            Command="{Binding InstaAccessCommand}"
+            Content="Instant Access" />
 
         <TextBlock
-        Grid.ColumnSpan="3"
-        Margin="0,0,0,15"
-        FontSize="60"
-        Foreground="#FFBC24"
-        Text="Login"
-        TextAlignment="Center" />
+            Grid.ColumnSpan="3"
+            Margin="0,0,0,15"
+            FontSize="60"
+            Foreground="#FFBC24"
+            Text="Login"
+            TextAlignment="Center" />
 
         <TextBlock
-        Grid.Row="1"
-        Grid.ColumnSpan="3"
-        HorizontalAlignment="Center"
-        FontSize="20"
-        Foreground="red"
-        Text="{Binding ErrorMessage}" />
+            Grid.Row="1"
+            Grid.ColumnSpan="3"
+            HorizontalAlignment="Center"
+            FontSize="20"
+            Foreground="red"
+            Text="{Binding ErrorMessage}" />
 
         <StackPanel
-        Grid.Row="2"
-        Grid.Column="1"
-        HorizontalAlignment="Center"
-        VerticalAlignment="Top">
+            Grid.Row="2"
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top">
 
             <uc:Input
-            Width="350"
-            Margin="10"
-            Placeholder="Email"
-            TextInp="{Binding Email, Mode=TwoWay}" />
+                Width="350"
+                Margin="10"
+                Placeholder="Email"
+                TextInp="{Binding Email, Mode=TwoWay}" />
 
             <uc:Input
-            Width="350"
-            Margin="10"
-            Placeholder="Heslo"
-            TextInp="{Binding Password, Mode=TwoWay}" />
+                Width="350"
+                Margin="10"
+                Placeholder="Heslo"
+                TextInp="{Binding Password, Mode=TwoWay}" />
 
             <Button
-            Width="200"
-            Height="50"
-            Margin="20"
-            HorizontalAlignment="Center"
-            Background="#FFBC24"
-            Command="{Binding LoginCommand}"
-            Content="Přihlásit"
-            FontSize="30"
-            Foreground="#20448C" />
+                Width="200"
+                Height="50"
+                Margin="20"
+                HorizontalAlignment="Center"
+                Background="#FFBC24"
+                Command="{Binding LoginCommand}"
+                Content="Přihlásit"
+                FontSize="30"
+                Foreground="#20448C" />
 
         </StackPanel>
     </Grid>

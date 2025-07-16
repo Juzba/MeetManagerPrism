@@ -43,20 +43,20 @@
                 Margin="10,0"
                 Padding="10,5"
                 VerticalAlignment="Center"
-                Command="{Binding NavigateToEventsPageCommand}"
+                Command=""
                 Content="Events" />
             <Button
                 Margin="10,0"
                 Padding="10,5"
                 VerticalAlignment="Center"
-                Command="{Binding NavigateToAddEventPageCommand}"
+                Command=""
                 Content="Manager"
                 Visibility="{Binding ManagerPageVisibility}" />
             <Button
                 Margin="10,0"
                 Padding="10,5"
                 VerticalAlignment="Center"
-                Command="{Binding NavigateToAdminPageCommand}"
+                Command=""
                 Content="Admin"
                 Visibility="{Binding AdminPageVisibility}" />
 

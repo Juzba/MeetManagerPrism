@@ -4,13 +4,13 @@ using System.Windows;
 
 namespace MeetManagerPrism.ViewModel
 {
-    public partial class RegisterPageViewModel : BindableBase
+    public partial class RegisterViewModel : BindableBase
     {
         private readonly ILoginService _loginService;
         private readonly IDataService _dataService;
         public DelegateCommand RegisterCommand { get; }
 
-        public RegisterPageViewModel(ILoginService loginService, IDataService dataService)
+        public RegisterViewModel(ILoginService loginService, IDataService dataService)
         {
             _dataService = dataService;
             _loginService = loginService;

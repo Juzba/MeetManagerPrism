@@ -1,6 +1,6 @@
 ﻿namespace MeetManagerPrism.Common
 {
-    public static class Constants
+    public static class Const
     {
         public const string MainRegion = "MainRegion";
 

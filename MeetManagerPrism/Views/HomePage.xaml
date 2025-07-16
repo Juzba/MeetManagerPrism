@@ -22,9 +22,9 @@
             <Button
                 Height="60"
                 Margin="0,30"
-                Command="{Binding ButtonClickCommand}"
+                Command=""
                 Content="Click me!" />
-            <TextBox Text="{Binding Text}" />
+            <TextBox Text="" />
 
 
         </StackPanel>
