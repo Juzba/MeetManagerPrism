@@ -1,4 +1,4 @@
-﻿namespace MeetManagerWPF.Model
+﻿namespace MeetManagerPrism.Model
 {
     public class Invitation
     {

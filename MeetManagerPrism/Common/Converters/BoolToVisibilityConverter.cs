@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 
-namespace MeetManagerWPF.Converters
+namespace MeetManagerPrism.Common.Converters
 {
     public class BoolToVisibilityConverter : IValueConverter
     {

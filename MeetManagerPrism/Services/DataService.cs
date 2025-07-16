@@ -1,8 +1,8 @@
-﻿using MeetManagerWPF.Data;
-using MeetManagerWPF.Model;
+﻿using MeetManagerPrism.Data;
+using MeetManagerPrism.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace MeetManagerWPF.Services
+namespace MeetManagerPrism.Services
 {
     public interface IDataService
     {

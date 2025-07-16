@@ -2,7 +2,7 @@
 using MeetManagerWPF.Services;
 using MeetManagerWPF.View.Pages;
 
-namespace MeetManagerWPF.ViewModel;
+namespace MeetManagerPrism.ViewModel;
 
 public partial class LoginViewModel(IDataService dataService, UserStore userStore, IHashService hashService, INavigationService navigation) : ObservableObject
 {

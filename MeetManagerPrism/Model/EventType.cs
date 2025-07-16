@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MeetManagerWPF.Model
+﻿namespace MeetManagerPrism.Model
 {
     public class EventType
     {
@@ -13,6 +7,6 @@ namespace MeetManagerWPF.Model
 
         // Events
         public ICollection<Event> Events { get; set; } = [];
-       
+
     }
 }

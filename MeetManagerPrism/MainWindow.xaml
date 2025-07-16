@@ -6,9 +6,11 @@
     xmlns:local="clr-namespace:MeetManagerPrism"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:viewmodels="clr-namespace:MeetManagerPrism.ViewModels"
     Title="MainWindow"
-    Width="800"
-    Height="450"
+    Width="1000"
+    Height="650"
+    d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
     mc:Ignorable="d">
     <!--<Window.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibility" />
@@ -91,7 +93,7 @@
                 Margin="10,0"
                 Padding="10,5"
                 VerticalAlignment="Center"
-                Command="{Binding NavigateToLoginCommand}"
+                Command="{Binding NavigateCommand}"
                 Content="Login" />
             <!--  Visibility="{Binding LoginVisibility, Converter={StaticResource InverseBoolToVisibility}}"  -->
         </StackPanel>

@@ -1,6 +1,6 @@
 ﻿using Isopoh.Cryptography.Argon2;
 
-namespace MeetManagerWPF.Services;
+namespace MeetManagerPrism.Services;
 
 
 

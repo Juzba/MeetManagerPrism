@@ -1,9 +1,9 @@
-﻿using MeetManagerWPF.Model;
+﻿using MeetManagerPrism.Model;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace MeetManagerWPF.Converters
+namespace MeetManagerPrism.Common.Converters
 {
     public class RoleIdToNameConverter : IMultiValueConverter
     {

@@ -1,7 +1,7 @@
-﻿using MeetManagerWPF.Model;
+﻿using MeetManagerPrism.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace MeetManagerWPF.Data
+namespace MeetManagerPrism.Data
 {
     public class AppDbContext : DbContext
     {
