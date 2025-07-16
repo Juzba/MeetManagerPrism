@@ -85,7 +85,4 @@ public partial class LoginViewModel : BindableBase, INavigationAware
         if (await _loginService.InstaAccess())
             _regionManager.RequestNavigate(Const.MainRegion, nameof(HomePage));
     }
-
-
-
 }
