@@ -2,6 +2,7 @@
     x:Class="MeetManagerPrism.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:MeetManagerPrism.Common.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:MeetManagerPrism"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -11,11 +12,12 @@
     Width="1000"
     Height="650"
     d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+    FontSize="30"
     mc:Ignorable="d">
-    <!--<Window.Resources>
+    <Window.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibility" />
         <converters:BoolToVisibilityConverter x:Key="InverseBoolToVisibility" Invert="True" />
-    </Window.Resources>-->
+    </Window.Resources>
 
 
     <Grid Background="#161616">
@@ -72,30 +74,31 @@
             <TextBlock
                 Margin="10,0"
                 VerticalAlignment="Center"
-                Text="{Binding UserName}" />
-            <!--  Visibility="{Binding LoginVisibility, Converter={StaticResource BoolToVisibility}}"  -->
+                Foreground="#FFD340"
+                Text="{Binding UserName}"
+                Visibility="{Binding LoginVisibility, Converter={StaticResource BoolToVisibility}}" />
             <Button
                 Margin="10,0"
                 Padding="10,5"
                 VerticalAlignment="Center"
                 Command="{Binding LogoutCommand}"
-                Content="Logout" />
-            <!--  Visibility="{Binding LoginVisibility, Converter={StaticResource BoolToVisibility}}"  -->
+                Content="Logout"
+                Visibility="{Binding LoginVisibility, Converter={StaticResource BoolToVisibility}}" />
 
             <Button
                 Margin="10,0"
                 Padding="10,5"
                 VerticalAlignment="Center"
                 Command="{Binding NavRegisterCommand}"
-                Content="Register" />
-            <!--  Visibility="{Binding LoginVisibility, Converter={StaticResource InverseBoolToVisibility}}"  -->
+                Content="Register"
+                Visibility="{Binding LoginVisibility, Converter={StaticResource InverseBoolToVisibility}}" />
             <Button
                 Margin="10,0"
                 Padding="10,5"
                 VerticalAlignment="Center"
                 Command="{Binding NavLoginCommand}"
-                Content="Login" />
-            <!--  Visibility="{Binding LoginVisibility, Converter={StaticResource InverseBoolToVisibility}}"  -->
+                Content="Login"
+                Visibility="{Binding LoginVisibility, Converter={StaticResource InverseBoolToVisibility}}" />
         </StackPanel>
 
 

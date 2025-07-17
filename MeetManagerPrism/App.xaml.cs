@@ -18,7 +18,7 @@ public partial class App : PrismApplication
             .UseSqlServer("Server=(localdb)\\mssqllocaldb; Database=MeetManagerPrism; Trusted_Connection=True;")
             .Options
         ));
-        containerRegistry.Register<UserStore>();
+        containerRegistry.RegisterSingleton<UserStore>();
         containerRegistry.Register<IDataService, DataService>();
         containerRegistry.Register<ILoginService, LoginService>();
         containerRegistry.Register<MainWindow>();

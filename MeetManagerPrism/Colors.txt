@@ -1,0 +1,12 @@
+﻿Colors: 
+
+Tmavì modrá -> #20448C
+Støednì modrá -> #086CB4
+Svìtle modrá -> #008CDB
+
+Tmavì žlutá -> #FFBC24
+Svìtle žlutá -> #FFD340
+
+světle zelená => #DBF227
+
+

@@ -1,0 +1,50 @@
+﻿automatické upozornění na konfliktní termíny u účastníků/místností
+Možnost přidat komentáře k události
+
+
+Základní notifikační “přehled” – dashboard
+
+co tě dnes čeká, kolik pozvánek je nevyřízených, atd.
+Návrh databázového modelu (základ):
+Uživatel (User)
+Id, Jméno, E-mail
+Událost (Event)
+Id, Název, Popis, DatumOd, DatumDo, TypId, MístnostId, OrganizátorId
+Pozvánka (Invitation)
+Id, UdálostId, UživatelskýId, Stav (přijatá/odmítnutá/nevyřízená)
+Typ akce (EventType)
+Id, Název (schůzka, party…)
+Místnost (Room)
+Id, Název, Kapacita, Lokalita
+
+
+Můžeš rozšiřovat například o:
+
+Role uživatelů, komentáře, nebo opakování.
+Pokud přidáš poskytování feedbacku/řazení podle priority, tak ještě pole "priorita".
+
+
+
+
+Jak může vypadat UI:
+Login/registrace obrazovka
+Dashboard: Přehled dnešních a nadcházejících akcí, nové (nevyřízené) pozvánky
+Kalendář: měsíční/týdenní zobrazení, barevné boxy pro typy akcí
+Seznam akcí: tabulka, kde vidíš své akce (jako organizátor i jako účastník)
+Detail akce: všechny informace, seznam účastníků, možnost spravovat pozvánky, komentáře
+Dialog pro vytvoření/úpravu akce: s výběrem pozvaných uživatelů, místnosti, typu, přidáním popisu
+Seznam místností/typů akcí: pro admina
+
+
+Technologie a patterny:
+Databáze: SQLite nebo SQL Server Express (lokální DB, ideál na ukázku)
+ORM: Entity Framework Core
+Design pattern: MVVM (ViewModel na každou obrazovku)
+UI toolkity: doporučuji Material Design in XAML nebo ModernWPF pro lepší vzhled
+
+Bonusy navíc:
+Reálné validace vstupů
+Možnost změny jazyka aplikace (CZ/EN)
+Nápověda/detailní popisky v UI
+Jednoduchá testovací data při prvním spuštění
+Export kalendáře do Google Calendar (přes API – pokročilé)

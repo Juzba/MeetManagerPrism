@@ -1,6 +1,5 @@
 ﻿using MeetManagerPrism.Services;
 using MeetManagerPrism.Views;
-using MeetManagerPrism.Common;
 using System.Windows;
 
 namespace MeetManagerPrism.ViewModels
@@ -21,6 +20,7 @@ namespace MeetManagerPrism.ViewModels
         {
             _regionManager = regionManager;
             _userStore = userStore;
+            OnLogin();
 
             LogoutCommand = new DelegateCommand(Logout);
 
@@ -53,31 +53,31 @@ namespace MeetManagerPrism.ViewModels
 
 
         // ON LOGIN //
-        //private void OnLogin()
-        //{
-        //    _userStore.PropertyChanged += (sender, e) =>
-        //    {
-        //        if (e.PropertyName == nameof(UserStore.IsUserLogged))
-        //        {
-        //            // Hide register and login
-        //            LoginVisibility = _userStore.IsUserLogged;
+        private void OnLogin()
+        {
+            _userStore.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == nameof(UserStore.IsUserLogged))
+                {
+                    // Hide register and login
+                    LoginVisibility = _userStore.IsUserLogged;
 
-        //            // Show username
-        //            UserName = $"{_userStore.User?.Name ?? "UserName"}";
+                    // Show username
+                    UserName = $"{_userStore.User?.Name ?? _userStore.User?.Email ?? "UserName"}";
 
-        //            // Role Admin? Show page for admin
-        //            if (_userStore.User?.Role?.RoleName == "Admin")
-        //            {
-        //                AdminPageVisibility = Visibility.Visible;
-        //                ManagerPageVisibility = Visibility.Visible;
-        //            }
+                    // Role Admin? Show page for admin
+                    if (_userStore.User?.Role?.RoleName == "Admin")
+                    {
+                        AdminPageVisibility = Visibility.Visible;
+                        ManagerPageVisibility = Visibility.Visible;
+                    }
 
-        //            // Role Manager? Show page for manager
-        //            if (_userStore.User?.Role?.RoleName == "Manager") ManagerPageVisibility = Visibility.Visible;
+                    // Role Manager? Show page for manager
+                    if (_userStore.User?.Role?.RoleName == "Manager") ManagerPageVisibility = Visibility.Visible;
 
-        //        }
-        //    };
-        //}
+                }
+            };
+        }
 
         // USERNAME //
         private string? userName;
@@ -143,7 +143,7 @@ namespace MeetManagerPrism.ViewModels
         //        _navigation.NavigateTo<AdminPage>();
         //}
 
-        
+
 
     }
 }
