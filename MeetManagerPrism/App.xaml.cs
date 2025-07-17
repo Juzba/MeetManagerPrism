@@ -1,6 +1,5 @@
 ﻿using MeetManagerPrism.Data;
 using MeetManagerPrism.Services;
-using MeetManagerPrism.ViewModel;
 using MeetManagerPrism.ViewModels;
 using MeetManagerPrism.Views;
 using Microsoft.EntityFrameworkCore;

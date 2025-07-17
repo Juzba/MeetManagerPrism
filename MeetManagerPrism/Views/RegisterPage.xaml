@@ -7,10 +7,11 @@
     xmlns:local="clr-namespace:MeetManagerPrism.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
-    xmlns:viewmodel="clr-namespace:MeetManagerPrism.ViewModel"
-    d:DataContext="{d:DesignInstance Type=viewmodel:RegisterPageViewModel}"
+    xmlns:viewmodel="clr-namespace:MeetManagerPrism.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodel:RegisterViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    prism:ViewModelLocator.AutoWireViewModel="True"
     FontSize="30"
     mc:Ignorable="d">
 
@@ -44,7 +45,7 @@
             HorizontalAlignment="Center"
             FontSize="20"
             Foreground="red"
-            Text="" />
+            Text="{Binding ErrorMessage}" />
 
         <StackPanel
             Grid.Row="2"
@@ -55,20 +56,20 @@
                 Width="350"
                 Margin="10"
                 Placeholder="Email"
-                TextInp="" />
+                TextInp="{Binding Email, Mode=TwoWay}" />
 
             <UserControls:Input
                 Width="350"
                 Margin="10"
                 Placeholder="Heslo"
-                TextInp="" />
+                TextInp="{Binding PasswordA, Mode=TwoWay}" />
 
 
             <UserControls:Input
                 Width="350"
                 Margin="10"
                 Placeholder="Opakovat heslo"
-                TextInp="" />
+                TextInp="{Binding PasswordB, Mode=TwoWay}" />
 
             <Button
                 Width="200"

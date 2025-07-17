@@ -10,8 +10,9 @@ namespace MeetManagerPrism.Services
         string HashPassword(string password);
         bool VerifyPassword(string password, string hash);
 
-        Task<bool> LoginConfirm(LoginViewModel loginVM);
-        Task<bool> InstaAccess();
+        Task<bool> TryLogin(LoginViewModel loginVM);
+        Task<bool> TryInstaAccess();
+        Task<bool> TryRegister(RegisterViewModel registerVM);
     }
 
 
@@ -29,7 +30,7 @@ namespace MeetManagerPrism.Services
         public bool VerifyPassword(string password, string hash) => Argon2.Verify(hash, password);
 
         // LOGIN //
-        public async Task<bool> LoginConfirm(LoginViewModel loginVM)
+        public async Task<bool> TryLogin(LoginViewModel loginVM)
         {
             var user = await _dataService.GetUser(loginVM.Email ?? "");
             if (user == null || !VerifyPassword(loginVM.Password ?? "", user.PasswordHash)) return false;
@@ -43,7 +44,7 @@ namespace MeetManagerPrism.Services
 
         // INSTANT ACCESS //
 
-        public async Task<bool> InstaAccess()
+        public async Task<bool> TryInstaAccess()
         {
             var user = await _dataService.GetUser("Juzba@gmail.com");
 
@@ -51,10 +52,22 @@ namespace MeetManagerPrism.Services
 
             _userStore.User = user;
             _userStore.IsUserLogged = true;
-            return true;     
+            return true;
         }
 
+        // REGISTER //
 
+        public async Task<bool> TryRegister(RegisterViewModel registerVM)
+        {
+            if (await _dataService.GetUser(registerVM.Email) != null) return false;
+
+            var hash = HashPassword(registerVM.PasswordA);
+            var newUser = new User() { Name = registerVM.Email, Email = registerVM.Email, PasswordHash = hash };
+
+            await _dataService.AddUser(newUser);
+
+            return true;
+        }
 
     }
 }

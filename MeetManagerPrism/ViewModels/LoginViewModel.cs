@@ -66,7 +66,7 @@ public partial class LoginViewModel : BindableBase, INavigationAware
     {
         ErrorMessage = "";
 
-        if (await _loginService.LoginConfirm(this))
+        if (await _loginService.TryLogin(this))
         {
             // ACCESS GRANTED //
             _regionManager.RequestNavigate(Const.MainRegion, nameof(HomePage));
@@ -82,7 +82,7 @@ public partial class LoginViewModel : BindableBase, INavigationAware
     // INSTANT ACCESS //
     private async Task InstaAccess()
     {
-        if (await _loginService.InstaAccess())
+        if (await _loginService.TryInstaAccess())
             _regionManager.RequestNavigate(Const.MainRegion, nameof(HomePage));
     }
 }

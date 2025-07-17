@@ -1,75 +1,90 @@
-﻿using MeetManagerPrism.Services;
-using System.Windows;
+﻿using MeetManagerPrism.Common;
+using MeetManagerPrism.Services;
+using MeetManagerPrism.Views;
 
 
-namespace MeetManagerPrism.ViewModel
+namespace MeetManagerPrism.ViewModels;
+
+public partial class RegisterViewModel : BindableBase, IRegionAware
 {
-    public partial class RegisterViewModel : BindableBase
+    private readonly ILoginService _loginService;
+    private readonly IRegionManager _regionManager;
+    public AsyncDelegateCommand RegisterCommand { get; }
+
+
+    public RegisterViewModel(ILoginService loginService, IRegionManager regionManager)
     {
-        private readonly ILoginService _loginService;
-        private readonly IDataService _dataService;
-        public DelegateCommand RegisterCommand { get; }
+        _loginService = loginService;
+        _regionManager = regionManager;
 
-        public RegisterViewModel(ILoginService loginService, IDataService dataService)
+        RegisterCommand = new AsyncDelegateCommand(Register);
+    }
+
+    public void OnNavigatedFrom(NavigationContext navigationContext) { }
+    public void OnNavigatedTo(NavigationContext navigationContext) { }
+    public bool IsNavigationTarget(NavigationContext navigationContext) => false;
+
+
+
+    // EMAIL //
+    private string email = "";
+    public string Email
+    {
+        get { return email; }
+        set { SetProperty(ref email, value); }
+    }
+
+    // PASSWORD //
+    private string passwordA = "";
+    public string PasswordA
+    {
+        get { return passwordA; }
+        set { SetProperty(ref passwordA, value); }
+    }
+
+
+    // PASSWORD2 //
+    private string passwordB = "";
+    public string PasswordB
+    {
+        get { return passwordB; }
+        set { SetProperty(ref passwordB, value); }
+    }
+
+
+    // ERROR MESSAGE //
+    private string? errorMessage;
+    public string? ErrorMessage
+    {
+        get { return errorMessage; }
+        set { SetProperty(ref errorMessage, value); }
+    }
+
+
+
+
+    // REGISTER COMMAND //
+    private async Task Register()
+    {
+        if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrEmpty(PasswordA) || !PasswordA.Equals(PasswordB))
         {
-            _dataService = dataService;
-            _loginService = loginService;
-
-            RegisterCommand = new DelegateCommand(()=> MessageBox.Show("Register"));
-            //ErrorMessage = "";
+            ErrorMessage = "Chybí email nebo obě hesla nejsou stejná.";
+            return;
         }
 
+        if (await _loginService.TryRegister(this))
+        {
+            // REGISTER SUCCESS //
+            _regionManager.RequestNavigate(Const.MainRegion, nameof(LoginPage));
+            return;
+        }
+
+        ErrorMessage = "Uživatel s tímto emailem již existuje.";
     }
 }
-//        // USERNAME //
-//        [ObservableProperty]
-//        private string? email;
-
-
-//        // PASSWORD //
-//        [ObservableProperty]
-//        private string? passwordA;
-
-
-//        // PASSWORD2 //
-//        [ObservableProperty]
-//        private string? passwordB;
-
-
-//        // ERROR MESSAGE //
-//        [ObservableProperty]
-//        private string? errorMessage;
 
 
 
-//        // REGISTER COMMAND //
-//        [RelayCommand]
-//        private async Task Register()
-//        {
-//            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrEmpty(PasswordA) || !PasswordA.Equals(PasswordB))
-//            {
-//                ErrorMessage = "Chybí email nebo obě hesla nejsou stejná.";
-//                return;
-//            }
 
-//            if (await _dataService.GetUser(Email) != null)
-//            {
-//                ErrorMessage = "Uživatel s tímto emailem již existuje.";
-//                return;
-//            }
 
-//            var hash = _hashService.HashPassword(PasswordA);
-//            var newUser = new User() { Name = Email, Email = Email, PasswordHash = hash };
-
-//            await _dataService.AddUser(newUser);
-
-//            ErrorMessage = "";
-//            PasswordA = "";
-//            PasswordB = "";
-//            Email = "";
-
-//            _navigation.NavigateTo<LoginPage>();
-//        }
-//    }
-//}
 
