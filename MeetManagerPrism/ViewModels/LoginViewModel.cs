@@ -1,6 +1,7 @@
 ﻿using MeetManagerPrism.Common;
 using MeetManagerPrism.Services;
 using MeetManagerPrism.Views;
+using MeetManagerPrism.Views.Admin;
 
 namespace MeetManagerPrism.ViewModels;
 
@@ -83,6 +84,6 @@ public partial class LoginViewModel : BindableBase, INavigationAware
     private async Task InstaAccess()
     {
         if (await _loginService.TryInstaAccess())
-            _regionManager.RequestNavigate(Const.MainRegion, nameof(HomePage));
+            _regionManager.RequestNavigate(Const.MainRegion, nameof(AdminPage));
     }
 }

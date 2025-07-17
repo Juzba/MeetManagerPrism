@@ -15,9 +15,6 @@
     Foreground="#FFD340"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <converters:RoleIdToNameConverter x:Key="RoleIdToNameConverter" />
-    </UserControl.Resources>
 
     <Grid Background="#20448C">
         <Grid.RowDefinitions>
@@ -79,30 +76,17 @@
                     Binding="{Binding Email}"
                     Header="Email" />
 
+
                 <DataGridTemplateColumn Header="Role">
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock>
-                                <TextBlock.Text>
-                                    <MultiBinding Converter="{StaticResource RoleIdToNameConverter}">
-                                        <Binding Path="RoleId" />
-                                        <Binding Path="DataContext.RoleList" RelativeSource="{RelativeSource AncestorType=UserControl}" />
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-
-                    <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
                             <ComboBox
                                 DisplayMemberPath="RoleName"
                                 ItemsSource="{Binding DataContext.RolesList, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                Loaded="ComboBox_Loaded"
                                 SelectedValue="{Binding RoleId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 SelectedValuePath="Id" />
                         </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn MinWidth="80" Header="Akce">
