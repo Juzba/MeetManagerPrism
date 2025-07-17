@@ -6,8 +6,10 @@
     xmlns:local="clr-namespace:MeetManagerPrism.Views.Manager"
     xmlns:manager="clr-namespace:MeetManagerPrism.ViewModels.Manager"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    prism:ViewModelLocator.AutoWireViewModel="True"
     FontSize="20"
     Foreground="#DBF227"
     mc:Ignorable="d">

@@ -6,9 +6,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:MeetManagerPrism.Views.Admin"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
     xmlns:viewmodel="clr-namespace:MeetManagerPrism.ViewModels"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    prism:ViewModelLocator.AutoWireViewModel="True"
     FontSize="30"
     Foreground="#FFD340"
     mc:Ignorable="d">
@@ -38,7 +40,7 @@
             Command="{Binding SaveChangesCommand}"
             Content="Uložit změny"
             FontSize="25"
-            Foreground="#FFBC24" />
+            Foreground="#161616" />
 
         <TextBlock
             HorizontalAlignment="Center"
@@ -92,11 +94,11 @@
                     </DataGridTemplateColumn.CellTemplate>
 
                     <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>  
+                        <DataTemplate>
                             <ComboBox
                                 DisplayMemberPath="RoleName"
+                                ItemsSource="{Binding DataContext.RolesList, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                 Loaded="ComboBox_Loaded"
-                                ItemsSource="{Binding DataContext.RoleList, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                 SelectedValue="{Binding RoleId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 SelectedValuePath="Id" />
                         </DataTemplate>

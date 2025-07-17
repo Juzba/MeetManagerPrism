@@ -1,5 +1,8 @@
-﻿using MeetManagerPrism.Services;
+﻿using MeetManagerPrism.Common;
+using MeetManagerPrism.Services;
 using MeetManagerPrism.Views;
+using MeetManagerPrism.Views.Admin;
+using MeetManagerPrism.Views.Manager;
 using System.Windows;
 
 namespace MeetManagerPrism.ViewModels
@@ -8,12 +11,14 @@ namespace MeetManagerPrism.ViewModels
     {
         private readonly IRegionManager _regionManager;
         private readonly UserStore _userStore;
-        const string MainRegion = "MainRegion";
 
         public DelegateCommand LogoutCommand { get; }
         public DelegateCommand NavLoginCommand { get; }
         public DelegateCommand NavRegisterCommand { get; }
         public DelegateCommand NavHomeCommand { get; }
+        public DelegateCommand NavEventsCommand { get; }
+        public DelegateCommand NavManagerCommand { get; }
+        public DelegateCommand NavAdminCommand { get; }
 
 
         public MainViewModel(IRegionManager regionManager, UserStore userStore)
@@ -25,34 +30,34 @@ namespace MeetManagerPrism.ViewModels
             LogoutCommand = new DelegateCommand(Logout);
 
             // TO LOGIN PAGE //
-            NavLoginCommand = new DelegateCommand(() => _regionManager.RequestNavigate(MainRegion, nameof(LoginPage)));
+            NavLoginCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(LoginPage)));
+          
             // TO REGISTER PAGE //
-            NavRegisterCommand = new DelegateCommand(() => _regionManager.RequestNavigate(MainRegion, nameof(RegisterPage)));
-            //// TO HOME PAGE //
-            NavHomeCommand = new DelegateCommand(() => _regionManager.RequestNavigate(MainRegion, nameof(HomePage)));
+            NavRegisterCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(RegisterPage)));
+          
+            // TO HOME PAGE //
+            NavHomeCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(HomePage)));
+          
+            // TO EVENTS PAGE //
+            NavEventsCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(EventsPage)));
 
-            //// TO EVENTS PAGE //
-            //[RelayCommand]
-            //private void NavigateToEventsPage() => _navigation.NavigateTo<EventsPage>();
+            // TO MANAGER PAGE //
+            NavManagerCommand = new DelegateCommand(() =>
+            {
+                if (_userStore.User?.Role.RoleName == "Admin" || _userStore.User?.Role.RoleName == "Manager") 
+                    _regionManager.RequestNavigate(Const.MainRegion, nameof(ManagerPage));
+            });
 
-            //// TO ADD EVENT PAGE //
-            //[RelayCommand]
-            //private void NavigateToAddEventPage() => _navigation.NavigateTo<ManagerPage>();
-
-
-
-
-
-
-
+            // TO ADMIN PAGE //
+            NavAdminCommand = new DelegateCommand(() =>
+            {
+                if (_userStore.User?.Role.RoleName == "Admin")
+                    _regionManager.RequestNavigate(Const.MainRegion, nameof(AdminPage));
+            });
         }
 
 
-
-
-
-
-        // ON LOGIN //
+        // AFTER LOGIN //
         private void OnLogin()
         {
             _userStore.PropertyChanged += (sender, e) =>
@@ -123,26 +128,8 @@ namespace MeetManagerPrism.ViewModels
 
             AdminPageVisibility = Visibility.Collapsed;
             ManagerPageVisibility = Visibility.Collapsed;
-            _regionManager.RequestNavigate(MainRegion, nameof(LoginPage));
+            _regionManager.RequestNavigate(Const.MainRegion, nameof(LoginPage));
         }
-
-
-        //// TO EVENTS PAGE //
-        //[RelayCommand]
-        //private void NavigateToEventsPage() => _navigation.NavigateTo<EventsPage>();
-
-        //// TO ADD EVENT PAGE //
-        //[RelayCommand]
-        //private void NavigateToAddEventPage() => _navigation.NavigateTo<ManagerPage>();
-
-        //// TO ADMIN PAGE //
-        //[RelayCommand]
-        //private void NavigateToAdminPage()
-        //{
-        //    if (_userStore.User?.Role.RoleName == "Admin")
-        //        _navigation.NavigateTo<AdminPage>();
-        //}
-
 
 
     }

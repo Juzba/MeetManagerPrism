@@ -1,7 +1,11 @@
 ﻿using MeetManagerPrism.Data;
 using MeetManagerPrism.Services;
 using MeetManagerPrism.ViewModels;
+using MeetManagerPrism.ViewModels.Admin;
+using MeetManagerPrism.ViewModels.Manager;
 using MeetManagerPrism.Views;
+using MeetManagerPrism.Views.Admin;
+using MeetManagerPrism.Views.Manager;
 using Microsoft.EntityFrameworkCore;
 using System.Windows;
 
@@ -27,7 +31,10 @@ public partial class App : PrismApplication
         // VIEWS //
         containerRegistry.RegisterForNavigation<RegisterPage, RegisterViewModel>();
         containerRegistry.RegisterForNavigation<LoginPage, LoginViewModel>();
-        containerRegistry.RegisterForNavigation<HomePage>();
+        containerRegistry.RegisterForNavigation<HomePage, HomeViewModel>();
+        containerRegistry.RegisterForNavigation<EventsPage, EventsViewModel>();
+        containerRegistry.RegisterForNavigation<ManagerPage, ManagerViewModel>();
+        containerRegistry.RegisterForNavigation<AdminPage, AdminViewModel>();
     }
 
 

@@ -45,21 +45,22 @@
                 Margin="10,0"
                 Padding="10,5"
                 VerticalAlignment="Center"
-                Command=""
+                Command="{Binding NavEventsCommand}"
                 Content="Events" />
             <Button
                 Margin="10,0"
                 Padding="10,5"
                 VerticalAlignment="Center"
-                Command=""
+                Command="{Binding NavManagerCommand}"
                 Content="Manager"
                 Visibility="{Binding ManagerPageVisibility}" />
             <Button
                 Margin="10,0"
                 Padding="10,5"
                 VerticalAlignment="Center"
-                Command=""
+                Command="{Binding NavAdminCommand}"
                 Content="Admin"
+                Cursor="Hand"
                 Visibility="{Binding AdminPageVisibility}" />
 
 
