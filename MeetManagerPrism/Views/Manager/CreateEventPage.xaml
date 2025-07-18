@@ -91,7 +91,7 @@
                 MaxWidth="350"
                 Margin="5"
                 DisplayMemberPath="Name"
-                ItemsSource="{Binding DataContext.EventTypeList, RelativeSource={RelativeSource AncestorType=Page}}"
+                ItemsSource="{Binding DataContext.EventTypeList, RelativeSource={RelativeSource AncestorType=UserControl}}"
                 SelectedValue="{Binding SelectedEventType}" />
 
             <Label Grid.Row="4" Content="Pokoj:" />
@@ -102,7 +102,7 @@
                 Margin="5"
                 DisplayMemberPath="Name"
                 SelectedValue="{Binding SelectedRoom}"
-                ItemsSource="{Binding DataContext.RoomList, RelativeSource={RelativeSource AncestorType=Page}}" />
+                ItemsSource="{Binding DataContext.RoomList, RelativeSource={RelativeSource AncestorType=UserControl}}" />
 
             <Label Grid.Row="5" Content="Popis:" />
             <TextBox

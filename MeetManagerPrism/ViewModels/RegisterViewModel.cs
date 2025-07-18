@@ -20,6 +20,7 @@ public partial class RegisterViewModel : BindableBase, IRegionAware
         RegisterCommand = new AsyncDelegateCommand(Register);
     }
 
+    // I-NAVIGATION-AWARE //
     public void OnNavigatedFrom(NavigationContext navigationContext) { }
     public void OnNavigatedTo(NavigationContext navigationContext) { }
     public bool IsNavigationTarget(NavigationContext navigationContext) => false;

@@ -3,19 +3,19 @@ using MeetManagerPrism.Views.Manager;
 
 namespace MeetManagerPrism.ViewModels.Manager
 {
-    public partial class ManagerViewModel : BindableBase, IRegionAware
+    public partial class ManagerMainViewModel : BindableBase, IRegionAware
     {
         private readonly IRegionManager _regionManager;
 
         public DelegateCommand NavCreateEventCommand { get; }
         public DelegateCommand NavSeznamCommand { get; }
 
-        public ManagerViewModel(IRegionManager regionManager)
+        public ManagerMainViewModel(IRegionManager regionManager)
         {
             _regionManager = regionManager;
 
             NavCreateEventCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.ManagerRegion, nameof(CreateEventPage)));
-            NavSeznamCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.ManagerRegion, nameof(CreateEventPage)));
+            NavSeznamCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.ManagerRegion, nameof(ManagerEventsPage)));
 
         }
 

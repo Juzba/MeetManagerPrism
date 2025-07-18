@@ -30,7 +30,7 @@ namespace MeetManagerPrism.ViewModels.Admin
             OnInitializeCommand.Execute();
         }
 
-        // INAVIGATIONAWARE //
+        // I-NAVIGATION-AWARE //
         public bool IsNavigationTarget(NavigationContext navigationContext) => false; // Vždy vytvoří novou instanci
         public void OnNavigatedTo(NavigationContext navigationContext) { }
         public void OnNavigatedFrom(NavigationContext navigationContext) { }

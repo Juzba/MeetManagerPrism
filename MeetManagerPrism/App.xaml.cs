@@ -34,8 +34,9 @@ public partial class App : PrismApplication
         containerRegistry.RegisterForNavigation<HomePage, HomeViewModel>();
         containerRegistry.RegisterForNavigation<EventsPage, EventsViewModel>();
         containerRegistry.RegisterForNavigation<AdminPage, AdminViewModel>();
-        containerRegistry.RegisterForNavigation<ManagerPage, ManagerViewModel>();
+        containerRegistry.RegisterForNavigation<ManagerPage, ManagerMainViewModel>();
         containerRegistry.RegisterForNavigation<CreateEventPage, CreateEventViewModel>();
+        containerRegistry.RegisterForNavigation<ManagerEventsPage, ManagerEventsViewModel>();
     }
 
 
