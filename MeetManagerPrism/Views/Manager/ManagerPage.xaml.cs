@@ -8,5 +8,7 @@ namespace MeetManagerPrism.Views.Manager
         {
             InitializeComponent();
         }
+
+       
     }
 }

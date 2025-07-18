@@ -11,6 +11,7 @@ namespace MeetManagerPrism.Services
         Task DeleteUser(User user);
         Task<User?> GetUser(string email);
         Task<ICollection<User>> GetUsersList();
+        Task<ICollection<Role>> GetRolesList();
         Task<ICollection<EventType>> GetEventTypeList();
         Task<ICollection<Room>> GetRoomList();
         Task UpdateUsersList();
@@ -50,6 +51,9 @@ namespace MeetManagerPrism.Services
 
         // GET USERS LIST //
         public async Task<ICollection<User>> GetUsersList() => await _db.Users.Include(p => p.Role).ToListAsync();
+
+         // GET USERS LIST //
+        public async Task<ICollection<Role>> GetRolesList() => await _db.Roles.ToListAsync();
 
         // GET EVENT TYPE LIST //
         public async Task<ICollection<EventType>> GetEventTypeList() => await _db.EventTypes.ToListAsync();

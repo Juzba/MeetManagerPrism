@@ -1,22 +1,28 @@
-﻿namespace MeetManagerPrism.ViewModels.Manager
+﻿using MeetManagerPrism.Common;
+using MeetManagerPrism.Views.Manager;
+
+namespace MeetManagerPrism.ViewModels.Manager
 {
-    public partial class ManagerViewModel() : BindableBase
+    public partial class ManagerViewModel : BindableBase, IRegionAware
     {
+        private readonly IRegionManager _regionManager;
 
+        public DelegateCommand NavCreateEventCommand { get; }
+        public DelegateCommand NavSeznamCommand { get; }
 
+        public ManagerViewModel(IRegionManager regionManager)
+        {
+            _regionManager = regionManager;
 
-        //[RelayCommand]
-        //private void NavigateToNewEvent()
-        //{
-        //    _navigation.NavigateTo<CreateEventPage>(Constants.FrameManagerView);
-        //}
+            NavCreateEventCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.ManagerRegion, nameof(CreateEventPage)));
+            NavSeznamCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.ManagerRegion, nameof(CreateEventPage)));
 
-        //[RelayCommand]
-        //private void NavigateToSeznam() => _navigation.NavigateTo<CreateEventPage>(Constants.FrameManagerView);
+        }
 
-
-
-
+        // INAVIGATIONAWARE //
+        public bool IsNavigationTarget(NavigationContext navigationContext) => false; // Vždy vytvoří novou instanci
+        public void OnNavigatedTo(NavigationContext navigationContext) { NavSeznamCommand.Execute(); }
+        public void OnNavigatedFrom(NavigationContext navigationContext) { _regionManager.Regions.Remove("ManagerRegion"); }
 
 
 

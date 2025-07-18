@@ -84,6 +84,6 @@ public partial class LoginViewModel : BindableBase, INavigationAware
     private async Task InstaAccess()
     {
         if (await _loginService.TryInstaAccess())
-            _regionManager.RequestNavigate(Const.MainRegion, nameof(AdminPage));
+            _regionManager.RequestNavigate(Const.MainRegion, Const.InstantLoginPage);
     }
 }

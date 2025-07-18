@@ -7,22 +7,24 @@ namespace MeetManagerPrism.ViewModels.Admin
     public partial class AdminViewModel : BindableBase, IRegionAware
     {
         private readonly IDataService _dataService;
+        private readonly UserStore _userStore;
 
         public AsyncDelegateCommand OnInitializeCommand { get; }
         public AsyncDelegateCommand LoadUsersListCommand { get; }
+        public AsyncDelegateCommand LoadRolesListCommand { get; }
         public AsyncDelegateCommand SaveCommand { get; }
         public AsyncDelegateCommand<object?> RemoveUserCommand { get; }
-        public AsyncDelegateCommand<object?> SelectedRoleCommand { get; }
 
-        public AdminViewModel(IDataService dataService)
+        public AdminViewModel(IDataService dataService, UserStore userStore)
         {
             _dataService = dataService;
+            _userStore = userStore;
 
             OnInitializeCommand = new AsyncDelegateCommand(OnInitialize);
             LoadUsersListCommand = new AsyncDelegateCommand(LoadUsersList);
+            LoadRolesListCommand = new AsyncDelegateCommand(LoadRolesList);
             SaveCommand = new AsyncDelegateCommand(SaveChanges);
             RemoveUserCommand = new AsyncDelegateCommand<object?>(RemoveUser);
-            SelectedRoleCommand = new AsyncDelegateCommand<object?>(SelectedRole);
 
             OnInitializeCommand.Execute();
         }
@@ -36,20 +38,28 @@ namespace MeetManagerPrism.ViewModels.Admin
         private async Task OnInitialize()
         {
             // LOAD USERS FROM DB //
-           await LoadUsersListCommand.Execute();
+            await LoadUsersListCommand.Execute();
 
+            // LOAD ROLES FROM DB //
+            await LoadRolesListCommand.Execute();
         }
 
 
 
 
 
+
         // ROLES LIST //
-        public ObservableCollection<Role> RolesList { get; } = [new Role { Id = "AdminRoleId-51sa9-sdd18", RoleName = "Admin" }, new Role { Id = "UserRoleId-54sa9-sda87", RoleName = "User" }, new Role { Id = "ManagerRoleId-21ga5-sda13", RoleName = "Manager" }];
+        private ObservableCollection<Role> rolesList = [];
+        public ObservableCollection<Role> RolesList
+        {
+            get { return rolesList; }
+            set { SetProperty(ref rolesList, value); }
+        }
 
 
         // USERS LIST //
-        public ObservableCollection<User> users = [];
+        private ObservableCollection<User> users = [];
         public ObservableCollection<User> Users
         {
             get { return users; }
@@ -57,16 +67,16 @@ namespace MeetManagerPrism.ViewModels.Admin
         }
 
 
-
-
-        // SELECTED ROLE //
-        private async Task SelectedRole(object? param)
+        // ERROR MESSAGE //
+        private string? errorMessage;
+        public string? ErrorMessage
         {
-      
+            get { return errorMessage; }
+            set { SetProperty(ref errorMessage, value); }
         }
 
 
-        // LOAD DATA //
+        // LOAD USERS //
         private async Task LoadUsersList()
         {
             var usersData = await _dataService.GetUsersList();
@@ -74,9 +84,23 @@ namespace MeetManagerPrism.ViewModels.Admin
         }
 
 
-        // SAVE CHANGES //
-        private async Task SaveChanges() => await _dataService.UpdateUsersList();
+        // LOAD ROLES //
+        private async Task LoadRolesList()
+        {
+            var rolesData = await _dataService.GetRolesList();
+            RolesList = new ObservableCollection<Role>(rolesData);
+        }
 
+
+        // SAVE CHANGES //
+        private async Task SaveChanges()
+        {
+            // There must be at least one admin here. //
+            if (Users.Any(p => p.RoleId.Contains("Admin"))) await _dataService.UpdateUsersList();
+
+            else ErrorMessage = "Musí být aspoň jeden Admin.";
+
+        }
 
 
         // REMOVE USER //
@@ -84,18 +108,14 @@ namespace MeetManagerPrism.ViewModels.Admin
         {
             if (param is not User user) return;
 
+            if (user.Name == _userStore.User?.Name)
+            {
+                ErrorMessage = "Admin nemůže smazat sám sebe.";
+                return;
+            }
+
             await _dataService.DeleteUser(user);
             await LoadUsersListCommand.Execute();
         }
-
-
-
-
-
-
-
-
-
-
     }
 }
