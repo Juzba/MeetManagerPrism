@@ -8,15 +8,33 @@ public partial class CreateEventViewModel : BindableBase
 {
     private readonly IDataService _dataService;
 
+    private AsyncDelegateCommand OnInitializeCommand { get; }
+    private AsyncDelegateCommand GetEventTypeListCommand { get; }
+    private AsyncDelegateCommand GetRoomListCommand { get; }
+    public AsyncDelegateCommand CreateEventCommand { get; }
+    public DelegateCommand DeleteEventCommand { get; }
 
 
     public CreateEventViewModel(IDataService dataService)
     {
         _dataService = dataService;
-        //GetEventTypeListCommand.Execute(null);
-        //GetRoomListCommand.Execute(null);
+
+        OnInitializeCommand = new AsyncDelegateCommand(OnInitialize);
+        GetEventTypeListCommand = new AsyncDelegateCommand(GetEventTypeList);
+        GetRoomListCommand = new AsyncDelegateCommand(GetRoomList);
+        CreateEventCommand = new AsyncDelegateCommand(CreateEvent);
+        DeleteEventCommand = new DelegateCommand(DeleteEvent);
+
+        OnInitializeCommand.Execute();
     }
 
+
+    // ON INITIALIZE //
+    private async Task OnInitialize()
+    {
+        await GetEventTypeListCommand.Execute();
+        await GetRoomListCommand.Execute(); 
+    }
 
 
     // LOAD EVENT-TYPES FROM DB - COMBOBOX  //
@@ -52,12 +70,13 @@ public partial class CreateEventViewModel : BindableBase
 
 
     // ROOMS LIST //
-    private ObservableCollection<Room> roomList;
+    private ObservableCollection<Room> roomList = [];
     public ObservableCollection<Room> RoomList
     {
         get { return roomList; }
         set { SetProperty(ref roomList, value); }
     }
+
 
     // SELECTED ROOM //
     private Room? selectedRoom;
@@ -67,6 +86,7 @@ public partial class CreateEventViewModel : BindableBase
         set { SetProperty(ref selectedRoom, value); }
     }
 
+
     // ERROR MESSAGE //
     private string? errorMessage;
     public string? ErrorMessage
@@ -74,6 +94,7 @@ public partial class CreateEventViewModel : BindableBase
         get { return errorMessage; }
         set { SetProperty(ref errorMessage, value); }
     }
+
 
     // NAME //
     private string? name;
@@ -84,20 +105,36 @@ public partial class CreateEventViewModel : BindableBase
     }
 
 
-    [ObservableProperty]
+    // START EVENT //
     private DateTime startEvent;
+    public DateTime StartEvent
+    {
+        get { return startEvent; }
+        set { SetProperty(ref startEvent, value); }
+    }
 
-    [ObservableProperty]
+
+    // END EVENT //
     private DateTime endEvent;
+    public DateTime EndEvent
+    {
+        get { return endEvent; }
+        set { SetProperty(ref endEvent, value); }
+    }
 
-    [ObservableProperty]
+
+    // DESCRIPTION //
     private string? description;
+    public string? Description
+    {
+        get { return description; }
+        set { SetProperty(ref description, value); }
+    }
 
 
 
-
-    [RelayCommand]
-    public async Task CreateEvent()
+    // CREATE EVENT //
+    private async Task CreateEvent()
     {
         if (Name == null || Description == null || SelectedEventType == null)
         {
@@ -111,8 +148,8 @@ public partial class CreateEventViewModel : BindableBase
     }
 
 
-    [RelayCommand]
-    public void DeleteEvent()
+    // DELETE EVENT //
+    private void DeleteEvent()
     {
 
     }

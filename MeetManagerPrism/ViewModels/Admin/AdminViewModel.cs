@@ -9,9 +9,10 @@ namespace MeetManagerPrism.ViewModels.Admin
         private readonly IDataService _dataService;
         private readonly UserStore _userStore;
 
-        public AsyncDelegateCommand OnInitializeCommand { get; }
-        public AsyncDelegateCommand LoadUsersListCommand { get; }
-        public AsyncDelegateCommand LoadRolesListCommand { get; }
+        private AsyncDelegateCommand OnInitializeCommand { get; }
+        private AsyncDelegateCommand LoadUsersListCommand { get; }
+        private AsyncDelegateCommand LoadRolesListCommand { get; }
+
         public AsyncDelegateCommand SaveCommand { get; }
         public AsyncDelegateCommand<object?> RemoveUserCommand { get; }
 
