@@ -4,19 +4,55 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:MeetManagerPrism.Views.Manager"
+    xmlns:manager="clr-namespace:MeetManagerPrism.ViewModels.Manager"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
+    d:DataContext="{d:DesignInstance Type=manager:ManagerEventsViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     prism:ViewModelLocator.AutoWireViewModel="True"
     FontSize="30"
     mc:Ignorable="d">
-    
-    <Grid Background="Bisque">
+
+    <Grid Background="#086CB4">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="auto" MinWidth="500" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
+            <RowDefinition Height="auto" MinHeight="250" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
         <TextBlock
+            Grid.ColumnSpan="3"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            FontSize="60"
-            Text="seznam" />
+            FontSize="50"
+            Foreground="#FFBC24"
+            Text="Moje Eventy" />
+
+        <DataGrid
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="0,20,0,0"
+            AutoGenerateColumns="False"
+            CanUserAddRows="False"
+            ItemsSource="{Binding EventsList}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                <DataGridTextColumn Header="Začátek" />
+                <DataGridTextColumn Header="Konec" />
+                <DataGridTextColumn Header="Typ" />
+                <DataGridTextColumn Header="Kde" />
+                <DataGridTextColumn Header="Popis" />
+            </DataGrid.Columns>
+
+
+        </DataGrid>
+
+
+
     </Grid>
 </UserControl>
