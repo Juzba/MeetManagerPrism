@@ -61,6 +61,12 @@ namespace MeetManagerPrism.Data
                 new Room() { ID = 4, Name = "areal u smutného psa", Capacity = 120, Location = "Pardubice" }
                 );
 
+            modelBuilder.Entity<Invitation>()
+             .HasOne(i => i.User)
+             .WithMany(u => u.Invitations) // přidej kolekci Invitations do User třídy (pokud tam není)
+             .HasForeignKey(i => i.UserId)
+             .OnDelete(DeleteBehavior.Restrict); // nebo DeleteBehavior.NoAction
+
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -67,18 +67,18 @@
             <Label Grid.Row="1" Content="Začátek:" />
             <DatePicker
                 Grid.Row="1"
-                 SelectedDate="{Binding StartEvent}"
                 Grid.Column="1"
                 MaxWidth="350"
-                Margin="5" />
+                Margin="5"
+                SelectedDate="{Binding StartEvent}" />
 
             <Label Grid.Row="2" Content="Konec:" />
             <DatePicker
                 Grid.Row="2"
-                SelectedDate="{Binding EndEvent}"
                 Grid.Column="1"
                 MaxWidth="350"
-                Margin="5" />
+                Margin="5"
+                SelectedDate="{Binding EndEvent}" />
 
             <Label
                 Grid.Row="3"
@@ -91,8 +91,10 @@
                 MaxWidth="350"
                 Margin="5"
                 DisplayMemberPath="Name"
+                SelectedValuePath="Name"
+                SelectedValue="{Binding SelectedEventType, Mode=TwoWay}"
                 ItemsSource="{Binding DataContext.EventTypeList, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                SelectedValue="{Binding SelectedEventType}" />
+                 />
 
             <Label Grid.Row="4" Content="Pokoj:" />
             <ComboBox
@@ -101,17 +103,17 @@
                 MaxWidth="350"
                 Margin="5"
                 DisplayMemberPath="Name"
-                SelectedValue="{Binding SelectedRoom}"
-                ItemsSource="{Binding DataContext.RoomList, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                ItemsSource="{Binding DataContext.RoomList, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                SelectedValue="{Binding SelectedRoom, Mode=TwoWay}" />
 
             <Label Grid.Row="5" Content="Popis:" />
             <TextBox
-                Text="{Binding Description}"
                 Grid.Row="5"
                 Grid.Column="1"
                 MaxWidth="350"
                 MaxHeight="100"
-                Margin="5" />
+                Margin="5"
+                Text="{Binding Description}" />
         </Grid>
 
         <StackPanel Grid.Row="1" Grid.Column="2">
@@ -121,7 +123,7 @@
                 Margin="10"
                 VerticalAlignment="Top"
                 Command="{Binding CreateEventCommand}"
-                Content="Vytvořit" />
+                Content="Uložit" />
             <Button
                 Grid.Row="1"
                 Grid.Column="2"

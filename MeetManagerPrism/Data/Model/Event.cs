@@ -13,9 +13,15 @@
         public int EventTypeId { get; set; }
         public EventType EventType { get; set; } = null!;
 
-        // ROOM //
 
+        // ROOM //
         public int RoomID { get; set; }
         public Room Room { get; set; } = null!;
+
+
+        // USER //
+        public int UserId { get; set; }
+        public User User { get; set; } = null!;
+
     }
 }

@@ -7,9 +7,18 @@
         public string Email { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
 
+
         // Role
         public string RoleId { get; set; } = "UserRoleId-54sa9-sda87";
         public Role Role { get; set; } = default!;
+
+
+        // EVENTS //
+        public ICollection<Event> Events { get; set; } = [];
+
+
+        // INVITATION //
+        public ICollection<Invitation> Invitations { get; set; } = [];
 
     }
 }

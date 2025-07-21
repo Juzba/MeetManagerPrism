@@ -6,10 +6,11 @@ using System.Collections.ObjectModel;
 
 namespace MeetManagerPrism.ViewModels.Manager;
 
-public partial class CreateEventViewModel : BindableBase, IRegionAware
+public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigationAware
 {
     private readonly IDataService _dataService;
     private readonly IRegionManager _regionManager;
+    private readonly UserStore _userStore;
 
     private AsyncDelegateCommand OnInitializeCommand { get; }
     private AsyncDelegateCommand GetEventTypeListCommand { get; }
@@ -18,10 +19,11 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware
     public DelegateCommand DeleteEventCommand { get; }
 
 
-    public CreateEventViewModel(IDataService dataService, IRegionManager regionManager)
+    public CreateEventViewModel(IDataService dataService, IRegionManager regionManager, UserStore userStore)
     {
         _dataService = dataService;
         _regionManager = regionManager;
+        _userStore = userStore;
 
         OnInitializeCommand = new AsyncDelegateCommand(OnInitialize);
         GetEventTypeListCommand = new AsyncDelegateCommand(GetEventTypeList);
@@ -35,7 +37,22 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware
 
     // I-NAVIGATION-AWARE //
     public void OnNavigatedFrom(NavigationContext navigationContext) { }
-    public void OnNavigatedTo(NavigationContext navigationContext) { }
+    public void OnNavigatedTo(NavigationContext navigationContext)
+    {
+        if (navigationContext.Parameters.ContainsKey("Event"))
+        {
+            EventParametr = (Event?)navigationContext.Parameters["Event"];
+            if (EventParametr == null) return;
+
+            Name = EventParametr.Name;
+            StartEvent = EventParametr.StartDate;
+            EndEvent = EventParametr.EndDate;
+            Description = EventParametr.Description;
+            SelectedEventType = EventParametr.EventType;
+            SelectedRoom = EventParametr.Room;
+
+        }
+    }
     public bool IsNavigationTarget(NavigationContext navigationContext) => false;
 
 
@@ -144,6 +161,15 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware
         set { SetProperty(ref description, value); }
     }
 
+    // INPUT PARAMETR SELECTED EVENT //
+    private Event? eventParametr;
+    public Event? EventParametr
+    {
+        get { return eventParametr; }
+        set { SetProperty(ref eventParametr, value); }
+    }
+
+
 
 
     // CREATE EVENT //
@@ -155,7 +181,16 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware
             return;
         }
 
-        var newEvent = new Event() { Name = Name, Description = Description, EndDate = EndEvent, StartDate = StartEvent, EventTypeId = SelectedEventType.Id, RoomID = SelectedRoom.ID };
+        var newEvent = new Event()
+        {
+            Name = Name,
+            Description = Description,
+            EndDate = EndEvent,
+            StartDate = StartEvent,
+            EventTypeId = SelectedEventType.Id,
+            RoomID = SelectedRoom.ID,
+            UserId = _userStore.User!.Id
+        };
         await _dataService.AddEvent(newEvent);
 
         _regionManager.RequestNavigate(Const.ManagerRegion, nameof(ManagerEventsPage));

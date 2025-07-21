@@ -64,7 +64,8 @@ namespace MeetManagerPrism.Data.Migrations
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EventTypeId = table.Column<int>(type: "int", nullable: false),
-                    RoomID = table.Column<int>(type: "int", nullable: false)
+                    RoomID = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -188,6 +189,11 @@ namespace MeetManagerPrism.Data.Migrations
                 column: "RoomID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Events_UserId",
+                table: "Events",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Invitations_EventId",
                 table: "Invitations",
                 column: "EventId");
@@ -208,12 +214,20 @@ namespace MeetManagerPrism.Data.Migrations
                 column: "RoleId");
 
             migrationBuilder.AddForeignKey(
+                name: "FK_Events_Users_UserId",
+                table: "Events",
+                column: "UserId",
+                principalTable: "Users",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_Invitations_Users_UserId",
                 table: "Invitations",
                 column: "UserId",
                 principalTable: "Users",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
         }
 
         /// <inheritdoc />
@@ -228,8 +242,8 @@ namespace MeetManagerPrism.Data.Migrations
                 table: "Events");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Invitations_Events_EventId",
-                table: "Invitations");
+                name: "FK_Events_Users_UserId",
+                table: "Events");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Invitations_Users_UserId",
@@ -242,9 +256,6 @@ namespace MeetManagerPrism.Data.Migrations
                 name: "Rooms");
 
             migrationBuilder.DropTable(
-                name: "Events");
-
-            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
@@ -252,6 +263,9 @@ namespace MeetManagerPrism.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Roles");
+
+            migrationBuilder.DropTable(
+                name: "Events");
         }
     }
 }

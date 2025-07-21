@@ -39,14 +39,14 @@
             Margin="0,20,0,0"
             AutoGenerateColumns="False"
             CanUserAddRows="False"
-            ItemsSource="{Binding EventsList}">
+            ItemsSource="{Binding EventsList}"
+            SelectedItem="{Binding SelectedEvent}">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
-                <DataGridTextColumn Header="Začátek" />
-                <DataGridTextColumn Header="Konec" />
-                <DataGridTextColumn Header="Typ" />
-                <DataGridTextColumn Header="Kde" />
-                <DataGridTextColumn Header="Popis" />
+                <DataGridTextColumn Binding="{Binding StartDate, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Začátek" />
+                <DataGridTextColumn Binding="{Binding EndDate, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Konec" />
+                <DataGridTextColumn Binding="{Binding EventType.Name}" Header="Typ" />
+                <DataGridTextColumn Binding="{Binding Room.Name}" Header="Kde" />
             </DataGrid.Columns>
 
 

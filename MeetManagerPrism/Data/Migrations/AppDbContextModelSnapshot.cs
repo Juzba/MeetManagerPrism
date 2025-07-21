@@ -50,11 +50,16 @@ namespace MeetManagerPrism.Data.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EventTypeId");
 
                     b.HasIndex("RoomID");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Events");
                 });
@@ -298,9 +303,17 @@ namespace MeetManagerPrism.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MeetManagerPrism.Data.Model.User", "User")
+                        .WithMany("Events")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("EventType");
 
                     b.Navigation("Room");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MeetManagerPrism.Data.Model.Invitation", b =>
@@ -312,9 +325,9 @@ namespace MeetManagerPrism.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("MeetManagerPrism.Data.Model.User", "User")
-                        .WithMany()
+                        .WithMany("Invitations")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Event");
@@ -355,6 +368,13 @@ namespace MeetManagerPrism.Data.Migrations
             modelBuilder.Entity("MeetManagerPrism.Data.Model.Room", b =>
                 {
                     b.Navigation("Events");
+                });
+
+            modelBuilder.Entity("MeetManagerPrism.Data.Model.User", b =>
+                {
+                    b.Navigation("Events");
+
+                    b.Navigation("Invitations");
                 });
 #pragma warning restore 612, 618
         }
