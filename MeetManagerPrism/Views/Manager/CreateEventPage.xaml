@@ -35,7 +35,7 @@
             VerticalAlignment="Center"
             FontSize="38"
             Foreground="#FFBC24"
-            Text="Vytvořit Událost" />
+            Text="{Binding Title}" />
 
 
         <Grid Grid.Row="1" Grid.Column="1">
@@ -62,7 +62,7 @@
                 MaxWidth="350"
                 Margin="5"
                 MaxLength="25"
-                Text="{Binding Name}" />
+                Text="{Binding MyEvent.Name}" />
 
             <Label Grid.Row="1" Content="Začátek:" />
             <DatePicker
@@ -70,7 +70,7 @@
                 Grid.Column="1"
                 MaxWidth="350"
                 Margin="5"
-                SelectedDate="{Binding StartEvent}" />
+                SelectedDate="{Binding MyEvent.StartDate}" />
 
             <Label Grid.Row="2" Content="Konec:" />
             <DatePicker
@@ -78,7 +78,7 @@
                 Grid.Column="1"
                 MaxWidth="350"
                 Margin="5"
-                SelectedDate="{Binding EndEvent}" />
+                SelectedDate="{Binding MyEvent.EndDate}" />
 
             <Label
                 Grid.Row="3"
@@ -91,10 +91,9 @@
                 MaxWidth="350"
                 Margin="5"
                 DisplayMemberPath="Name"
-                SelectedValuePath="Name"
-                SelectedValue="{Binding SelectedEventType, Mode=TwoWay}"
-                ItemsSource="{Binding DataContext.EventTypeList, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                 />
+                ItemsSource="{Binding DataContext.EventTypeList, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                SelectedValue="{Binding MyEvent.EventTypeId, Mode=TwoWay}"
+                SelectedValuePath="Id" />
 
             <Label Grid.Row="4" Content="Pokoj:" />
             <ComboBox
@@ -103,9 +102,11 @@
                 MaxWidth="350"
                 Margin="5"
                 DisplayMemberPath="Name"
-                ItemsSource="{Binding DataContext.RoomList, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                SelectedValue="{Binding SelectedRoom, Mode=TwoWay}" />
-
+                ItemsSource="{Binding DataContext.RoomList, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                SelectedValue="{Binding MyEvent.RoomID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                SelectedValuePath="ID" />
+            
+           
             <Label Grid.Row="5" Content="Popis:" />
             <TextBox
                 Grid.Row="5"
@@ -113,7 +114,7 @@
                 MaxWidth="350"
                 MaxHeight="100"
                 Margin="5"
-                Text="{Binding Description}" />
+                Text="{Binding MyEvent.Description}" />
         </Grid>
 
         <StackPanel Grid.Row="1" Grid.Column="2">
@@ -130,7 +131,9 @@
                 MaxWidth="300"
                 Margin="10"
                 VerticalAlignment="Top"
+                Background="DarkRed"
                 Command="{Binding DeleteEventCommand}"
+                Visibility="{Binding VisibilityDelete}"
                 Content="Smazat" />
 
             <TextBlock

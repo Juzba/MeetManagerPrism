@@ -3,6 +3,7 @@ using MeetManagerPrism.Data.Model;
 using MeetManagerPrism.Services;
 using MeetManagerPrism.Views.Manager;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace MeetManagerPrism.ViewModels.Manager;
 
@@ -16,7 +17,7 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
     private AsyncDelegateCommand GetEventTypeListCommand { get; }
     private AsyncDelegateCommand GetRoomListCommand { get; }
     public AsyncDelegateCommand CreateEventCommand { get; }
-    public DelegateCommand DeleteEventCommand { get; }
+    public AsyncDelegateCommand DeleteEventCommand { get; }
 
 
     public CreateEventViewModel(IDataService dataService, IRegionManager regionManager, UserStore userStore)
@@ -29,7 +30,7 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
         GetEventTypeListCommand = new AsyncDelegateCommand(GetEventTypeList);
         GetRoomListCommand = new AsyncDelegateCommand(GetRoomList);
         CreateEventCommand = new AsyncDelegateCommand(CreateEvent);
-        DeleteEventCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.ManagerRegion, nameof(CreateEventPage)));
+        DeleteEventCommand = new AsyncDelegateCommand(DeleteEvent);
 
         OnInitializeCommand.Execute();
     }
@@ -44,17 +45,12 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
             EventParametr = (Event?)navigationContext.Parameters["Event"];
             if (EventParametr == null) return;
 
-            Name = EventParametr.Name;
-            StartEvent = EventParametr.StartDate;
-            EndEvent = EventParametr.EndDate;
-            Description = EventParametr.Description;
-            SelectedEventType = EventParametr.EventType;
-            SelectedRoom = EventParametr.Room;
-
+            MyEvent = EventParametr;
+            Title = "Upravit Event";
+            VisibilityDelete = Visibility.Visible;
         }
     }
     public bool IsNavigationTarget(NavigationContext navigationContext) => false;
-
 
 
 
@@ -81,6 +77,24 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
     }
 
 
+    // EVENT //
+    private Event myEvent = new() { StartDate = DateTime.Now.AddDays(7), EndDate = DateTime.Now.AddDays(8)};
+    public Event MyEvent
+    {
+        get { return myEvent; }
+        set { SetProperty(ref myEvent, value); }
+    }
+
+
+    // PARAMETR EVENT //
+    private Event? eventParametr;
+    public Event? EventParametr
+    {
+        get { return eventParametr; }
+        set { SetProperty(ref eventParametr, value); }
+    }
+
+
     // EVENT-TYPE LIST //
     private ObservableCollection<EventType> eventTypeList = [];
     public ObservableCollection<EventType> EventTypeList
@@ -99,24 +113,6 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
     }
 
 
-    // SELECTED EVENT-TYPE //
-    private EventType? selectedEventType;
-    public EventType? SelectedEventType
-    {
-        get { return selectedEventType; }
-        set { SetProperty(ref selectedEventType, value); }
-    }
-
-
-    // SELECTED ROOM //
-    private Room? selectedRoom;
-    public Room? SelectedRoom
-    {
-        get { return selectedRoom; }
-        set { SetProperty(ref selectedRoom, value); }
-    }
-
-
     // ERROR MESSAGE //
     private string? errorMessage;
     public string? ErrorMessage
@@ -125,74 +121,50 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
         set { SetProperty(ref errorMessage, value); }
     }
 
-
-    // NAME //
-    private string? name;
-    public string? Name
+    // TITLE //
+    private string title = "Vytvořit Událost";
+    public string Title
     {
-        get { return name; }
-        set { SetProperty(ref name, value); }
+        get { return title; }
+        set { SetProperty(ref title, value); }
     }
 
+    // DELETE VISIBILITY //
 
-    // START EVENT //
-    private DateTime startEvent = DateTime.Now.AddDays(7);
-    public DateTime StartEvent
+    private Visibility visibilityDelete = Visibility.Collapsed;
+    public Visibility VisibilityDelete
     {
-        get { return startEvent; }
-        set { SetProperty(ref startEvent, value); }
+        get { return visibilityDelete; }
+        set { SetProperty(ref visibilityDelete, value); }
     }
-
-
-    // END EVENT //
-    private DateTime endEvent = DateTime.Now.AddDays(8);
-    public DateTime EndEvent
-    {
-        get { return endEvent; }
-        set { SetProperty(ref endEvent, value); }
-    }
-
-
-    // DESCRIPTION //
-    private string? description;
-    public string? Description
-    {
-        get { return description; }
-        set { SetProperty(ref description, value); }
-    }
-
-    // INPUT PARAMETR SELECTED EVENT //
-    private Event? eventParametr;
-    public Event? EventParametr
-    {
-        get { return eventParametr; }
-        set { SetProperty(ref eventParametr, value); }
-    }
-
-
 
 
     // CREATE EVENT //
     private async Task CreateEvent()
     {
-        if (Name == null || Description == null || SelectedEventType == null || SelectedRoom == null)
+        if (MyEvent.Name == null || MyEvent.Description == null || MyEvent.RoomID == 0 || MyEvent.EventTypeId == 0)
         {
             ErrorMessage = "Chybí údaje!";
             return;
         }
 
-        var newEvent = new Event()
-        {
-            Name = Name,
-            Description = Description,
-            EndDate = EndEvent,
-            StartDate = StartEvent,
-            EventTypeId = SelectedEventType.Id,
-            RoomID = SelectedRoom.ID,
-            UserId = _userStore.User!.Id
-        };
-        await _dataService.AddEvent(newEvent);
+        MyEvent.UserId = _userStore.User!.Id;
 
+        if (EventParametr == null) await _dataService.AddEvent(MyEvent);
+        else
+        {
+            MyEvent.Room = null!;
+            MyEvent.EventType = null!;
+            await _dataService.UpdateEvent(MyEvent);
+        }
+
+        _regionManager.RequestNavigate(Const.ManagerRegion, nameof(ManagerEventsPage));
+    }
+
+    // DELETE EVENT //
+    private async Task DeleteEvent()
+    {
+        await _dataService.DeleteEvent(MyEvent);
         _regionManager.RequestNavigate(Const.ManagerRegion, nameof(ManagerEventsPage));
     }
 

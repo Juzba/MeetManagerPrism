@@ -8,6 +8,8 @@ namespace MeetManagerPrism.Services
     {
         Task AddUser(User user);
         Task AddEvent(Event newEvent);
+        Task UpdateEvent(Event updEvent);
+        Task DeleteEvent(Event delEvent);
         Task DeleteUser(User user);
         Task<User?> GetUser(string email);
         Task<ICollection<User>> GetUsersList();
@@ -15,7 +17,7 @@ namespace MeetManagerPrism.Services
         Task<ICollection<Event>> GetEventsList(User user);
         Task<ICollection<EventType>> GetEventTypeList();
         Task<ICollection<Room>> GetRoomList();
-        Task UpdateUsersList();
+        Task SaveChangesDB();
     }
 
 
@@ -36,6 +38,24 @@ namespace MeetManagerPrism.Services
         public async Task AddEvent(Event newEwent)
         {
             await _db.Events.AddAsync(newEwent);
+            await _db.SaveChangesAsync();
+        }
+
+        // UPDATE EVENT //
+        public async Task UpdateEvent(Event updEwent)
+        {
+            _db.Events.Attach(updEwent);
+            _db.Entry(updEwent).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+        }
+
+        // DELETE EVENT //
+        public async Task DeleteEvent(Event delEvent)
+        {
+            var dbEvent = await _db.Events.FindAsync(delEvent.Id);
+            if (dbEvent == null) return;
+
+            _db.Events.Remove(dbEvent);
             await _db.SaveChangesAsync();
         }
 
@@ -60,13 +80,13 @@ namespace MeetManagerPrism.Services
         public async Task<ICollection<EventType>> GetEventTypeList() => await _db.EventTypes.ToListAsync();
 
         // GET EVENT LIST - USER //
-        public async Task<ICollection<Event>> GetEventsList(User user) => await _db.Events.Where(p=>p.UserId == user.Id).Include(p => p.EventType).Include(p => p.Room).ToListAsync();
+        public async Task<ICollection<Event>> GetEventsList(User user) => await _db.Events.Where(p => p.UserId == user.Id).Include(p => p.EventType).Include(p => p.Room).ToListAsync();
 
         // GET EVENT TYPE LIST //
         public async Task<ICollection<Room>> GetRoomList() => await _db.Rooms.ToListAsync();
 
         // SAVE USERS LIST //
-        public async Task UpdateUsersList() => await _db.SaveChangesAsync();
+        public async Task SaveChangesDB() => await _db.SaveChangesAsync();
 
 
     }

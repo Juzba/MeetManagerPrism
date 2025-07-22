@@ -22,8 +22,8 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="80" />
-            <RowDefinition Height="auto" MinHeight="250" />
-            <RowDefinition />
+            <RowDefinition MinHeight="250" />
+            <RowDefinition Height="auto" MinHeight="80" />
         </Grid.RowDefinitions>
 
         <TextBlock
@@ -40,7 +40,8 @@
             AutoGenerateColumns="False"
             CanUserAddRows="False"
             ItemsSource="{Binding EventsList}"
-            SelectedItem="{Binding SelectedEvent}">
+            SelectedItem="{Binding SelectedEvent}"
+            VerticalScrollBarVisibility="Visible">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
                 <DataGridTextColumn Binding="{Binding StartDate, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Začátek" />

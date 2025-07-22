@@ -97,7 +97,7 @@ namespace MeetManagerPrism.ViewModels.Admin
         private async Task SaveChanges()
         {
             // There must be at least one admin here. //
-            if (Users.Any(p => p.RoleId.Contains("Admin"))) await _dataService.UpdateUsersList();
+            if (Users.Any(p => p.RoleId.Contains("Admin"))) await _dataService.SaveChangesDB();
 
             else ErrorMessage = "Musí být aspoň jeden Admin.";
 
