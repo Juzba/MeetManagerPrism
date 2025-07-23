@@ -45,8 +45,9 @@
                 Margin="10,0"
                 Padding="10,5"
                 VerticalAlignment="Center"
-                Command="{Binding NavEventsCommand}"
-                Content="Events" />
+                Command="{Binding NavDashboardCommand}"
+                Content="DashBoard"
+                Visibility="{Binding UserPageVisibility}" />
             <Button
                 Margin="10,0"
                 Padding="10,5"

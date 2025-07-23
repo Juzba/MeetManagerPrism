@@ -3,11 +3,14 @@ using MeetManagerPrism.Services;
 using MeetManagerPrism.ViewModels;
 using MeetManagerPrism.ViewModels.Admin;
 using MeetManagerPrism.ViewModels.Manager;
+using MeetManagerPrism.Data.Model;
 using MeetManagerPrism.Views;
 using MeetManagerPrism.Views.Admin;
 using MeetManagerPrism.Views.Manager;
 using Microsoft.EntityFrameworkCore;
 using System.Windows;
+using MeetManagerPrism.ViewModels.Users;
+using MeetManagerPrism.Views.Users;
 
 namespace MeetManagerPrism;
 
@@ -37,6 +40,7 @@ public partial class App : PrismApplication
         containerRegistry.RegisterForNavigation<ManagerPage, ManagerMainViewModel>();
         containerRegistry.RegisterForNavigation<CreateEventPage, CreateEventViewModel>();
         containerRegistry.RegisterForNavigation<ManagerEventsPage, ManagerEventsViewModel>();
+        containerRegistry.RegisterForNavigation<Dashboard, DashboardViewModel>();
     }
 
 
