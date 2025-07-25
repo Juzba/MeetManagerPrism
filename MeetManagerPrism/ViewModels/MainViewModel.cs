@@ -99,6 +99,15 @@ public partial class MainViewModel : BindableBase
     }
 
 
+    // PAGE TITLE //
+    private string? pageTitle = "Login";
+    public string? PageTitle
+    {
+        get { return pageTitle; }
+        set { SetProperty(ref pageTitle, value); }
+    }
+
+
     // LOGINVISIBILITY //
     private bool loginVisibility;
     public bool LoginVisibility

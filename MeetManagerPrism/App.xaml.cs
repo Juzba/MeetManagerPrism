@@ -47,6 +47,7 @@ public partial class App : PrismApplication
     protected override Window CreateShell()
     {
         var mainWindow = Container.Resolve<MainWindow>();
+        mainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         mainWindow.DataContext = Container.Resolve<MainViewModel>();
         return mainWindow;
     }
