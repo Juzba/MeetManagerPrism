@@ -3,9 +3,9 @@ using System.Windows.Controls;
 
 namespace MeetManagerPrism.Views.Admin;
 
-public partial class AdminPage : UserControl
+public partial class AdminUsersPage : UserControl
 {
-    public AdminPage()
+    public AdminUsersPage()
     {
         InitializeComponent();
     }

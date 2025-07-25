@@ -1,19 +1,16 @@
 ﻿<UserControl
-    x:Class="MeetManagerPrism.Views.Manager.ManagerPage"
+    x:Class="MeetManagerPrism.Views.Admin.AdminMainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:admin="clr-namespace:MeetManagerPrism.ViewModels.Admin"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:MeetManagerPrism.Views"
-    xmlns:manager="clr-namespace:MeetManagerPrism.ViewModels.Manager"
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:local="clr-namespace:MeetManagerPrism.Views.Admin"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
-    d:DataContext="{d:DesignInstance Type=manager:ManagerMainViewModel}"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DataContext="{d:DesignInstance Type=admin:AdminMainViewModel}"
+    d:DesignHeight="700"
+    d:DesignWidth="1280"
     prism:ViewModelLocator.AutoWireViewModel="True"
-    FontSize="30"
-    Foreground="#FFD340"
     mc:Ignorable="d">
 
 
@@ -31,20 +28,27 @@
                 Width="150"
                 Height="60"
                 Margin="0,30,0,10"
-                Command="{Binding NavCreateEventCommand}"
-                Content="Vytvořit" />
+                Command="{Binding NavAdminUsersCommand}"
+                Content="Users" />
+
             <Button
                 Width="150"
                 Height="60"
                 Margin="0,10"
-                Command="{Binding NavSeznamCommand}"
-                Content="Seznam" />
+                Command=""
+                Content="Místnosti" />
+
+            <Button
+                Width="150"
+                Height="60"
+                Margin="0,10"
+                Command=""
+                Content="Event Types" />
 
 
         </StackPanel>
 
-        <ContentControl Grid.Column="1" prism:RegionManager.RegionName="ManagerRegion" />
+        <ContentControl Grid.Column="1" prism:RegionManager.RegionName="AdminRegion" />
 
     </Grid>
-
 </UserControl>

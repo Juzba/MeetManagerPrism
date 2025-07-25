@@ -25,15 +25,6 @@
             <RowDefinition Height="35*" MinHeight="120" />
         </Grid.RowDefinitions>
 
-        <TextBlock
-            Grid.Column="1"
-            Grid.Row="1"
-            Margin="0 20"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            Foreground="White"
-            Text="{Binding DateTime, StringFormat={}{0:dd.MM.yyyy HH:mm}}" />
-
         <DataGrid
             Grid.Row="1"
             Margin="40,20"
@@ -120,11 +111,36 @@
                     </DataGridTemplateColumn.Header>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn  Binding="{Binding Name}" />
-                <DataGridTextColumn  Binding="{Binding StartDate,StringFormat={}{0: hh.MM.yyyy}}" />
-                <DataGridTextColumn  Binding="{Binding EndDate,StringFormat={}{0: hh.MM.yyyy}}" />
+                <DataGridTextColumn Binding="{Binding Name}" />
+                <DataGridTextColumn Binding="{Binding StartDate, StringFormat={}{0: hh.MM.yyyy}}" />
+                <DataGridTextColumn Binding="{Binding EndDate, StringFormat={}{0: hh.MM.yyyy}}" />
             </DataGrid.Columns>
         </DataGrid>
+
+
+        <Grid
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80" />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                Grid.Row="0"
+                Margin="0,20"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                FontSize="30"
+                Foreground="White"
+                Text="{Binding ActualTime, StringFormat={}{0:dd.MM.yyyy HH:mm:ss}}" />
+
+
+
+        </Grid>
+
 
     </Grid>
 </UserControl>

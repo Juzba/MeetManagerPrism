@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace MeetManagerPrism.ViewModels.Admin
 {
-    public partial class AdminViewModel : BindableBase, IRegionAware
+    public partial class AdminUsersViewModel : BindableBase, IRegionAware
     {
         private readonly IDataService _dataService;
         private readonly UserStore _userStore;
@@ -18,7 +18,7 @@ namespace MeetManagerPrism.ViewModels.Admin
         public AsyncDelegateCommand SaveCommand { get; }
         public AsyncDelegateCommand<object?> RemoveUserCommand { get; }
 
-        public AdminViewModel(IDataService dataService, UserStore userStore, IEventAggregator eventAggregator)
+        public AdminUsersViewModel(IDataService dataService, UserStore userStore, IEventAggregator eventAggregator)
         {
             _dataService = dataService;
             _userStore = userStore;

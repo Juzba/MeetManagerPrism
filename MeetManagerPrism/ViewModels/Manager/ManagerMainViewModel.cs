@@ -2,6 +2,7 @@
 using MeetManagerPrism.Common.Events;
 using MeetManagerPrism.Views.Manager;
 using System.Drawing;
+using System.Windows.Threading;
 
 namespace MeetManagerPrism.ViewModels.Manager
 {
@@ -30,7 +31,6 @@ namespace MeetManagerPrism.ViewModels.Manager
             _eventAggregator.GetEvent<MainViewTitleEvent>().Publish("Event Manager");
         }
         public void OnNavigatedFrom(NavigationContext navigationContext) { _regionManager.Regions.Remove("ManagerRegion"); }
-
 
 
     }

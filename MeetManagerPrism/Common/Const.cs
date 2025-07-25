@@ -13,6 +13,7 @@ namespace MeetManagerPrism.Common
         // NAVIGATION REGIONS //
         public const string MainRegion = "MainRegion";
         public const string ManagerRegion = "ManagerRegion";
+        public const string AdminRegion = "AdminRegion";
 
 
 

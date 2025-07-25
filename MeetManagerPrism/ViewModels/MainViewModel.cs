@@ -55,11 +55,11 @@ public partial class MainViewModel : BindableBase
                 _regionManager.RequestNavigate(Const.MainRegion, nameof(ManagerPage));
         });
 
-        // TO ADMIN PAGE //
+        // TO ADMIN MAIN PAGE //
         NavAdminCommand = new DelegateCommand(() =>
         {
             if (_userStore.User?.Role.RoleName == "Admin")
-                _regionManager.RequestNavigate(Const.MainRegion, nameof(AdminPage));
+                _regionManager.RequestNavigate(Const.MainRegion, nameof(AdminMainPage));
         });
     }
 

@@ -2,6 +2,7 @@
 using MeetManagerPrism.Data.Model;
 using MeetManagerPrism.Services;
 using System.Collections.ObjectModel;
+using System.Windows.Threading;
 
 namespace MeetManagerPrism.ViewModels.Users
 {
@@ -10,6 +11,8 @@ namespace MeetManagerPrism.ViewModels.Users
         private readonly IDataService _dataService;
         private readonly UserStore _userStore;
         private readonly IEventAggregator _eventAggregator;
+        private DispatcherTimer _timer = new();
+
 
         private readonly AsyncDelegateCommand OnInitializeCommand;
 
@@ -17,16 +20,21 @@ namespace MeetManagerPrism.ViewModels.Users
         {
             _dataService = dataService;
             _userStore = userStore;
+            _eventAggregator = eventAggregator;
             OnInitializeCommand = new AsyncDelegateCommand(OnInitialize);
 
+            TimerEvent();
             OnInitializeCommand.Execute();
-            _eventAggregator = eventAggregator;
         }
 
         // I-REGION-AWARE //
         public void OnNavigatedTo(NavigationContext navigationContext) { _eventAggregator.GetEvent<MainViewTitleEvent>().Publish("Dashboard"); }
         public bool IsNavigationTarget(NavigationContext navigationContext) => false;
-        public void OnNavigatedFrom(NavigationContext navigationContext) { }
+        public void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            _timer.Tick -= Timer_Tick;
+            _timer.Stop();
+        }
 
 
         private async Task OnInitialize()
@@ -59,13 +67,23 @@ namespace MeetManagerPrism.ViewModels.Users
 
 
 
-        // DATE_TIME //
-        private DateTime dateTime = DateTime.Now;
-        public DateTime DateTime
+        // ACTUAL TIME //
+        private DateTime actualTime = DateTime.Now;
+        public DateTime ActualTime
         {
-            get { return dateTime; }
-            set { dateTime = value; }
+            get { return actualTime; }
+            set { SetProperty(ref actualTime, value); }
         }
+
+        // ACTUAL TIME EVENT //
+        private void TimerEvent()
+        {
+            _timer.Interval = TimeSpan.FromSeconds(1);
+            _timer.Tick += Timer_Tick;
+            _timer.Start();
+        }
+
+        private void Timer_Tick(object? sender, EventArgs e) { ActualTime = DateTime.Now; }
 
     }
 }
