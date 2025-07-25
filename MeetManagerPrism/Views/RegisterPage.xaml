@@ -31,15 +31,6 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock
-            Grid.Column="0"
-            Grid.ColumnSpan="3"
-            VerticalAlignment="Top"
-            FontSize="60"
-            Foreground="#FFBC24"
-            Text="Register"
-            TextAlignment="Center" />
-
-        <TextBlock
             Grid.Row="1"
             Grid.ColumnSpan="3"
             HorizontalAlignment="Center"

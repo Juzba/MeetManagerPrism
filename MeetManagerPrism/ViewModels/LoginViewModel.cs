@@ -1,4 +1,5 @@
 ﻿using MeetManagerPrism.Common;
+using MeetManagerPrism.Common.Events;
 using MeetManagerPrism.Services;
 using MeetManagerPrism.Views;
 using MeetManagerPrism.Views.Admin;
@@ -7,31 +8,30 @@ namespace MeetManagerPrism.ViewModels;
 
 public partial class LoginViewModel : BindableBase, INavigationAware
 {
-    private readonly IDataService _dataService;
-    private readonly UserStore _userStore;
     private readonly ILoginService _loginService;
     private readonly IRegionManager _regionManager;
+    private readonly IEventAggregator _eventAggregator;
 
     public AsyncDelegateCommand LoginCommand { get; }
     public AsyncDelegateCommand InstaAccessCommand { get; }
 
 
-    // INAVIGATIONAWARE //
-    public bool IsNavigationTarget(NavigationContext navigationContext) => false; // Vždy vytvoří novou instanci
-    public void OnNavigatedTo(NavigationContext navigationContext) { }
-    public void OnNavigatedFrom(NavigationContext navigationContext) { }
-
-
-    public LoginViewModel(IDataService dataService, UserStore userStore, ILoginService loginService, IRegionManager regionManager)
+    public LoginViewModel( ILoginService loginService, IRegionManager regionManager, IEventAggregator eventAggregator)
     {
-        _dataService = dataService;
-        _userStore = userStore;
         _loginService = loginService;
         _regionManager = regionManager;
+        _eventAggregator = eventAggregator;
 
         LoginCommand = new AsyncDelegateCommand(Login);
         InstaAccessCommand = new AsyncDelegateCommand(InstaAccess);
     }
+
+
+    // INAVIGATIONAWARE //
+    public bool IsNavigationTarget(NavigationContext navigationContext) => false; // Vždy vytvoří novou instanci
+    public void OnNavigatedTo(NavigationContext navigationContext) { _eventAggregator.GetEvent<MainViewTitleEvent>().Publish("Login"); }
+    public void OnNavigatedFrom(NavigationContext navigationContext) { }
+
 
 
 

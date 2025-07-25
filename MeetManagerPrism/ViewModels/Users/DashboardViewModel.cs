@@ -1,4 +1,5 @@
-﻿using MeetManagerPrism.Data.Model;
+﻿using MeetManagerPrism.Common.Events;
+using MeetManagerPrism.Data.Model;
 using MeetManagerPrism.Services;
 using System.Collections.ObjectModel;
 
@@ -8,20 +9,22 @@ namespace MeetManagerPrism.ViewModels.Users
     {
         private readonly IDataService _dataService;
         private readonly UserStore _userStore;
+        private readonly IEventAggregator _eventAggregator;
 
         private readonly AsyncDelegateCommand OnInitializeCommand;
 
-        public DashboardViewModel(IDataService dataService, UserStore userStore)
+        public DashboardViewModel(IDataService dataService, UserStore userStore, IEventAggregator eventAggregator)
         {
             _dataService = dataService;
             _userStore = userStore;
             OnInitializeCommand = new AsyncDelegateCommand(OnInitialize);
 
             OnInitializeCommand.Execute();
+            _eventAggregator = eventAggregator;
         }
 
         // I-REGION-AWARE //
-        public void OnNavigatedTo(NavigationContext navigationContext) { }
+        public void OnNavigatedTo(NavigationContext navigationContext) { _eventAggregator.GetEvent<MainViewTitleEvent>().Publish("Dashboard"); }
         public bool IsNavigationTarget(NavigationContext navigationContext) => false;
         public void OnNavigatedFrom(NavigationContext navigationContext) { }
 

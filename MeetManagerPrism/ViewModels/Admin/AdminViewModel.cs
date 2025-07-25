@@ -1,4 +1,5 @@
-﻿using MeetManagerPrism.Data.Model;
+﻿using MeetManagerPrism.Common.Events;
+using MeetManagerPrism.Data.Model;
 using MeetManagerPrism.Services;
 using System.Collections.ObjectModel;
 
@@ -8,6 +9,7 @@ namespace MeetManagerPrism.ViewModels.Admin
     {
         private readonly IDataService _dataService;
         private readonly UserStore _userStore;
+        private readonly IEventAggregator _eventAggregator;
 
         private AsyncDelegateCommand OnInitializeCommand { get; }
         private AsyncDelegateCommand LoadUsersListCommand { get; }
@@ -16,10 +18,11 @@ namespace MeetManagerPrism.ViewModels.Admin
         public AsyncDelegateCommand SaveCommand { get; }
         public AsyncDelegateCommand<object?> RemoveUserCommand { get; }
 
-        public AdminViewModel(IDataService dataService, UserStore userStore)
+        public AdminViewModel(IDataService dataService, UserStore userStore, IEventAggregator eventAggregator)
         {
             _dataService = dataService;
             _userStore = userStore;
+            _eventAggregator = eventAggregator;
 
             OnInitializeCommand = new AsyncDelegateCommand(OnInitialize);
             LoadUsersListCommand = new AsyncDelegateCommand(LoadUsersList);
@@ -28,11 +31,12 @@ namespace MeetManagerPrism.ViewModels.Admin
             RemoveUserCommand = new AsyncDelegateCommand<object?>(RemoveUser);
 
             OnInitializeCommand.Execute();
+            _eventAggregator = eventAggregator;
         }
 
         // I-NAVIGATION-AWARE //
         public bool IsNavigationTarget(NavigationContext navigationContext) => false; // Vždy vytvoří novou instanci
-        public void OnNavigatedTo(NavigationContext navigationContext) { }
+        public void OnNavigatedTo(NavigationContext navigationContext) { _eventAggregator.GetEvent<MainViewTitleEvent>().Publish("Admin Page"); }
         public void OnNavigatedFrom(NavigationContext navigationContext) { }
 
 

@@ -20,8 +20,8 @@
 
     <Grid Background="#20448C">
         <Grid.RowDefinitions>
-            <RowDefinition Height="22*" />
-            <RowDefinition Height="78*" />
+            <RowDefinition Height="auto" MinHeight="80" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="75*" />
@@ -42,11 +42,6 @@
             Foreground="#161616" />
         <StackPanel>
 
-            <TextBlock
-                HorizontalAlignment="Center"
-                FontSize="50"
-                Foreground="#FFBC24"
-                Text="Admin Page" />
 
             <TextBlock
                 FontSize="20"

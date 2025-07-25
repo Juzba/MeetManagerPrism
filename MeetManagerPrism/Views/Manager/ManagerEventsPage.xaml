@@ -21,22 +21,16 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="80" />
-            <RowDefinition MinHeight="250" />
-            <RowDefinition Height="auto" MinHeight="80" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="90*"  />
+            <RowDefinition Height="10*" MinHeight="80" />
         </Grid.RowDefinitions>
 
-        <TextBlock
-            Grid.ColumnSpan="3"
-            HorizontalAlignment="Center"
-            FontSize="50"
-            Foreground="#FFBC24"
-            Text="Moje Eventy" />
 
         <DataGrid
             Grid.Row="1"
             Grid.Column="1"
-            Margin="0,20,0,0"
+            Margin="0,40,0,0"
             AutoGenerateColumns="False"
             CanUserAddRows="False"
             ItemsSource="{Binding EventsList}"

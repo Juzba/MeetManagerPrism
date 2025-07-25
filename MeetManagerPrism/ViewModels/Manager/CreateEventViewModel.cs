@@ -46,7 +46,6 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
             if (EventParametr == null) return;
 
             MyEvent = EventParametr;
-            Title = "Upravit Event";
             VisibilityDelete = Visibility.Visible;
         }
     }
@@ -119,14 +118,6 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
     {
         get { return errorMessage; }
         set { SetProperty(ref errorMessage, value); }
-    }
-
-    // TITLE //
-    private string title = "Vytvořit Událost";
-    public string Title
-    {
-        get { return title; }
-        set { SetProperty(ref title, value); }
     }
 
     // DELETE VISIBILITY //

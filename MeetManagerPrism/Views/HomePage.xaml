@@ -15,11 +15,8 @@
 
     <Grid Background="#20448C">
         <StackPanel Margin="0,30" HorizontalAlignment="Center">
-            <TextBlock
-                FontSize="50"
-                Foreground="#FFBC24"
-                Text="Home Page" />
             <Button
+                Width="200"
                 Height="60"
                 Margin="0,30"
                 Command=""

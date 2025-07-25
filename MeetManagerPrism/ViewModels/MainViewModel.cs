@@ -1,4 +1,5 @@
 ﻿using MeetManagerPrism.Common;
+using MeetManagerPrism.Common.Events;
 using MeetManagerPrism.Services;
 using MeetManagerPrism.Views;
 using MeetManagerPrism.Views.Admin;
@@ -12,6 +13,7 @@ public partial class MainViewModel : BindableBase
 {
     private readonly IRegionManager _regionManager;
     private readonly UserStore _userStore;
+    private readonly IEventAggregator _eventAggregator;
 
     public DelegateCommand LogoutCommand { get; }
     public DelegateCommand NavLoginCommand { get; }
@@ -22,10 +24,14 @@ public partial class MainViewModel : BindableBase
     public DelegateCommand NavAdminCommand { get; }
 
 
-    public MainViewModel(IRegionManager regionManager, UserStore userStore)
+    public MainViewModel(IRegionManager regionManager, UserStore userStore, IEventAggregator eventAggregator)
     {
         _regionManager = regionManager;
         _userStore = userStore;
+        _eventAggregator = eventAggregator;
+
+        // PAGE TITLE EVENT //
+        _eventAggregator.GetEvent<MainViewTitleEvent>().Subscribe((string title) => PageTitle = title);
         OnLogin();
 
         LogoutCommand = new DelegateCommand(Logout);

@@ -8,8 +8,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     d:DataContext="{d:DesignInstance Type=manager:CreateEventViewModel}"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="700"
+    d:DesignWidth="1280"
     prism:ViewModelLocator.AutoWireViewModel="True"
     FontSize="20"
     Foreground="#DBF227"
@@ -28,15 +28,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-
-        <TextBlock
-            Grid.Column="1"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            FontSize="38"
-            Foreground="#FFBC24"
-            Text="{Binding Title}" />
-
 
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.ColumnDefinitions>
@@ -105,8 +96,8 @@
                 ItemsSource="{Binding DataContext.RoomList, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}"
                 SelectedValue="{Binding MyEvent.RoomID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 SelectedValuePath="ID" />
-            
-           
+
+
             <Label Grid.Row="5" Content="Popis:" />
             <TextBox
                 Grid.Row="5"
@@ -120,7 +111,7 @@
         <StackPanel Grid.Row="1" Grid.Column="2">
 
             <Button
-                MaxWidth="300"
+                Width="200"
                 Margin="10"
                 VerticalAlignment="Top"
                 Command="{Binding CreateEventCommand}"
@@ -128,13 +119,13 @@
             <Button
                 Grid.Row="1"
                 Grid.Column="2"
-                MaxWidth="300"
+                Width="200"
                 Margin="10"
                 VerticalAlignment="Top"
                 Background="DarkRed"
                 Command="{Binding DeleteEventCommand}"
-                Visibility="{Binding VisibilityDelete}"
-                Content="Smazat" />
+                Content="Smazat"
+                Visibility="{Binding VisibilityDelete}" />
 
             <TextBlock
                 Margin="10"
