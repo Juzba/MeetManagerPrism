@@ -10,6 +10,7 @@ namespace MeetManagerPrism.Services
         Task AddEvent(Event newEvent);
         Task UpdateEvent(Event updEvent);
         Task DeleteEvent(Event delEvent);
+        Task DeleteRoom(Room room);
         Task DeleteUser(User user);
         Task<User?> GetUser(string email);
         Task<ICollection<User>> GetUsersList();
@@ -58,6 +59,13 @@ namespace MeetManagerPrism.Services
             if (dbEvent == null) return;
 
             _db.Events.Remove(dbEvent);
+            await _db.SaveChangesAsync();
+        }
+
+        // DELETE ROOM //
+        public async Task DeleteRoom(Room room)
+        {
+            _db.Rooms.Remove(room);
             await _db.SaveChangesAsync();
         }
 

@@ -30,7 +30,7 @@
         <DataGrid
             Grid.Row="1"
             Grid.Column="1"
-            Margin="0,40,0,0"
+            Margin="0,50"
             AutoGenerateColumns="False"
             CanUserAddRows="False"
             ItemsSource="{Binding EventsList}"
