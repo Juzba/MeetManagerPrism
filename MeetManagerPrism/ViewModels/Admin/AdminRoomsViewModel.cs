@@ -10,6 +10,7 @@ namespace MeetManagerPrism.ViewModels.Admin
 
         private AsyncDelegateCommand OnInitializeCommand;
         public AsyncDelegateCommand SaveChangesCommand { get; }
+        public AsyncDelegateCommand AddNewRoomCommand { get; }
         public AsyncDelegateCommand<object?> RemoveRoomCommand { get; }
 
 
@@ -19,6 +20,8 @@ namespace MeetManagerPrism.ViewModels.Admin
             OnInitializeCommand = new AsyncDelegateCommand(OnInitialize);
             SaveChangesCommand = new AsyncDelegateCommand(SaveChanges);
             RemoveRoomCommand = new AsyncDelegateCommand<object?>(RemoveRoom);
+            AddNewRoomCommand = new AsyncDelegateCommand(AddNewRoom);
+
 
             OnInitializeCommand.Execute();
         }
@@ -53,8 +56,32 @@ namespace MeetManagerPrism.ViewModels.Admin
             set { SetProperty(ref roomList, value); }
         }
 
+
+        // NEW ROOM //
+        private Room newRoom = new();
+        public Room NewRoom
+        {
+            get { return newRoom; }
+            set { SetProperty(ref newRoom, value); }
+        }
+
+
+        // ERROR MESSAGE //
+        private string? errorMessage;
+        public string? ErrorMessage
+        {
+            get { return errorMessage; }
+            set { SetProperty(ref errorMessage, value); }
+        }
+
+
+
         // SAVE CHANGES //
-        private async Task SaveChanges() => await _dataService.SaveChangesDB();
+        private async Task SaveChanges()
+        {
+            await _dataService.SaveChangesDB();
+        }
+
 
         // REMOVE ROOM //
         private async Task RemoveRoom(object? param)
@@ -63,8 +90,23 @@ namespace MeetManagerPrism.ViewModels.Admin
 
             await _dataService.DeleteRoom(room);
             await LoadRoomsList();
-
-
         }
+
+        // ADD ROOM //
+        private async Task AddNewRoom()
+        {
+            if (NewRoom.Name == null || NewRoom.Location == null || NewRoom.Capacity == 0)
+            {
+                ErrorMessage = "Chybí hodnoty pro přidání pokoje.";
+                return;
+            }
+
+            await _dataService.AddRoom(NewRoom);
+
+            NewRoom = new();
+            ErrorMessage = null;
+            await OnInitialize();
+        }
+
     }
 }

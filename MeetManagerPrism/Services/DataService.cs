@@ -8,6 +8,7 @@ namespace MeetManagerPrism.Services
     {
         Task AddUser(User user);
         Task AddEvent(Event newEvent);
+        Task AddRoom(Room room);
         Task UpdateEvent(Event updEvent);
         Task DeleteEvent(Event delEvent);
         Task DeleteRoom(Room room);
@@ -41,6 +42,13 @@ namespace MeetManagerPrism.Services
         public async Task AddEvent(Event newEwent)
         {
             await _db.Events.AddAsync(newEwent);
+            await _db.SaveChangesAsync();
+        }
+
+        // ADD EVENT //
+        public async Task AddRoom(Room room)
+        {
+            await _db.Rooms.AddAsync(room);
             await _db.SaveChangesAsync();
         }
 

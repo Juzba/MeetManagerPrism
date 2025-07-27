@@ -11,6 +11,7 @@
     d:DesignHeight="700"
     d:DesignWidth="1280"
     prism:ViewModelLocator.AutoWireViewModel="True"
+    FontSize="20"
     mc:Ignorable="d">
 
 
@@ -20,22 +21,11 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="75*" />
-            <ColumnDefinition Width="25*" />
+            <ColumnDefinition Width="70*" />
+            <ColumnDefinition Width="30*" />
         </Grid.ColumnDefinitions>
 
-        <Button
-            Grid.Row="1"
-            Grid.Column="1"
-            Height="50"
-            Margin="0"
-            Padding="10,5"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            Command="{Binding SaveChangesCommand}"
-            Content="Uložit změny"
-            FontSize="25"
-            Foreground="#161616" />
+
         <StackPanel>
 
 
@@ -49,12 +39,12 @@
 
         <DataGrid
             Grid.Row="1"
-            Margin="20,0"
+            Margin="0 0 0 55"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             AutoGenerateColumns="False"
             Background="#086CB4"
-            CanUserAddRows="false"
+            CanUserAddRows="False"
             FontSize="17"
             Foreground="#FFD340"
             ItemsSource="{Binding RoomList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -68,14 +58,16 @@
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     MinWidth="150"
+                    Width="180"
                     Binding="{Binding Name}"
                     Header="Název" />
                 <DataGridTextColumn
                     MinWidth="150"
+                    Width="180"
                     Binding="{Binding Location}"
                     Header="Místo" />
                 <DataGridTextColumn
-                    MinWidth="150"
+                    MinWidth="100"
                     Binding="{Binding Capacity}"
                     Header="Kapacita" />
 
@@ -92,6 +84,109 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid
+                Grid.Row="1"
+                Margin="20 20 20 40"
+                VerticalAlignment="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition MinHeight="50" />
+                    <RowDefinition MinHeight="50" />
+                    <RowDefinition MinHeight="50" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+
+                <TextBlock
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    FontSize="35"
+                    Foreground="#FFBC24"
+                    Text="Přidat Pokoj" />
+
+                <TextBox
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Text="{Binding NewRoom.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Text="{Binding NewRoom.Location, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Text="{Binding NewRoom.Capacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Label
+                    Grid.Row="1"
+                    VerticalAlignment="Center"
+                    Content="Název:" />
+                <Label
+                    Grid.Row="2"
+                    VerticalAlignment="Center"
+                    Content="Místo:" />
+                <Label
+                    Grid.Row="3"
+                    VerticalAlignment="Center"
+                    Content="Kapacita:" />
+
+
+
+
+                <Button
+                    Grid.Row="4"
+                    Grid.ColumnSpan="2"
+                    Width="200"
+                    Height="50"
+                    Margin="0,20"
+                    Padding="10,5"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Command="{Binding AddNewRoomCommand}"
+                    Content="Přidat"
+                    FontSize="25"
+                    Foreground="#161616" />
+            </Grid>
+
+
+
+
+
+            <Button
+                Grid.Row="0"
+                Width="200"
+                Height="50"
+                Margin="0,20"
+                Padding="10,5"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Command="{Binding SaveChangesCommand}"
+                Content="Uložit změny"
+                FontSize="25"
+                Foreground="#161616" />
+
+        </Grid>
+
+
+
+
+
+
     </Grid>
 
 
