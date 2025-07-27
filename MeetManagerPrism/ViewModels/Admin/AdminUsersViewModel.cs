@@ -81,6 +81,15 @@ namespace MeetManagerPrism.ViewModels.Admin
         }
 
 
+        // NEW USER //
+        private User newUser = new();
+        public User NewUser
+        {
+            get { return newUser; }
+            set { SetProperty(ref newUser, value); }
+        }
+
+
         // LOAD USERS //
         private async Task LoadUsersList()
         {

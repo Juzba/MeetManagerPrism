@@ -85,7 +85,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Grid Grid.Row="1" Grid.Column="1">
+        <Grid Grid.Row="1" Grid.Column="1" Margin="0,5,0,-5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition />
@@ -93,11 +93,11 @@
 
             <Grid
                 Grid.Row="1"
-                Margin="20 20 20 40"
+                Margin="20 20 60 40"
                 VerticalAlignment="Bottom">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="35*" />
+                    <ColumnDefinition Width="65*" />
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
