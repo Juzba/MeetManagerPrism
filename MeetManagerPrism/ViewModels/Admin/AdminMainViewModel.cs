@@ -18,19 +18,30 @@ namespace MeetManagerPrism.ViewModels.Admin
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
 
-            NavAdminUsersCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.AdminRegion, nameof(AdminUsersPage)));
-            NavAdminRoomsCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.AdminRegion, nameof(AdminRoomsPage)));
-            NavAdminEventTypesCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.AdminRegion, nameof(AdminEventTypesPage)));
+            NavAdminUsersCommand = new DelegateCommand(() => { _regionManager.RequestNavigate(Const.AdminRegion, nameof(AdminUsersPage)); CurrentPage = "Users"; });
+            NavAdminRoomsCommand = new DelegateCommand(() => { _regionManager.RequestNavigate(Const.AdminRegion, nameof(AdminRoomsPage)); CurrentPage = "Rooms"; });
+            NavAdminEventTypesCommand = new DelegateCommand(() => { _regionManager.RequestNavigate(Const.AdminRegion, nameof(AdminEventTypesPage)); CurrentPage = "EventTypes"; });
         }
 
 
 
 
         // I-REGION-AWARE //
-        public bool IsNavigationTarget(NavigationContext navigationContext) => true;
-        public void OnNavigatedFrom(NavigationContext navigationContext) { }
-        public void OnNavigatedTo(NavigationContext navigationContext) { _regionManager.RequestNavigate(Const.AdminRegion, nameof(AdminUsersPage)); }
+        public bool IsNavigationTarget(NavigationContext navigationContext) => false;
+        public void OnNavigatedFrom(NavigationContext navigationContext) => _regionManager.Regions.Remove("AdminRegion");
+        public void OnNavigatedTo(NavigationContext navigationContext) => NavAdminUsersCommand.Execute();
 
+
+
+
+        // CURRENT PAGE //
+
+        private string currentPage = "";
+        public string CurrentPage
+        {
+            get { return currentPage; }
+            set { SetProperty(ref currentPage, value); }
+        }
 
 
     }

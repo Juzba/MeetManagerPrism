@@ -1,8 +1,6 @@
 ﻿using MeetManagerPrism.Common;
 using MeetManagerPrism.Common.Events;
 using MeetManagerPrism.Views.Manager;
-using System.Drawing;
-using System.Windows.Threading;
 
 namespace MeetManagerPrism.ViewModels.Manager
 {
@@ -19,18 +17,29 @@ namespace MeetManagerPrism.ViewModels.Manager
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
 
-            NavCreateEventCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.ManagerRegion, nameof(CreateEventPage)));
-            NavSeznamCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.ManagerRegion, nameof(ManagerEventsPage)));
+            NavCreateEventCommand = new DelegateCommand(() => { _regionManager.RequestNavigate(Const.ManagerRegion, nameof(CreateEventPage)); CurrentPage = "CreateEvent"; });
+            NavSeznamCommand = new DelegateCommand(() => { _regionManager.RequestNavigate(Const.ManagerRegion, nameof(ManagerEventsPage)); CurrentPage = "Events"; });
         }
 
-        // INAVIGATIONAWARE //
+        // I-NAVIGATION-AWARE //
         public bool IsNavigationTarget(NavigationContext navigationContext) => false; // Vždy vytvoří novou instanci
-        public void OnNavigatedTo(NavigationContext navigationContext) 
+        public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            NavSeznamCommand.Execute(); 
+            NavSeznamCommand.Execute();
             _eventAggregator.GetEvent<MainViewTitleEvent>().Publish("Event Manager");
         }
         public void OnNavigatedFrom(NavigationContext navigationContext) { _regionManager.Regions.Remove("ManagerRegion"); }
+
+
+        // CURRENT PAGE //
+        private string currentPage = "";
+        public string CurrentPage
+        {
+            get { return currentPage; }
+            set { SetProperty(ref currentPage, value); }
+        }
+
+
 
 
     }
