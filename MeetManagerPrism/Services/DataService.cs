@@ -125,19 +125,19 @@ namespace MeetManagerPrism.Services
 
 
         // GET EVENT LIST - USER //
-        public async Task<ICollection<Event>> GetEventsList(User user) => await _db.Events.Where(p => p.UserId == user.Id).Include(p => p.EventType).Include(p => p.Room).ToListAsync();
+        public async Task<ICollection<Event>> GetEventsList(User user) => await _db.Events.Where(p => p.AutorId == user.Id).Include(p => p.EventType).Include(p => p.Room).ToListAsync();
 
         // GET TODAY EVENT LIST - USER //
         public async Task<ICollection<Event>> GetUpcomingEventsList(User user)
         {
             return await _db.Events.Where
                 (
-                p => p.UserId == user.Id
+                p => p.AutorId == user.Id
                 && p.StartDate >= DateTime.Now
                 )
                 .Include(p => p.EventType)
                 .Include(p => p.Room)
-                .Include(p => p.User)
+                .Include(p => p.Autor)
                 .Take(10)
                 .ToListAsync();
         }
@@ -147,11 +147,11 @@ namespace MeetManagerPrism.Services
         {
             return await _db.Events.Where
                 (
-                p => p.UserId == user.Id
+                p => p.AutorId == user.Id
                 && p.StartDate <= DateTime.Now
                 && p.EndDate >= DateTime.Now
                 )
-                .Include(p => p.EventType).Include(p => p.Room).Include(p => p.User).ToListAsync();
+                .Include(p => p.EventType).Include(p => p.Room).Include(p => p.Autor).ToListAsync();
         }
 
         // GET ROOMS LIST //

@@ -16,7 +16,7 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
     private AsyncDelegateCommand OnInitializeCommand { get; }
     private AsyncDelegateCommand GetEventTypeListCommand { get; }
     private AsyncDelegateCommand GetRoomListCommand { get; }
-    private AsyncDelegateCommand GetRoomUsersCommand { get; }
+    private AsyncDelegateCommand GetUsersCommand { get; }
     public AsyncDelegateCommand CreateEventCommand { get; }
     public AsyncDelegateCommand DeleteEventCommand { get; }
 
@@ -30,7 +30,7 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
         OnInitializeCommand = new AsyncDelegateCommand(OnInitialize);
         GetEventTypeListCommand = new AsyncDelegateCommand(GetEventTypeList);
         GetRoomListCommand = new AsyncDelegateCommand(GetRoomList);
-        GetRoomUsersCommand = new AsyncDelegateCommand(GetUsersList);
+        GetUsersCommand = new AsyncDelegateCommand(GetUsersList);
         CreateEventCommand = new AsyncDelegateCommand(CreateEvent);
         DeleteEventCommand = new AsyncDelegateCommand(DeleteEvent);
 
@@ -60,7 +60,7 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
     {
         await GetEventTypeListCommand.Execute();
         await GetRoomListCommand.Execute();
-        await GetRoomUsersCommand.Execute();
+        await GetUsersCommand.Execute();
     }
 
 
@@ -81,12 +81,19 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
     // LOAD USERS FROM DB - INVATION //
     private async Task GetUsersList()
     {
+        // get users from invited-users on My-event id. 
         var invitedUsers = await _dataService.GetInvitedUsersList(MyEvent.Id);
-        var users = await _dataService.GetUsersList();
+        var iUsers = invitedUsers.Select(p => p.User);
 
+        // get all users
+        var allUsers = await _dataService.GetUsersList();
 
-        //UserList = new ObservableCollection<User>(users.Where(p=>));  ////////////// TUUUUUUUUUUUUUU
-        InvitedUsersList = new ObservableCollection<User>(invitedUsers.Select(p=>p.User));
+        // if user is not invited then displey user in invitation datagrid table
+        foreach (User user in allUsers)
+            if (!iUsers.Contains(user)) UserList.Add(user);
+
+        // show invited users in datagrid table
+        InvitedUsersList = new ObservableCollection<User>(iUsers);
     }
 
 
@@ -200,16 +207,16 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
         if (EventParametr == null)
         {
             // NEW EVENT
-            MyEvent.UserId = _userStore.User!.Id;       // logged user id
+            MyEvent.AutorId = _userStore.User!.Id;       // logged user id
             await _dataService.AddEvent(MyEvent);
 
-            var invitation = new Invitation() 
-            { 
+            var invitation = new Invitation()
+            {
                 Event = MyEvent,
                 SentDate = DateTime.Now,
                 Status = InvStatus.Pending,
                 AutorId = _userStore.User!.Id,
-                InvitedUsers = InvitedUsersList.Select(p=> new InvitedUser() { User = p}).ToList() 
+                InvitedUsers = InvitedUsersList.Select(p => new InvitedUser() { User = p }).ToList()
             };
             await _dataService.AddInvitation(invitation);
         }
@@ -219,6 +226,20 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
             MyEvent.Room = null!;
             MyEvent.EventType = null!;
             await _dataService.UpdateEvent(MyEvent);
+
+            //var invitation = new Invitation()
+            //{
+            //    Event = MyEvent,
+            //    SentDate = DateTime.Now,
+            //    Status = InvStatus.Pending,
+            //    AutorId = _userStore.User!.Id,
+            //    InvitedUsers = InvitedUsersList.Select(p => new InvitedUser() { User = p }).ToList()
+            //};
+            //await _dataService.AddInvitation(invitation);
+
+
+
+
         }
 
         _regionManager.RequestNavigate(Const.ManagerRegion, nameof(ManagerEventsPage));

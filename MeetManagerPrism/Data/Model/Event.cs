@@ -20,8 +20,8 @@
 
 
         // USER //
-        public int UserId { get; set; }
-        public User User { get; set; } = null!;
+        public int AutorId { get; set; }
+        public User Autor { get; set; } = null!;
 
     }
 }

@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Blueprints\MeetManagerPrism.drawio" />
     <None Remove="Changes.txt" />
     <None Remove="Colors.txt" />
     <None Remove="MeetUpAPP-UseCaseDiagram.png" />
@@ -21,6 +22,9 @@
     </Content>
     <Content Include="Blueprints\Colors.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Blueprints\MeetManagerPrism.drawio">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Blueprints\MeetUpAPP-UseCaseDiagram.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

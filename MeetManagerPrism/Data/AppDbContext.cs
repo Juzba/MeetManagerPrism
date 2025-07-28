@@ -70,9 +70,9 @@ namespace MeetManagerPrism.Data
 
 
             modelBuilder.Entity<Event>()
-                .HasOne(e => e.User)
+                .HasOne(e => e.Autor)
                 .WithMany(u => u.MyEvents)
-                .HasForeignKey(e => e.UserId)
+                .HasForeignKey(e => e.AutorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
 
