@@ -10,24 +10,28 @@ namespace MeetManagerPrism.ViewModels.Admin
         private readonly IDataService _dataService;
         private readonly UserStore _userStore;
         private readonly IEventAggregator _eventAggregator;
+        private readonly ILoginService _loginService;
 
         private AsyncDelegateCommand OnInitializeCommand { get; }
         private AsyncDelegateCommand LoadUsersListCommand { get; }
         private AsyncDelegateCommand LoadRolesListCommand { get; }
 
         public AsyncDelegateCommand SaveCommand { get; }
+        public AsyncDelegateCommand AddUserCommand { get; }
         public AsyncDelegateCommand<object?> RemoveUserCommand { get; }
 
-        public AdminUsersViewModel(IDataService dataService, UserStore userStore, IEventAggregator eventAggregator)
+        public AdminUsersViewModel(ILoginService loginService, IDataService dataService, UserStore userStore, IEventAggregator eventAggregator)
         {
             _dataService = dataService;
             _userStore = userStore;
             _eventAggregator = eventAggregator;
+            _loginService = loginService;
 
             OnInitializeCommand = new AsyncDelegateCommand(OnInitialize);
             LoadUsersListCommand = new AsyncDelegateCommand(LoadUsersList);
             LoadRolesListCommand = new AsyncDelegateCommand(LoadRolesList);
             SaveCommand = new AsyncDelegateCommand(SaveChanges);
+            AddUserCommand = new AsyncDelegateCommand(AddUser);
             RemoveUserCommand = new AsyncDelegateCommand<object?>(RemoveUser);
 
             OnInitializeCommand.Execute();
@@ -114,6 +118,31 @@ namespace MeetManagerPrism.ViewModels.Admin
 
             else ErrorMessage = "Musí být aspoň jeden Admin.";
 
+        }
+
+
+        // ADD USER //
+        private async Task AddUser()
+        {
+            if (string.IsNullOrWhiteSpace(NewUser.Email) || string.IsNullOrWhiteSpace(NewUser.PasswordHash))
+            {
+                ErrorMessage = "Chybí Email nebo heslo!";
+                return;
+            }
+
+            if (await _dataService.GetUser(NewUser.Email) != null)
+            {
+                ErrorMessage = "Tento uživatel už existuje!";
+                return;
+            }
+
+            NewUser.PasswordHash = _loginService.HashPassword(NewUser.PasswordHash);
+
+            await _dataService.AddUser(NewUser);
+
+            NewUser = new();
+            ErrorMessage = null;
+            await LoadUsersListCommand.Execute();
         }
 
 

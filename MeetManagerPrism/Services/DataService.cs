@@ -8,10 +8,12 @@ namespace MeetManagerPrism.Services
     {
         Task AddUser(User user);
         Task AddEvent(Event newEvent);
+        Task AddEventType(EventType eventType);
         Task AddRoom(Room room);
         Task UpdateEvent(Event updEvent);
         Task DeleteEvent(Event delEvent);
         Task DeleteRoom(Room room);
+        Task DeleteEventType(EventType eventType);
         Task DeleteUser(User user);
         Task<User?> GetUser(string email);
         Task<ICollection<User>> GetUsersList();
@@ -42,6 +44,13 @@ namespace MeetManagerPrism.Services
         public async Task AddEvent(Event newEwent)
         {
             await _db.Events.AddAsync(newEwent);
+            await _db.SaveChangesAsync();
+        }
+
+        // ADD EVENT-TYPE //
+        public async Task AddEventType(EventType eventType)
+        {
+            await _db.EventTypes.AddAsync(eventType);
             await _db.SaveChangesAsync();
         }
 
@@ -77,6 +86,13 @@ namespace MeetManagerPrism.Services
             await _db.SaveChangesAsync();
         }
 
+        // DELETE EVENT-TYPE //
+        public async Task DeleteEventType(EventType eventType)
+        {
+            _db.EventTypes.Remove(eventType);
+            await _db.SaveChangesAsync();
+        }
+
         // DELETE USER //
         public async Task DeleteUser(User user)
         {
@@ -94,8 +110,6 @@ namespace MeetManagerPrism.Services
         // GET USERS LIST //
         public async Task<ICollection<Role>> GetRolesList() => await _db.Roles.ToListAsync();
 
-        // GET EVENT TYPE LIST //
-        public async Task<ICollection<EventType>> GetEventTypeList() => await _db.EventTypes.ToListAsync();
 
         // GET EVENT LIST - USER //
         public async Task<ICollection<Event>> GetEventsList(User user) => await _db.Events.Where(p => p.UserId == user.Id).Include(p => p.EventType).Include(p => p.Room).ToListAsync();
@@ -127,9 +141,12 @@ namespace MeetManagerPrism.Services
                 .Include(p => p.EventType).Include(p => p.Room).Include(p => p.User).ToListAsync();
         }
 
-        // GET EVENT TYPE LIST //
+        // GET ROOMS LIST //
         public async Task<ICollection<Room>> GetRoomList() => await _db.Rooms.ToListAsync();
 
+        // GET EVENT TYPE LIST //
+        public async Task<ICollection<EventType>> GetEventTypeList() => await _db.EventTypes.ToListAsync();
+        
         // SAVE USERS LIST //
         public async Task SaveChangesDB() => await _db.SaveChangesAsync();
 

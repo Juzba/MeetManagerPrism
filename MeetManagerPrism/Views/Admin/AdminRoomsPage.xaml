@@ -11,7 +11,7 @@
     d:DesignHeight="700"
     d:DesignWidth="1280"
     prism:ViewModelLocator.AutoWireViewModel="True"
-    FontSize="20"
+    FontSize="16"
     mc:Ignorable="d">
 
 
@@ -22,7 +22,8 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="70*" />
-            <ColumnDefinition Width="30*" />
+            <ColumnDefinition Width="25*" />
+            <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
 
 
@@ -39,7 +40,7 @@
 
         <DataGrid
             Grid.Row="1"
-            Margin="0 0 0 55"
+            Margin="0,0,0,55"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             AutoGenerateColumns="False"
@@ -57,13 +58,13 @@
                     Header="Id"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    MinWidth="150"
                     Width="180"
+                    MinWidth="150"
                     Binding="{Binding Name}"
                     Header="Název" />
                 <DataGridTextColumn
-                    MinWidth="150"
                     Width="180"
+                    MinWidth="150"
                     Binding="{Binding Location}"
                     Header="Místo" />
                 <DataGridTextColumn
@@ -85,7 +86,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Grid Grid.Row="1" Grid.Column="1" Margin="0,5,0,-5">
+        <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition />
@@ -93,7 +94,7 @@
 
             <Grid
                 Grid.Row="1"
-                Margin="20 20 60 40"
+                Margin="0,35"
                 VerticalAlignment="Bottom">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="35*" />
@@ -151,12 +152,10 @@
                 <Button
                     Grid.Row="4"
                     Grid.ColumnSpan="2"
-                    Width="200"
                     Height="50"
                     Margin="0,20"
                     Padding="10,5"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
+                    HorizontalAlignment="Stretch"
                     Command="{Binding AddNewRoomCommand}"
                     Content="Přidat"
                     FontSize="25"
@@ -169,11 +168,9 @@
 
             <Button
                 Grid.Row="0"
-                Width="200"
                 Height="50"
-                Margin="0,20"
                 Padding="10,5"
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Stretch"
                 VerticalAlignment="Top"
                 Command="{Binding SaveChangesCommand}"
                 Content="Uložit změny"

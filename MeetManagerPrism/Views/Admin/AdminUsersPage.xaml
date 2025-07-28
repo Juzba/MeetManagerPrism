@@ -13,7 +13,7 @@
     d:DesignHeight="700"
     d:DesignWidth="1280"
     prism:ViewModelLocator.AutoWireViewModel="True"
-    FontSize="20"
+    FontSize="16"
     Foreground="#FFD340"
     mc:Ignorable="d">
 
@@ -29,10 +29,7 @@
             <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
 
-        <Grid
-            Grid.Row="1"
-            Grid.Column="1"
-            Margin="0,5,0,-5">
+        <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition />
@@ -40,9 +37,9 @@
 
             <Grid
                 Grid.Row="1"
-                Margin="0 35"
+                Margin="0,35"
                 VerticalAlignment="Bottom">
-                
+
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="35*" />
                     <ColumnDefinition Width="65*" />
@@ -116,7 +113,7 @@
                     Margin="0,20"
                     Padding="10,5"
                     VerticalAlignment="Top"
-                    Command="{Binding AddNewRoomCommand}"
+                    Command="{Binding AddUserCommand}"
                     Content="Přidat"
                     FontSize="25"
                     Foreground="#161616" />

@@ -16,8 +16,8 @@
 
     <Grid Background="#20448C">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20*" />
-            <ColumnDefinition Width="80*" />
+            <ColumnDefinition Width="15*" />
+            <ColumnDefinition Width="85*" />
         </Grid.ColumnDefinitions>
 
 
