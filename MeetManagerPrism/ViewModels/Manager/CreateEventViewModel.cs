@@ -16,6 +16,7 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
     private AsyncDelegateCommand OnInitializeCommand { get; }
     private AsyncDelegateCommand GetEventTypeListCommand { get; }
     private AsyncDelegateCommand GetRoomListCommand { get; }
+    private AsyncDelegateCommand GetRoomUsersCommand { get; }
     public AsyncDelegateCommand CreateEventCommand { get; }
     public AsyncDelegateCommand DeleteEventCommand { get; }
 
@@ -29,6 +30,7 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
         OnInitializeCommand = new AsyncDelegateCommand(OnInitialize);
         GetEventTypeListCommand = new AsyncDelegateCommand(GetEventTypeList);
         GetRoomListCommand = new AsyncDelegateCommand(GetRoomList);
+        GetRoomUsersCommand = new AsyncDelegateCommand(GetUsersList);
         CreateEventCommand = new AsyncDelegateCommand(CreateEvent);
         DeleteEventCommand = new AsyncDelegateCommand(DeleteEvent);
 
@@ -58,6 +60,7 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
     {
         await GetEventTypeListCommand.Execute();
         await GetRoomListCommand.Execute();
+        await GetRoomUsersCommand.Execute();
     }
 
 
@@ -75,9 +78,20 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
         RoomList = new ObservableCollection<Room>(rooms);
     }
 
+    // LOAD USERS FROM DB - INVATION //
+    private async Task GetUsersList()
+    {
+        var invitedUsers = await _dataService.GetInvitedUsersList(MyEvent.Id);
+        var users = await _dataService.GetUsersList();
+
+
+        //UserList = new ObservableCollection<User>(users.Where(p=>));  ////////////// TUUUUUUUUUUUUUU
+        InvitedUsersList = new ObservableCollection<User>(invitedUsers.Select(p=>p.User));
+    }
+
 
     // EVENT //
-    private Event myEvent = new() { StartDate = DateTime.Now.AddDays(7), EndDate = DateTime.Now.AddDays(8)};
+    private Event myEvent = new() { StartDate = DateTime.Now.AddDays(7), EndDate = DateTime.Now.AddDays(8) };
     public Event MyEvent
     {
         get { return myEvent; }
@@ -112,6 +126,50 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
     }
 
 
+    // USERS LIST //
+    private ObservableCollection<User> userList = [];
+    public ObservableCollection<User> UserList
+    {
+        get { return userList; }
+        set { SetProperty(ref userList, value); }
+    }
+
+    // SELECTED USER //
+    private User? selectedUser;
+    public User? SelectedUser
+    {
+        get { return selectedUser; }
+        set
+        {
+            selectedUser = value;
+            SelectedUserFunc();
+        }
+    }
+
+    // SELECTED INVITED USER //
+    private User? selectedInvitedUser;
+    public User? SelectedInvitedUser
+    {
+        get { return selectedInvitedUser; }
+        set
+        {
+            selectedInvitedUser = value;
+            SelectedInvitedUserFunc();
+        }
+    }
+
+
+
+    // INVITED USERS LIST - PARTICIPANTS //
+    private ObservableCollection<User> invitedUsersList = [];
+    public ObservableCollection<User> InvitedUsersList
+    {
+        get { return invitedUsersList; }
+        set { SetProperty(ref invitedUsersList, value); }
+    }
+
+
+
     // ERROR MESSAGE //
     private string? errorMessage;
     public string? ErrorMessage
@@ -139,11 +197,25 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
             return;
         }
 
-        MyEvent.UserId = _userStore.User!.Id;
+        if (EventParametr == null)
+        {
+            // NEW EVENT
+            MyEvent.UserId = _userStore.User!.Id;       // logged user id
+            await _dataService.AddEvent(MyEvent);
 
-        if (EventParametr == null) await _dataService.AddEvent(MyEvent);
+            var invitation = new Invitation() 
+            { 
+                Event = MyEvent,
+                SentDate = DateTime.Now,
+                Status = InvStatus.Pending,
+                AutorId = _userStore.User!.Id,
+                InvitedUsers = InvitedUsersList.Select(p=> new InvitedUser() { User = p}).ToList() 
+            };
+            await _dataService.AddInvitation(invitation);
+        }
         else
         {
+            // EDIT EVENT
             MyEvent.Room = null!;
             MyEvent.EventType = null!;
             await _dataService.UpdateEvent(MyEvent);
@@ -158,5 +230,26 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
         await _dataService.DeleteEvent(MyEvent);
         _regionManager.RequestNavigate(Const.ManagerRegion, nameof(ManagerEventsPage));
     }
+
+
+    // SELECTED USER //
+    private void SelectedUserFunc()
+    {
+        if (SelectedUser == null || InvitedUsersList.Contains(SelectedUser)) return;
+
+        InvitedUsersList.Add(SelectedUser);
+        UserList.Remove(SelectedUser);
+    }
+
+    // SELECTED INVITED USER //
+    private void SelectedInvitedUserFunc()
+    {
+        if (SelectedInvitedUser == null || UserList.Contains(SelectedInvitedUser)) return;
+
+        UserList.Add(SelectedInvitedUser);
+        InvitedUsersList.Remove(SelectedInvitedUser);
+    }
+
+
 
 }

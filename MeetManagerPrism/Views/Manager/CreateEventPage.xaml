@@ -15,18 +15,20 @@
     Foreground="#DBF227"
     mc:Ignorable="d">
 
+
     <Grid Background="#086CB4">
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="7*" MaxWidth="600" />
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="10*" />
+            <ColumnDefinition Width="70*" MaxWidth="600" />
+            <ColumnDefinition Width="20*" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="80" />
+            <RowDefinition Height="50" />
             <RowDefinition Height="Auto" />
             <RowDefinition />
+            <RowDefinition Height="55" />
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="1" Grid.Column="1">
@@ -82,7 +84,7 @@
                 MaxWidth="350"
                 Margin="5"
                 DisplayMemberPath="Name"
-                ItemsSource="{Binding DataContext.EventTypeList, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                ItemsSource="{Binding EventTypeList, Mode=TwoWay}"
                 SelectedValue="{Binding MyEvent.EventTypeId, Mode=TwoWay}"
                 SelectedValuePath="Id" />
 
@@ -93,7 +95,7 @@
                 MaxWidth="350"
                 Margin="5"
                 DisplayMemberPath="Name"
-                ItemsSource="{Binding DataContext.RoomList, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                ItemsSource="{Binding RoomList, Mode=TwoWay}"
                 SelectedValue="{Binding MyEvent.RoomID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 SelectedValuePath="ID" />
 
@@ -134,5 +136,71 @@
                 TextAlignment="Center" />
         </StackPanel>
 
+
+
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="47*" />
+                <ColumnDefinition Width="6*" />
+                <ColumnDefinition Width="47*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="15*" />
+                <RowDefinition Height="85*" />
+            </Grid.RowDefinitions>
+
+
+
+            <TextBlock
+                VerticalAlignment="Center"
+                Text="Pozvat"
+                TextAlignment="Center" />
+            <TextBlock
+                Grid.Column="2"
+                VerticalAlignment="Center"
+                Text="Pozvaní"
+                TextAlignment="Center" />
+
+            <DataGrid
+                Grid.Row="1"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                IsReadOnly="True"
+                ItemsSource="{Binding UserList}"
+                SelectedItem="{Binding SelectedUser, ValidatesOnDataErrors=True}"
+                VerticalScrollBarVisibility="Auto">
+            
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                    <DataGridTextColumn Binding="{Binding Email}" Header="Email" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+
+            <DataGrid
+                Grid.Row="1"
+                Grid.Column="2"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                IsReadOnly="True"
+                ItemsSource="{Binding InvitedUsersList}"
+                SelectedItem="{Binding SelectedInvitedUser}"
+                VerticalScrollBarVisibility="Auto">
+
+      
+
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                    <DataGridTextColumn Binding="{Binding Email}" Header="Email" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+
+
+
+
+        </Grid>
     </Grid>
 </UserControl>

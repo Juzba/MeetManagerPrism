@@ -12,6 +12,7 @@ namespace MeetManagerPrism.Data
         public DbSet<EventType> EventTypes { get; set; }
         public DbSet<Invitation> Invitations { get; set; }
         public DbSet<Room> Rooms { get; set; }
+        public DbSet<InvitedUser> InvitedUsers { get; set; }
 
 
 
@@ -62,10 +63,33 @@ namespace MeetManagerPrism.Data
                 );
 
             modelBuilder.Entity<Invitation>()
-             .HasOne(i => i.User)
-             .WithMany(u => u.Invitations) // přidej kolekci Invitations do User třídy (pokud tam není)
-             .HasForeignKey(i => i.UserId)
-             .OnDelete(DeleteBehavior.Restrict); // nebo DeleteBehavior.NoAction
+             .HasOne(i => i.Autor)
+             .WithMany(u => u.MyInvitations)
+             .HasForeignKey(i => i.AutorId)
+             .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<Event>()
+                .HasOne(e => e.User)
+                .WithMany(u => u.MyEvents)
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<InvitedUser>()
+                 .HasKey(i => i.Id);
+
+            modelBuilder.Entity<InvitedUser>()
+                .HasOne(i => i.Invitation)
+                .WithMany(i => i.InvitedUsers)
+                .HasForeignKey(i => i.InvitationId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<InvitedUser>()
+                .HasOne(i => i.User)
+                .WithMany(u => u.InvitedUsers)
+                .HasForeignKey(i => i.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(modelBuilder);
         }

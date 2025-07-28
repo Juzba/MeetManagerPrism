@@ -14,11 +14,15 @@
 
 
         // EVENTS //
-        public ICollection<Event> Events { get; set; } = [];
+        public ICollection<Event> MyEvents { get; set; } = [];
 
 
         // INVITATION //
-        public ICollection<Invitation> Invitations { get; set; } = [];
+        public ICollection<Invitation> MyInvitations { get; set; } = [];
+
+
+        // INVITED - USERS PARTICIPANTS //
+        public ICollection<InvitedUser> InvitedUsers { get; set; } = [];
 
     }
 }

@@ -10,12 +10,12 @@
         public int EventId { get; set; }
         public Event Event { get; set; } = default!;
 
-        // User
-        public int UserId { get; set; }
-        public User User { get; set; } = default!;
+        // Autor - User
+        public int AutorId { get; set; }
+        public User Autor { get; set; } = default!;
 
-        // User Participants
-        public ICollection<User> Participants { get; set; } = [];
+        // InvitedUsers
+        public ICollection<InvitedUser> InvitedUsers { get; set; } = [];
     }
 
 

@@ -8,7 +8,6 @@
     <prism:PrismApplication.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!--<materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Lime" />-->
                 <materialDesign:BundledTheme
                     BaseTheme="Dark"
                     PrimaryColor="Amber"

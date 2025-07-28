@@ -4,19 +4,16 @@ using MeetManagerPrism.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace MeetManagerPrism.Data.Migrations
+namespace MeetManagerPrism.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250721160403_InitialCreate")]
-    partial class InitialCreate
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,6 +121,9 @@ namespace MeetManagerPrism.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AutorId")
+                        .HasColumnType("int");
+
                     b.Property<int>("EventId")
                         .HasColumnType("int");
 
@@ -133,16 +133,36 @@ namespace MeetManagerPrism.Data.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.HasKey("Id");
+
+                    b.HasIndex("AutorId");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("Invitations");
+                });
+
+            modelBuilder.Entity("MeetManagerPrism.Data.Model.InvitedUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("InvitationId")
+                        .HasColumnType("int");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EventId");
+                    b.HasIndex("InvitationId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Invitations");
+                    b.ToTable("InvitedUsers");
                 });
 
             modelBuilder.Entity("MeetManagerPrism.Data.Model.Role", b =>
@@ -242,9 +262,6 @@ namespace MeetManagerPrism.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("InvitationId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -258,8 +275,6 @@ namespace MeetManagerPrism.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("InvitationId");
 
                     b.HasIndex("RoleId");
 
@@ -307,9 +322,9 @@ namespace MeetManagerPrism.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("MeetManagerPrism.Data.Model.User", "User")
-                        .WithMany("Events")
+                        .WithMany("MyEvents")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("EventType");
@@ -321,29 +336,44 @@ namespace MeetManagerPrism.Data.Migrations
 
             modelBuilder.Entity("MeetManagerPrism.Data.Model.Invitation", b =>
                 {
+                    b.HasOne("MeetManagerPrism.Data.Model.User", "Autor")
+                        .WithMany("MyInvitations")
+                        .HasForeignKey("AutorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("MeetManagerPrism.Data.Model.Event", "Event")
                         .WithMany()
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Autor");
+
+                    b.Navigation("Event");
+                });
+
+            modelBuilder.Entity("MeetManagerPrism.Data.Model.InvitedUser", b =>
+                {
+                    b.HasOne("MeetManagerPrism.Data.Model.Invitation", "Invitation")
+                        .WithMany("InvitedUsers")
+                        .HasForeignKey("InvitationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MeetManagerPrism.Data.Model.User", "User")
-                        .WithMany("Invitations")
+                        .WithMany("InvitedUsers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Event");
+                    b.Navigation("Invitation");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("MeetManagerPrism.Data.Model.User", b =>
                 {
-                    b.HasOne("MeetManagerPrism.Data.Model.Invitation", null)
-                        .WithMany("Participants")
-                        .HasForeignKey("InvitationId");
-
                     b.HasOne("MeetManagerPrism.Data.Model.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
@@ -360,7 +390,7 @@ namespace MeetManagerPrism.Data.Migrations
 
             modelBuilder.Entity("MeetManagerPrism.Data.Model.Invitation", b =>
                 {
-                    b.Navigation("Participants");
+                    b.Navigation("InvitedUsers");
                 });
 
             modelBuilder.Entity("MeetManagerPrism.Data.Model.Role", b =>
@@ -375,9 +405,11 @@ namespace MeetManagerPrism.Data.Migrations
 
             modelBuilder.Entity("MeetManagerPrism.Data.Model.User", b =>
                 {
-                    b.Navigation("Events");
+                    b.Navigation("InvitedUsers");
 
-                    b.Navigation("Invitations");
+                    b.Navigation("MyEvents");
+
+                    b.Navigation("MyInvitations");
                 });
 #pragma warning restore 612, 618
         }
