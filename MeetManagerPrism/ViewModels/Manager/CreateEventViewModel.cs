@@ -71,12 +71,14 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
         EventTypeList = new ObservableCollection<EventType>(eventTypes);
     }
 
+
     // LOAD ROOMS FROM DB - COMBOBOX //
     private async Task GetRoomList()
     {
         var rooms = await _dataService.GetRoomList();
         RoomList = new ObservableCollection<Room>(rooms);
     }
+
 
     // LOAD USERS FROM DB - INVATION //
     private async Task GetUsersList()
@@ -227,18 +229,21 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
             MyEvent.EventType = null!;
             await _dataService.UpdateEvent(MyEvent);
 
-            //var invitation = new Invitation()
-            //{
-            //    Event = MyEvent,
-            //    SentDate = DateTime.Now,
-            //    Status = InvStatus.Pending,
-            //    AutorId = _userStore.User!.Id,
-            //    InvitedUsers = InvitedUsersList.Select(p => new InvitedUser() { User = p }).ToList()
-            //};
-            //await _dataService.AddInvitation(invitation);
 
 
+            // EDIT INVITATION
+            var invitation = await _dataService.GetInvitation(MyEvent);
 
+            if (invitation == null)
+            {
+                ErrorMessage = "Invitation se nenalezl!";
+                return;
+            }
+
+            //invitation.InvitedUsers.Clear();
+            invitation.InvitedUsers = [.. InvitedUsersList.Select(p => new InvitedUser() { User = p, Invitation = invitation })];
+
+            await _dataService.UpdateInvitation(invitation);
 
         }
 

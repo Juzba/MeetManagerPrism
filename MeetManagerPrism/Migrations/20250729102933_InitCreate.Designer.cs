@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MeetManagerPrism.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250728182241_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250729102933_InitCreate")]
+    partial class InitCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,9 @@ namespace MeetManagerPrism.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AutorId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -53,16 +56,13 @@ namespace MeetManagerPrism.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("AutorId");
 
                     b.HasIndex("EventTypeId");
 
                     b.HasIndex("RoomID");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Events");
                 });
@@ -312,6 +312,12 @@ namespace MeetManagerPrism.Migrations
 
             modelBuilder.Entity("MeetManagerPrism.Data.Model.Event", b =>
                 {
+                    b.HasOne("MeetManagerPrism.Data.Model.User", "Autor")
+                        .WithMany("MyEvents")
+                        .HasForeignKey("AutorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("MeetManagerPrism.Data.Model.EventType", "EventType")
                         .WithMany("Events")
                         .HasForeignKey("EventTypeId")
@@ -324,17 +330,11 @@ namespace MeetManagerPrism.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MeetManagerPrism.Data.Model.User", "User")
-                        .WithMany("MyEvents")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.Navigation("Autor");
 
                     b.Navigation("EventType");
 
                     b.Navigation("Room");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MeetManagerPrism.Data.Model.Invitation", b =>

@@ -19,16 +19,17 @@
     <Grid Background="#086CB4">
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10*" />
-            <ColumnDefinition Width="70*" MaxWidth="600" />
             <ColumnDefinition Width="20*" />
+            <ColumnDefinition Width="50*" MaxWidth="1000" />
+            <ColumnDefinition Width="30*" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="30" />
             <RowDefinition />
-            <RowDefinition Height="55" />
+            <RowDefinition Height="35" />
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="1" Grid.Column="1">
@@ -52,24 +53,27 @@
             <TextBox
                 Grid.Row="0"
                 Grid.Column="1"
-                MaxWidth="350"
+                HorizontalAlignment="Right"
+                MinWidth="350"
                 Margin="5"
                 MaxLength="25"
                 Text="{Binding MyEvent.Name}" />
 
             <Label Grid.Row="1" Content="Začátek:" />
             <DatePicker
+                HorizontalAlignment="Right"
                 Grid.Row="1"
                 Grid.Column="1"
-                MaxWidth="350"
+                MinWidth="350"
                 Margin="5"
                 SelectedDate="{Binding MyEvent.StartDate}" />
 
             <Label Grid.Row="2" Content="Konec:" />
             <DatePicker
+                HorizontalAlignment="Right"
                 Grid.Row="2"
                 Grid.Column="1"
-                MaxWidth="350"
+                MinWidth="350"
                 Margin="5"
                 SelectedDate="{Binding MyEvent.EndDate}" />
 
@@ -79,9 +83,10 @@
                 Margin="0,0,15,0"
                 Content="Typ Události:" />
             <ComboBox
+                HorizontalAlignment="Right"
                 Grid.Row="3"
                 Grid.Column="1"
-                MaxWidth="350"
+                MinWidth="350"
                 Margin="5"
                 DisplayMemberPath="Name"
                 ItemsSource="{Binding EventTypeList, Mode=TwoWay}"
@@ -92,7 +97,8 @@
             <ComboBox
                 Grid.Row="4"
                 Grid.Column="1"
-                MaxWidth="350"
+                MinWidth="350"
+                HorizontalAlignment="Right"
                 Margin="5"
                 DisplayMemberPath="Name"
                 ItemsSource="{Binding RoomList, Mode=TwoWay}"
@@ -104,7 +110,8 @@
             <TextBox
                 Grid.Row="5"
                 Grid.Column="1"
-                MaxWidth="350"
+                MinWidth="350"
+                HorizontalAlignment="Right"
                 MaxHeight="100"
                 Margin="5"
                 Text="{Binding MyEvent.Description}" />
@@ -138,26 +145,28 @@
 
 
 
-        <Grid Grid.Row="2" Grid.Column="1">
+        <Grid Grid.Row="3" Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="47*" />
                 <ColumnDefinition Width="6*" />
                 <ColumnDefinition Width="47*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="15*" />
-                <RowDefinition Height="85*" />
+                <RowDefinition Height="20*" />
+                <RowDefinition Height="80*" />
             </Grid.RowDefinitions>
 
 
 
             <TextBlock
-                VerticalAlignment="Center"
+                VerticalAlignment="Bottom"
                 Text="Pozvat"
+                Margin="10"
                 TextAlignment="Center" />
             <TextBlock
                 Grid.Column="2"
-                VerticalAlignment="Center"
+                Margin="10"
+                VerticalAlignment="Bottom"
                 Text="Pozvaní"
                 TextAlignment="Center" />
 
@@ -169,7 +178,7 @@
                 ItemsSource="{Binding UserList}"
                 SelectedItem="{Binding SelectedUser, ValidatesOnDataErrors=True}"
                 VerticalScrollBarVisibility="Auto">
-            
+
 
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
@@ -188,7 +197,7 @@
                 SelectedItem="{Binding SelectedInvitedUser}"
                 VerticalScrollBarVisibility="Auto">
 
-      
+
 
 
                 <DataGrid.Columns>

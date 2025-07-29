@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MeetManagerPrism.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -87,7 +87,7 @@ namespace MeetManagerPrism.Migrations
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EventTypeId = table.Column<int>(type: "int", nullable: false),
                     RoomID = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    AutorId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -105,8 +105,8 @@ namespace MeetManagerPrism.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Events_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Events_Users_AutorId",
+                        column: x => x.AutorId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -211,6 +211,11 @@ namespace MeetManagerPrism.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Events_AutorId",
+                table: "Events",
+                column: "AutorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Events_EventTypeId",
                 table: "Events",
                 column: "EventTypeId");
@@ -219,11 +224,6 @@ namespace MeetManagerPrism.Migrations
                 name: "IX_Events_RoomID",
                 table: "Events",
                 column: "RoomID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Events_UserId",
-                table: "Events",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Invitations_AutorId",

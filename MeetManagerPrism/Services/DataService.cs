@@ -11,12 +11,18 @@ namespace MeetManagerPrism.Services
         Task AddEventType(EventType eventType);
         Task AddRoom(Room room);
         Task AddInvitation(Invitation invitation);
+
         Task UpdateEvent(Event updEvent);
+        Task UpdateInvitation(Invitation invitation);
+
         Task DeleteEvent(Event delEvent);
         Task DeleteRoom(Room room);
         Task DeleteEventType(EventType eventType);
         Task DeleteUser(User user);
+
         Task<User?> GetUser(string email);
+        Task<Invitation?> GetInvitation (Event myEvent);
+
         Task<ICollection<User>> GetUsersList();
         Task<ICollection<InvitedUser>> GetInvitedUsersList(int eventId);
         Task<ICollection<Role>> GetRolesList();
@@ -25,6 +31,7 @@ namespace MeetManagerPrism.Services
         Task<ICollection<Event>> GetUpcomingEventsList(User user);
         Task<ICollection<EventType>> GetEventTypeList();
         Task<ICollection<Room>> GetRoomList();
+
         Task SaveChangesDB();
     }
 
@@ -78,6 +85,14 @@ namespace MeetManagerPrism.Services
             await _db.SaveChangesAsync();
         }
 
+        // UPDATE INVITATION //
+        public async Task UpdateInvitation(Invitation invitation)
+        {
+            _db.Invitations.Attach(invitation);
+            _db.Entry(invitation).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+        }
+
         // DELETE EVENT //
         public async Task DeleteEvent(Event delEvent)
         {
@@ -112,6 +127,9 @@ namespace MeetManagerPrism.Services
 
         // GET USER //
         public async Task<User?> GetUser(string email) => await _db.Users.Include(p => p.Role).FirstOrDefaultAsync(p => p.Email == email);
+
+        // GET INVITATION //
+        public async Task<Invitation?> GetInvitation(Event myEvent) => await _db.Invitations.FirstOrDefaultAsync(p => p.Event == myEvent);
 
         // GET USERS LIST //
         public async Task<ICollection<User>> GetUsersList() => await _db.Users.Include(p => p.Role).ToListAsync();
