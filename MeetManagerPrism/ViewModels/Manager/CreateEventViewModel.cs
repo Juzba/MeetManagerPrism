@@ -84,23 +84,20 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
     private async Task GetUsersList()
     {
         // get users from invited-users on My-event id. 
-        var invitedUsers = await _dataService.GetInvitedUsersList(MyEvent.Id);
-        var iUsers = invitedUsers.Select(p => p.User);
+        var invitedUsers = await _dataService.GetInvitedUsersList(MyEvent.Id);          // include users
 
-        // get all users
-        var allUsers = await _dataService.GetUsersList();
+        var allUsers = await _dataService.GetUsersList();                              // get all users
 
-        // if user is not invited then displey user in invitation datagrid table
-        foreach (User user in allUsers)
-            if (!iUsers.Contains(user)) UserList.Add(user);
+        foreach (User user in allUsers)                                                // if user is not invited then displey user in invitation datagrid table
+                                                                                       // Not invited users
+            if (!invitedUsers.Any(p => p.User == user)) UserList.Add(new InvitedUser() { User = user, Status = InvStatus.Pending });
 
-        // show invited users in datagrid table
-        InvitedUsersList = new ObservableCollection<User>(iUsers);
+        InvitedUsersList = new ObservableCollection<InvitedUser>(invitedUsers);         // show invited users in datagrid table
     }
 
 
     // EVENT //
-    private Event myEvent = new() { StartDate = DateTime.Now.AddDays(7), EndDate = DateTime.Now.AddDays(8) };
+    private Event myEvent = new() { StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(8) };
     public Event MyEvent
     {
         get { return myEvent; }
@@ -136,16 +133,16 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
 
 
     // USERS LIST //
-    private ObservableCollection<User> userList = [];
-    public ObservableCollection<User> UserList
+    private ObservableCollection<InvitedUser> userList = [];
+    public ObservableCollection<InvitedUser> UserList
     {
         get { return userList; }
         set { SetProperty(ref userList, value); }
     }
 
     // SELECTED USER //
-    private User? selectedUser;
-    public User? SelectedUser
+    private InvitedUser? selectedUser;
+    public InvitedUser? SelectedUser
     {
         get { return selectedUser; }
         set
@@ -156,8 +153,8 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
     }
 
     // SELECTED INVITED USER //
-    private User? selectedInvitedUser;
-    public User? SelectedInvitedUser
+    private InvitedUser? selectedInvitedUser;
+    public InvitedUser? SelectedInvitedUser
     {
         get { return selectedInvitedUser; }
         set
@@ -170,8 +167,8 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
 
 
     // INVITED USERS LIST - PARTICIPANTS //
-    private ObservableCollection<User> invitedUsersList = [];
-    public ObservableCollection<User> InvitedUsersList
+    private ObservableCollection<InvitedUser> invitedUsersList = [];
+    public ObservableCollection<InvitedUser> InvitedUsersList
     {
         get { return invitedUsersList; }
         set { SetProperty(ref invitedUsersList, value); }
@@ -216,9 +213,8 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
             {
                 Event = MyEvent,
                 SentDate = DateTime.Now,
-                Status = InvStatus.Pending,
                 AutorId = _userStore.User!.Id,
-                InvitedUsers = InvitedUsersList.Select(p => new InvitedUser() { User = p }).ToList()
+                InvitedUsers = InvitedUsersList
             };
             await _dataService.AddInvitation(invitation);
         }
@@ -240,9 +236,7 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
                 return;
             }
 
-            //invitation.InvitedUsers.Clear();
-            invitation.InvitedUsers = [.. InvitedUsersList.Select(p => new InvitedUser() { User = p, Invitation = invitation })];
-
+            invitation.InvitedUsers = invitedUsersList;
             await _dataService.UpdateInvitation(invitation);
 
         }
