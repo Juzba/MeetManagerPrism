@@ -84,7 +84,7 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
     private async Task GetUsersList()
     {
         // get users from invited-users on My-event id. 
-        var invitedUsers = await _dataService.GetInvitedUsersList(MyEvent.Id);          // include users
+        var invitedUsers = await _dataService.GetInvitedUsersListFromEvent(MyEvent.Id);          // include users
 
         var allUsers = await _dataService.GetUsersList();                              // get all users
 

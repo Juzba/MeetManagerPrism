@@ -23,5 +23,11 @@
         public int AutorId { get; set; }
         public User Autor { get; set; } = null!;
 
+
+        // INVITATION //
+        public int InvitationId { get; set; }
+        public Invitation Invitation { get; set; } = null!;
+
+
     }
 }

@@ -15,19 +15,23 @@
     mc:Ignorable="d">
     <Grid Background="#3B3936">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="70*" />
-            <ColumnDefinition Width="30*" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="65*" />
+            <ColumnDefinition Width="25*" />
+            <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="65*" MinHeight="250" />
-            <RowDefinition Height="35*" MinHeight="120" />
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="60*" MinHeight="250" />
+            <RowDefinition Height="30*" MinHeight="120" />
+            <RowDefinition Height="5*" />
         </Grid.RowDefinitions>
 
         <DataGrid
             Grid.Row="1"
-            Margin="40,20"
+            Grid.Column="1"
+            Margin="0,0,40,20"
             AutoGenerateColumns="False"
             CanUserAddRows="False"
             CanUserDeleteRows="False"
@@ -35,7 +39,7 @@
             HorizontalScrollBarVisibility="Hidden"
             IsReadOnly="True"
             ItemsSource="{Binding TodayEvents}"
-            VerticalScrollBarVisibility="Hidden">
+            VerticalScrollBarVisibility="Auto">
 
             <DataGrid.Columns>
 
@@ -95,7 +99,8 @@
 
         <DataGrid
             Grid.Row="2"
-            Margin="40,20"
+            Grid.Column="1"
+            Margin="0,20,40,0"
             AutoGenerateColumns="False"
             CanUserAddRows="False"
             CanUserDeleteRows="False"
@@ -121,11 +126,11 @@
         <Grid
             Grid.Row="1"
             Grid.RowSpan="2"
-            Grid.Column="1">
+            Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="80" />
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="9*" />
             </Grid.RowDefinitions>
 
             <TextBlock
@@ -137,7 +142,22 @@
                 Foreground="White"
                 Text="{Binding ActualTime, StringFormat={}{0:dd.MM.yyyy HH:mm:ss}}" />
 
+            <TextBlock
+                Grid.Row="1"
+                Margin="5"
+                VerticalAlignment="Bottom"
+                FontSize="25"
+                Foreground="#BD2A2E"
+                Text="Jsem pozván na událost:"
+                TextAlignment="Center" />
 
+
+            <DataGrid Grid.Row="2">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Událost" />
+                </DataGrid.Columns>
+
+            </DataGrid>
 
         </Grid>
 
