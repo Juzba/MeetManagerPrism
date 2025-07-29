@@ -39,11 +39,17 @@ namespace MeetManagerPrism.ViewModels.Users
 
         private async Task OnInitialize()
         {
+            // Today Events
             var tEvents = await _dataService.GetTodayEventsList(_userStore.User!);
             TodayEvents = new ObservableCollection<Event>(tEvents);
 
+            // Upcoming events
             var uEvents = await _dataService.GetUpcomingEventsList(_userStore.User!);
             UpcomingEvents = new ObservableCollection<Event>(uEvents);
+
+            // Event invitations
+            var iEvents = await _dataService.GetEventsList_byInvitedUser(_userStore.User!);
+            EventInvationList = new ObservableCollection<Event>(iEvents);
         }
 
 
@@ -63,6 +69,14 @@ namespace MeetManagerPrism.ViewModels.Users
         {
             get { return upcomingEvents; }
             set { SetProperty(ref upcomingEvents, value); }
+        }
+
+        // EVENTS INVITIONS //
+        private ObservableCollection<Event> eventInvationList = [];
+        public ObservableCollection<Event> EventInvationList
+        {
+            get { return eventInvationList; }
+            set { SetProperty(ref eventInvationList, value); }
         }
 
 

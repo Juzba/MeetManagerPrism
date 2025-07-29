@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MeetManagerPrism.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250729130753_InitialCreate")]
+    [Migration("20250729145924_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -44,6 +44,9 @@ namespace MeetManagerPrism.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("EventTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InvitationId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -137,7 +140,8 @@ namespace MeetManagerPrism.Data.Migrations
 
                     b.HasIndex("AutorId");
 
-                    b.HasIndex("EventId");
+                    b.HasIndex("EventId")
+                        .IsUnique();
 
                     b.ToTable("Invitations");
                 });
@@ -346,8 +350,8 @@ namespace MeetManagerPrism.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("MeetManagerPrism.Data.Model.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId")
+                        .WithOne("Invitation")
+                        .HasForeignKey("MeetManagerPrism.Data.Model.Invitation", "EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -384,6 +388,12 @@ namespace MeetManagerPrism.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("MeetManagerPrism.Data.Model.Event", b =>
+                {
+                    b.Navigation("Invitation")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MeetManagerPrism.Data.Model.EventType", b =>

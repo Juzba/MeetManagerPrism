@@ -30,11 +30,12 @@ public partial class MainViewModel : BindableBase
         _userStore = userStore;
         _eventAggregator = eventAggregator;
 
-        // PAGE TITLE EVENT //
-        _eventAggregator.GetEvent<MainViewTitleEvent>().Subscribe((string title) => PageTitle = title);
         OnLogin();
 
         LogoutCommand = new DelegateCommand(Logout);
+
+        // PAGE TITLE EVENT //
+        _eventAggregator.GetEvent<MainViewTitleEvent>().Subscribe((string title) => PageTitle = title);
 
         // TO LOGIN PAGE //
         NavLoginCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(LoginPage)));
@@ -123,6 +124,8 @@ public partial class MainViewModel : BindableBase
     }
 
 
+
+
     // ADMIN PAGE VISIBILITY //
     private Visibility adminPageVisibility = Visibility.Collapsed;
     public Visibility AdminPageVisibility
@@ -130,6 +133,7 @@ public partial class MainViewModel : BindableBase
         get { return adminPageVisibility; }
         set { SetProperty(ref adminPageVisibility, value); }
     }
+
 
     // MANAGER PAGE VISIBILITY //
     private Visibility managerPageVisibility = Visibility.Collapsed;

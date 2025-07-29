@@ -87,7 +87,7 @@
                                     Grid.Row="2"
                                     Grid.Column="1"
                                     Foreground="White"
-                                    Text="{Binding User.Name, StringFormat='Organizátor: {0}'}" />
+                                    Text="{Binding Autor.Name, StringFormat='Organizátor: {0}'}" />
 
                             </Grid>
                         </DataTemplate>
@@ -152,9 +152,17 @@
                 TextAlignment="Center" />
 
 
-            <DataGrid Grid.Row="2">
+            <DataGrid
+                Grid.Row="2"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                CanUserDeleteRows="False"
+                IsReadOnly="True"
+                ItemsSource="{Binding EventInvationList}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Událost" />
+                    <DataGridTextColumn Binding="{Binding Name}" Header="Událost" />
+                    <DataGridTextColumn Binding="{Binding Autor.Name}" Header="Autor" />
+                    <DataGridTextColumn Binding="{Binding StartDate, StringFormat={}{0:dd.MM.yyyy}}" Header="Začátek" />
                 </DataGrid.Columns>
 
             </DataGrid>

@@ -87,7 +87,8 @@ namespace MeetManagerPrism.Data.Migrations
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EventTypeId = table.Column<int>(type: "int", nullable: false),
                     RoomID = table.Column<int>(type: "int", nullable: false),
-                    AutorId = table.Column<int>(type: "int", nullable: false)
+                    AutorId = table.Column<int>(type: "int", nullable: false),
+                    InvitationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -233,7 +234,8 @@ namespace MeetManagerPrism.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Invitations_EventId",
                 table: "Invitations",
-                column: "EventId");
+                column: "EventId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_InvitedUsers_InvitationId",
