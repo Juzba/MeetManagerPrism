@@ -40,9 +40,9 @@
                 Padding="10,5"
                 VerticalAlignment="Center"
                 Command="{Binding NavHomeCommand}"
-                Content="Home" >
+                Content="Home">
                 <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding PageTitle}" Value="Home">
                                 <Setter Property="Background" Value="Black" />
@@ -58,9 +58,9 @@
                 VerticalAlignment="Center"
                 Command="{Binding NavDashboardCommand}"
                 Content="DashBoard"
-                Visibility="{Binding UserPageVisibility}" >
+                Visibility="{Binding UserPageVisibility}">
                 <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding PageTitle}" Value="Dashboard">
                                 <Setter Property="Background" Value="Black" />
@@ -70,16 +70,16 @@
                     </Style>
                 </Button.Style>
             </Button>
-            
+
             <Button
                 Margin="10,0"
                 Padding="10,5"
                 VerticalAlignment="Center"
                 Command="{Binding NavManagerCommand}"
                 Content="Manager"
-                Visibility="{Binding ManagerPageVisibility}" >
+                Visibility="{Binding ManagerPageVisibility}">
                 <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding PageTitle}" Value="Event Manager">
                                 <Setter Property="Background" Value="Black" />
@@ -97,9 +97,9 @@
                 Command="{Binding NavAdminCommand}"
                 Content="Admin"
                 Cursor="Hand"
-                Visibility="{Binding AdminPageVisibility}" >
+                Visibility="{Binding AdminPageVisibility}">
                 <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding PageTitle}" Value="Admin Page">
                                 <Setter Property="Background" Value="Black" />

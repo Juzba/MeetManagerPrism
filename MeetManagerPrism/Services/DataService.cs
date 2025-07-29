@@ -25,7 +25,7 @@ namespace MeetManagerPrism.Services
         Task<Invitation?> GetInvitation(Event myEvent);
 
         Task<ICollection<User>> GetUsersList();
-        Task<ICollection<InvitedUser>> GetInvitedUsersListFromEvent(int eventId);
+        Task<ICollection<InvitedUser>> GetInvitedUsersList_FromEvent(int eventId);
         Task<ICollection<Role>> GetRolesList();
         Task<ICollection<Event>> GetEventsList(User user);
         Task<ICollection<Event>> GetEventsList_byInvitedUser(User user);
@@ -140,7 +140,7 @@ namespace MeetManagerPrism.Services
         public async Task<ICollection<User>> GetUsersList() => await _db.Users.Include(p => p.Role).ToListAsync();
 
         // GET INVITED-USERS LIST FROM EVENT //
-        public async Task<ICollection<InvitedUser>> GetInvitedUsersListFromEvent(int eventId) => await _db.InvitedUsers.Where(p => p.Invitation.EventId == eventId).Include(p => p.User).ToListAsync();
+        public async Task<ICollection<InvitedUser>> GetInvitedUsersList_FromEvent(int eventId) => await _db.InvitedUsers.Where(p => p.Invitation.EventId == eventId).Include(p => p.User).ToListAsync();
 
 
         // GET ROLES LIST //

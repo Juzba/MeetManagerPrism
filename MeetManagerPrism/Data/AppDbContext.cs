@@ -56,10 +56,10 @@ namespace MeetManagerPrism.Data
 
             modelBuilder.Entity<Room>().HasData
                 (
-                new Room() { ID = 1, Name = "chata pod smrkem", Capacity = 120, Location = "Vysočina" },
-                new Room() { ID = 2, Name = "jeskyně", Capacity = 120, Location = "Brno" },
-                new Room() { ID = 3, Name = "sokolovna", Capacity = 120, Location = "Lipník" },
-                new Room() { ID = 4, Name = "areal u smutného psa", Capacity = 120, Location = "Pardubice" }
+                new Room() { ID = 1, Name = "Chata pod smrkem", Capacity = 120, Location = "Vysočina" },
+                new Room() { ID = 2, Name = "Jeskyně", Capacity = 120, Location = "Brno" },
+                new Room() { ID = 3, Name = "Sokolovna", Capacity = 120, Location = "Lipník" },
+                new Room() { ID = 4, Name = "Areal u smutného psa", Capacity = 120, Location = "Pardubice" }
                 );
 
             modelBuilder.Entity<Invitation>()

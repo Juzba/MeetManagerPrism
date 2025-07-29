@@ -1,6 +1,8 @@
-﻿using MeetManagerPrism.Common.Events;
+﻿using MeetManagerPrism.Common;
+using MeetManagerPrism.Common.Events;
 using MeetManagerPrism.Data.Model;
 using MeetManagerPrism.Services;
+using MeetManagerPrism.Views.Users;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
 
@@ -9,6 +11,7 @@ namespace MeetManagerPrism.ViewModels.Users
     public class DashboardViewModel : BindableBase, IRegionAware
     {
         private readonly IDataService _dataService;
+        private readonly IRegionManager _regionManager;
         private readonly UserStore _userStore;
         private readonly IEventAggregator _eventAggregator;
         private DispatcherTimer _timer = new();
@@ -16,8 +19,9 @@ namespace MeetManagerPrism.ViewModels.Users
 
         private readonly AsyncDelegateCommand OnInitializeCommand;
 
-        public DashboardViewModel(IDataService dataService, UserStore userStore, IEventAggregator eventAggregator)
+        public DashboardViewModel(IRegionManager regionManager, IDataService dataService, UserStore userStore, IEventAggregator eventAggregator)
         {
+            _regionManager = regionManager;
             _dataService = dataService;
             _userStore = userStore;
             _eventAggregator = eventAggregator;
@@ -79,6 +83,20 @@ namespace MeetManagerPrism.ViewModels.Users
             set { SetProperty(ref eventInvationList, value); }
         }
 
+        // SELECTED EVENT //
+        private Event? selectedEvent;
+        public Event? SelectedEvent
+        {
+            get { return selectedEvent; }
+            set
+            {
+                selectedEvent = value;
+
+
+                var parametr = new NavigationParameters { { "Event", SelectedEvent! } };
+                _regionManager.RequestNavigate(Const.MainRegion, nameof(EventDetailsPage), parametr);
+            }
+        }
 
 
         // ACTUAL TIME //

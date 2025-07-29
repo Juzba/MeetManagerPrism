@@ -13,9 +13,6 @@ namespace MeetManagerPrism.ViewModels.Admin
         private readonly ILoginService _loginService;
 
         private AsyncDelegateCommand OnInitializeCommand { get; }
-        private AsyncDelegateCommand LoadUsersListCommand { get; }
-        private AsyncDelegateCommand LoadRolesListCommand { get; }
-
         public AsyncDelegateCommand SaveCommand { get; }
         public AsyncDelegateCommand AddUserCommand { get; }
         public AsyncDelegateCommand<object?> RemoveUserCommand { get; }
@@ -28,8 +25,6 @@ namespace MeetManagerPrism.ViewModels.Admin
             _loginService = loginService;
 
             OnInitializeCommand = new AsyncDelegateCommand(OnInitialize);
-            LoadUsersListCommand = new AsyncDelegateCommand(LoadUsersList);
-            LoadRolesListCommand = new AsyncDelegateCommand(LoadRolesList);
             SaveCommand = new AsyncDelegateCommand(SaveChanges);
             AddUserCommand = new AsyncDelegateCommand(AddUser);
             RemoveUserCommand = new AsyncDelegateCommand<object?>(RemoveUser);
@@ -47,10 +42,10 @@ namespace MeetManagerPrism.ViewModels.Admin
         private async Task OnInitialize()
         {
             // LOAD USERS FROM DB //
-            await LoadUsersListCommand.Execute();
+            await LoadUsersList();
 
             // LOAD ROLES FROM DB //
-            await LoadRolesListCommand.Execute();
+            await LoadRolesList();
         }
 
 
@@ -142,7 +137,7 @@ namespace MeetManagerPrism.ViewModels.Admin
 
             NewUser = new();
             ErrorMessage = null;
-            await LoadUsersListCommand.Execute();
+            await LoadUsersList();
         }
 
 
@@ -158,7 +153,7 @@ namespace MeetManagerPrism.ViewModels.Admin
             }
 
             await _dataService.DeleteUser(user);
-            await LoadUsersListCommand.Execute();
+            await LoadUsersList();
         }
     }
 }

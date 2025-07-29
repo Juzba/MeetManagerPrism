@@ -39,6 +39,7 @@
             HorizontalScrollBarVisibility="Hidden"
             IsReadOnly="True"
             ItemsSource="{Binding TodayEvents}"
+            SelectedItem="{Binding SelectedEvent}"
             VerticalScrollBarVisibility="Auto">
 
             <DataGrid.Columns>
@@ -105,7 +106,8 @@
             CanUserAddRows="False"
             CanUserDeleteRows="False"
             IsReadOnly="True"
-            ItemsSource="{Binding UpcomingEvents}">
+            ItemsSource="{Binding UpcomingEvents}"
+            SelectedItem="{Binding SelectedEvent}">
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.Header>
@@ -158,7 +160,8 @@
                 CanUserAddRows="False"
                 CanUserDeleteRows="False"
                 IsReadOnly="True"
-                ItemsSource="{Binding EventInvationList}">
+                ItemsSource="{Binding EventInvationList}"
+                SelectedItem="{Binding SelectedEvent}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Name}" Header="Událost" />
                     <DataGridTextColumn Binding="{Binding Autor.Name}" Header="Autor" />

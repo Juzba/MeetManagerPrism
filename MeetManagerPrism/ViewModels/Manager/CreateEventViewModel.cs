@@ -14,9 +14,6 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
     private readonly UserStore _userStore;
 
     private AsyncDelegateCommand OnInitializeCommand { get; }
-    private AsyncDelegateCommand GetEventTypeListCommand { get; }
-    private AsyncDelegateCommand GetRoomListCommand { get; }
-    private AsyncDelegateCommand GetUsersCommand { get; }
     public AsyncDelegateCommand CreateEventCommand { get; }
     public AsyncDelegateCommand DeleteEventCommand { get; }
 
@@ -28,9 +25,6 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
         _userStore = userStore;
 
         OnInitializeCommand = new AsyncDelegateCommand(OnInitialize);
-        GetEventTypeListCommand = new AsyncDelegateCommand(GetEventTypeList);
-        GetRoomListCommand = new AsyncDelegateCommand(GetRoomList);
-        GetUsersCommand = new AsyncDelegateCommand(GetUsersList);
         CreateEventCommand = new AsyncDelegateCommand(CreateEvent);
         DeleteEventCommand = new AsyncDelegateCommand(DeleteEvent);
 
@@ -58,9 +52,9 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
     // ON INITIALIZE //
     private async Task OnInitialize()
     {
-        await GetEventTypeListCommand.Execute();
-        await GetRoomListCommand.Execute();
-        await GetUsersCommand.Execute();
+        await GetEventTypeList();
+        await GetRoomList();
+        await GetUsersList();
     }
 
 
@@ -84,7 +78,7 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
     private async Task GetUsersList()
     {
         // get users from invited-users on My-event id. 
-        var invitedUsers = await _dataService.GetInvitedUsersListFromEvent(MyEvent.Id);          // include users
+        var invitedUsers = await _dataService.GetInvitedUsersList_FromEvent(MyEvent.Id);          // include users
 
         var allUsers = await _dataService.GetUsersList();                              // get all users
 
