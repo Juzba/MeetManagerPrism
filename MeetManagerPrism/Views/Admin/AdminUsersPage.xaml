@@ -154,7 +154,7 @@
             Background="#086CB4"
             CanUserAddRows="false"
             FontSize="17"
-            Foreground="#FFD340"
+            Foreground="#FFBC24"
             ItemsSource="{Binding Users, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectionMode="Single"
             SelectionUnit="Cell">

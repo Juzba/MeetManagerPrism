@@ -13,6 +13,7 @@ namespace MeetManagerPrism.Services
         Task AddInvitation(Invitation invitation);
 
         Task UpdateEvent(Event updEvent);
+        Task UpdateInvitedUser(InvitedUser invitedUser);
         Task UpdateInvitation(Invitation invitation);
 
         Task DeleteEvent(Event delEvent);
@@ -87,6 +88,14 @@ namespace MeetManagerPrism.Services
             await _db.SaveChangesAsync();
         }
 
+        // UPDATE INVITED USER //
+        public async Task UpdateInvitedUser(InvitedUser invitedUser)
+        {
+            _db.InvitedUsers.Attach(invitedUser);
+            _db.Entry(invitedUser).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+        }
+
         // UPDATE INVITATION //
         public async Task UpdateInvitation(Invitation invitation)
         {
@@ -129,9 +138,9 @@ namespace MeetManagerPrism.Services
 
         // GET USER //
         public async Task<User?> GetUser(string email) => await _db.Users.Include(p => p.Role).FirstOrDefaultAsync(p => p.Email == email);
-      
+
         // GET INVITED USER //
-        public async Task<InvitedUser?> GetInvitedUser(User user) => await _db.InvitedUsers.FirstOrDefaultAsync(p=>p.User == user);
+        public async Task<InvitedUser?> GetInvitedUser(User user) => await _db.InvitedUsers.FirstOrDefaultAsync(p => p.User == user);
 
         // GET INVITATION //
         public async Task<Invitation?> GetInvitation(Event myEvent) => await _db.Invitations.FirstOrDefaultAsync(p => p.Event == myEvent);
@@ -151,14 +160,22 @@ namespace MeetManagerPrism.Services
         public async Task<ICollection<Event>> GetEventsList(User user) => await _db.Events.Where(p => p.AutorId == user.Id).Include(p => p.EventType).Include(p => p.Room).ToListAsync();
 
         // GET EVENT LIST - INVITED-USER //
-        public async Task<ICollection<Event>> GetEventsList_byInvitedUser(User user) => await _db.Events.Where(p => p.Invitation.InvitedUsers.Any(p=>p.User == user)).Include(p=>p.Autor).ToListAsync();
+        public async Task<ICollection<Event>> GetEventsList_byInvitedUser(User user)
+        {
+            return await _db.Events.Where(
+                p => p.Invitation
+                .InvitedUsers
+                .Any(p => p.User == user && (p.Status == InvStatus.Pending || p.Status == InvStatus.Rejected)))
+                .Include(p => p.Autor)
+                .ToListAsync();
+        }
 
-        // GET TODAY EVENT LIST - USER //
+        // GET UPCOMING EVENT LIST - USER //
         public async Task<ICollection<Event>> GetUpcomingEventsList(User user)
         {
             return await _db.Events.Where
                 (
-                p => p.AutorId == user.Id
+                p => p.Invitation.InvitedUsers.Any(p => p.UserId == user.Id && p.Status == InvStatus.Accepted)
                 && p.StartDate >= DateTime.Now
                 )
                 .Include(p => p.EventType)
@@ -168,12 +185,12 @@ namespace MeetManagerPrism.Services
                 .ToListAsync();
         }
 
-        // GET UPCOMING EVENT LIST - USER //
+        // GET TODAY EVENT LIST - USER //
         public async Task<ICollection<Event>> GetTodayEventsList(User user)
         {
             return await _db.Events.Where
                 (
-                p => p.AutorId == user.Id
+                p => p.Invitation.InvitedUsers.Any(p => p.UserId == user.Id && p.Status == InvStatus.Accepted)
                 && p.StartDate <= DateTime.Now
                 && p.EndDate >= DateTime.Now
                 )

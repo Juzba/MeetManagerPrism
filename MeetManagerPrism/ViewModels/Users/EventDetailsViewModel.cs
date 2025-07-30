@@ -30,8 +30,8 @@ public class EventDetailsViewModel : BindableBase, INavigationAware
 
         OnInitializeCommand = new AsyncDelegateCommand(OnInitialize);
         NavDashboardPageCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(Dashboard)));
-        AcceptCommand = new AsyncDelegateCommand(Accept);
-        DeclineCommand = new AsyncDelegateCommand(Decline);
+        AcceptCommand = new AsyncDelegateCommand(Accept, CanAccept).ObservesProperty(()=> InvitedUser );
+        DeclineCommand = new AsyncDelegateCommand(Decline, CanDecline).ObservesProperty(() => InvitedUser);
 
     }
 
@@ -103,13 +103,33 @@ public class EventDetailsViewModel : BindableBase, INavigationAware
     // ACCEPT //
     private async Task Accept()
     {
+        if (InvitedUser == null) return;
 
+        InvitedUser.Status = InvStatus.Accepted;
+        RaisePropertyChanged(nameof(InvitedUser));
+
+        await _dataService.UpdateInvitedUser(InvitedUser);
+        await LoadInvitedUsers();
     }
 
     // DECLINE //
     private async Task Decline()
     {
+        if (InvitedUser == null) return;
 
+        InvitedUser.Status = InvStatus.Rejected;
+        RaisePropertyChanged(nameof(InvitedUser));
+
+        await _dataService.UpdateInvitedUser(InvitedUser);
+        await LoadInvitedUsers();
     }
 
+    private bool CanDecline()
+    {
+        return InvitedUser?.Status != InvStatus.Rejected;
+    }
+    private bool CanAccept()
+    {
+        return InvitedUser?.Status != InvStatus.Accepted;
+    }
 }

@@ -13,7 +13,7 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     FontSize="18"
     mc:Ignorable="d">
-    <Grid Background="#3B3936">
+    <Grid Background="#20448C">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*" />
             <ColumnDefinition Width="65*" />
@@ -33,6 +33,7 @@
             Grid.Column="1"
             Margin="0,0,40,20"
             AutoGenerateColumns="False"
+            Background="#008CDB"
             CanUserAddRows="False"
             CanUserDeleteRows="False"
             FontSize="18"
@@ -49,7 +50,7 @@
 
                         <TextBlock
                             FontSize="25"
-                            Foreground="#BD2A2E"
+                            Foreground="#20448C"
                             Text="Dnešní akce" />
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
@@ -71,23 +72,23 @@
                                     Grid.Column="0"
                                     Grid.ColumnSpan="2"
                                     FontSize="30"
-                                    Foreground="#486966"
+                                    Foreground="#FFBC24"
                                     Text="{Binding Name}" />
                                 <TextBlock
                                     Grid.Row="1"
                                     Grid.Column="1"
-                                    Foreground="White"
+                                    Foreground="#FFBC24"
                                     Text="{Binding StartDate, StringFormat='Od: {0:dd.MM.yyyy}'}" />
                                 <TextBlock
                                     Grid.Row="1"
                                     Grid.Column="2"
-                                    Foreground="White"
+                                    Foreground="#FFBC24"
                                     Text="{Binding EndDate, StringFormat='Do: {0:dd.MM.yyyy}'}" />
 
                                 <TextBlock
                                     Grid.Row="2"
                                     Grid.Column="1"
-                                    Foreground="White"
+                                    Foreground="#FFBC24"
                                     Text="{Binding Autor.Name, StringFormat='Organizátor: {0}'}" />
 
                             </Grid>
@@ -103,6 +104,7 @@
             Grid.Column="1"
             Margin="0,20,40,0"
             AutoGenerateColumns="False"
+            Background="#008CDB"
             CanUserAddRows="False"
             CanUserDeleteRows="False"
             IsReadOnly="True"
@@ -113,14 +115,14 @@
                     <DataGridTemplateColumn.Header>
                         <TextBlock
                             FontSize="15"
-                            Foreground="#BD2A2E"
+                            Foreground="#20448C"
                             Text="Nadcházejícií akce" />
                     </DataGridTemplateColumn.Header>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Binding="{Binding Name}" />
-                <DataGridTextColumn Binding="{Binding StartDate, StringFormat={}{0: hh.MM.yyyy}}" />
-                <DataGridTextColumn Binding="{Binding EndDate, StringFormat={}{0: hh.MM.yyyy}}" />
+                <DataGridTextColumn Binding="{Binding Name}" Foreground="#FFBC24" />
+                <DataGridTextColumn Binding="{Binding StartDate, StringFormat={}{0: hh.MM.yyyy}}" Foreground="#FFBC24" />
+                <DataGridTextColumn Binding="{Binding EndDate, StringFormat={}{0: hh.MM.yyyy}}" Foreground="#FFBC24" />
             </DataGrid.Columns>
         </DataGrid>
 
@@ -149,23 +151,34 @@
                 Margin="5"
                 VerticalAlignment="Bottom"
                 FontSize="25"
-                Foreground="#BD2A2E"
-                Text="Jsem pozván na událost:"
+                Foreground="#FFBC24"
+                Text="Nové pozvánky."
                 TextAlignment="Center" />
 
 
             <DataGrid
                 Grid.Row="2"
                 AutoGenerateColumns="False"
+                Background="#008CDB"
                 CanUserAddRows="False"
                 CanUserDeleteRows="False"
+                Foreground="#FFBC24"
                 IsReadOnly="True"
                 ItemsSource="{Binding EventInvationList}"
                 SelectedItem="{Binding SelectedEvent}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Name}" Header="Událost" />
-                    <DataGridTextColumn Binding="{Binding Autor.Name}" Header="Autor" />
-                    <DataGridTextColumn Binding="{Binding StartDate, StringFormat={}{0:dd.MM.yyyy}}" Header="Začátek" />
+                    <DataGridTextColumn
+                        Binding="{Binding Name}"
+                        Foreground="#FFBC24"
+                        Header="Událost" />
+                    <DataGridTextColumn
+                        Binding="{Binding Autor.Name}"
+                        Foreground="#FFBC24"
+                        Header="Autor" />
+                    <DataGridTextColumn
+                        Binding="{Binding StartDate, StringFormat={}{0:dd.MM.yyyy}}"
+                        Foreground="#FFBC24"
+                        Header="Začátek" />
                 </DataGrid.Columns>
 
             </DataGrid>

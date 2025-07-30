@@ -199,16 +199,16 @@
             HorizontalAlignment="Center"
             Orientation="Horizontal">
             <Button
-                Command="{Binding AcceptCommand}"
                 Height="50"
                 Margin="30,0"
+                Command="{Binding AcceptCommand}"
                 Content="Přijmout"
                 FontSize="20" />
             <Button
-                Command="{Binding DeclineCommand}"
                 Height="50"
                 Margin="30,0"
                 Background="Red"
+                Command="{Binding DeclineCommand}"
                 Content="Odmítnout"
                 FontSize="20" />
         </StackPanel>

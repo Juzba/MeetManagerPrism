@@ -44,6 +44,7 @@ public partial class App : PrismApplication
         containerRegistry.RegisterForNavigation<ManagerEventsPage, ManagerEventsViewModel>();
         containerRegistry.RegisterForNavigation<Dashboard, DashboardViewModel>();
         containerRegistry.RegisterForNavigation<EventDetailsPage, EventDetailsViewModel>();
+        containerRegistry.RegisterForNavigation<CalendarView, CalendarViewModel>();
     }
 
 

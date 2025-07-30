@@ -1,5 +1,4 @@
 ﻿automatické upozornění na konfliktní termíny u účastníků/místností
-Možnost přidat komentáře k události
 
 
 Základní notifikační “přehled” – dashboard
@@ -44,7 +43,4 @@ UI toolkity: doporučuji Material Design in XAML nebo ModernWPF pro lepší vzhl
 
 Bonusy navíc:
 Reálné validace vstupů
-Možnost změny jazyka aplikace (CZ/EN)
-Nápověda/detailní popisky v UI
 Jednoduchá testovací data při prvním spuštění
-Export kalendáře do Google Calendar (přes API – pokročilé)

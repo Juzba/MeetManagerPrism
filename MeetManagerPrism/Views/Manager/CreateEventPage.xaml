@@ -12,11 +12,11 @@
     d:DesignWidth="1280"
     prism:ViewModelLocator.AutoWireViewModel="True"
     FontSize="20"
-    Foreground="#DBF227"
+    Foreground="#FFD340"
     mc:Ignorable="d">
 
 
-    <Grid Background="#086CB4">
+    <Grid Background="#20448C">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20*" />
@@ -173,6 +173,7 @@
             <DataGrid
                 Grid.Row="1"
                 AutoGenerateColumns="False"
+                Background="#008CDB"
                 CanUserAddRows="False"
                 IsReadOnly="True"
                 ItemsSource="{Binding UserList}"
@@ -191,6 +192,7 @@
                 Grid.Row="1"
                 Grid.Column="2"
                 AutoGenerateColumns="False"
+                Background="#008CDB"
                 CanUserAddRows="False"
                 IsReadOnly="True"
                 ItemsSource="{Binding InvitedUsersList}"

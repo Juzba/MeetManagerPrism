@@ -20,6 +20,7 @@ public partial class MainViewModel : BindableBase
     public DelegateCommand NavRegisterCommand { get; }
     public DelegateCommand NavHomeCommand { get; }
     public DelegateCommand NavDashboardCommand { get; }
+    public DelegateCommand NavCalendarCommand { get; }
     public DelegateCommand NavManagerCommand { get; }
     public DelegateCommand NavAdminCommand { get; }
 
@@ -48,6 +49,9 @@ public partial class MainViewModel : BindableBase
 
         // TO DASHBOARD PAGE //
         NavDashboardCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(Dashboard)));
+      
+        // TO CALENDAR PAGE //
+        NavCalendarCommand = new DelegateCommand(() => _regionManager.RequestNavigate(Const.MainRegion, nameof(CalendarView)));
 
         // TO MANAGER PAGE //
         NavManagerCommand = new DelegateCommand(() =>

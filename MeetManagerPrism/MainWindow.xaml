@@ -75,6 +75,25 @@
                 Margin="10,0"
                 Padding="10,5"
                 VerticalAlignment="Center"
+                Command="{Binding NavCalendarCommand}"
+                Content="Calendar"
+                Visibility="{Binding UserPageVisibility}">
+                <Button.Style>
+                    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding PageTitle}" Value="Calendar">
+                                <Setter Property="Background" Value="Black" />
+                                <Setter Property="Foreground" Value="#FFBC24" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Button
+                Margin="10,0"
+                Padding="10,5"
+                VerticalAlignment="Center"
                 Command="{Binding NavManagerCommand}"
                 Content="Manager"
                 Visibility="{Binding ManagerPageVisibility}">

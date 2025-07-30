@@ -14,16 +14,51 @@
     mc:Ignorable="d">
 
     <Grid Background="#20448C">
-        <StackPanel Margin="0,30" HorizontalAlignment="Center">
-            <Button
-                Width="200"
-                Height="60"
-                Margin="0,30"
-                Command=""
-                Content="Click me!" />
-            <TextBox Text="" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="90*" />
+            <ColumnDefinition Width="5*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="90*" />
+            <RowDefinition Height="5*" />
+        </Grid.RowDefinitions>
 
-
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <TextBlock
+                Margin="20"
+                HorizontalAlignment="Center"
+                FontSize="40"
+                FontWeight="Bold"
+                Foreground="#008CDB"
+                Text="Vítejte v aplikaci Meet-Manager." />
+            <TextBlock
+                Margin="10"
+                FontSize="16"
+                Text="* Aplikace slouží ke správě a plánování událostí s automatickým upozorněním na konflikty termínů u účastníků a místností."
+                TextWrapping="Wrap" />
+            <TextBlock
+                Margin="10"
+                FontSize="16"
+                Text="* Uživatelé mohou spravovat pozvánky, přidávat komentáře k událostem a organizovat svůj čas efektivně přes přehledný dashboard."
+                TextWrapping="Wrap" />
+            <TextBlock
+                Margin="10"
+                FontSize="16"
+                Text="* Nabízí kalendářové zobrazení, detailní informace o událostech a správu účastníků i prostor."
+                TextWrapping="Wrap" />
+            <TextBlock
+                Margin="10"
+                FontSize="16"
+                Text="* Podporuje role uživatelů a umožňuje administraci místností a typů akcí."
+                TextWrapping="Wrap" />
+            <TextBlock
+                Margin="10"
+                FontSize="16"
+                Text="* Aplikace je vyvinutá s využitím moderních technologií, jako je Entity Framework Core a architektura MVVM, pro snadnou údržbu a uživatelskou přívětivost."
+                TextWrapping="Wrap" />
         </StackPanel>
+
     </Grid>
 </UserControl>
