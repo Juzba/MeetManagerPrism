@@ -34,6 +34,8 @@ namespace MeetManagerPrism.Services
         // VERIFY PASSWORD //
         public bool VerifyPassword(string password, string hash)
         {
+            if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(hash)) return false;
+
             return Argon2.Verify(hash, password);
         }
 
