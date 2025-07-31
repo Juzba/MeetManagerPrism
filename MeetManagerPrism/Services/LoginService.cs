@@ -23,17 +23,27 @@ namespace MeetManagerPrism.Services
         private UserStore _userStore = userStore;
 
         // HASH PASSWORD with Argon2 //
-        public string HashPassword(string password) => Argon2.Hash(password);
+        public string HashPassword(string password)
+        {
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentNullException(nameof(password), "password is null or empty!");
+
+            return Argon2.Hash(password);
+        }
 
 
         // VERIFY PASSWORD //
-        public bool VerifyPassword(string password, string hash) => Argon2.Verify(hash, password);
+        public bool VerifyPassword(string password, string hash)
+        {
+            return Argon2.Verify(hash, password);
+        }
 
         // LOGIN //
         public async Task<bool> TryLogin(LoginViewModel loginVM)
         {
-            var user = await _dataService.GetUser(loginVM.Email ?? "");
-            if (user == null || !VerifyPassword(loginVM.Password ?? "", user.PasswordHash)) return false;
+            if (string.IsNullOrWhiteSpace(loginVM.Email) || string.IsNullOrWhiteSpace(loginVM.Password)) return false;
+
+            var user = await _dataService.GetUser(loginVM.Email);
+            if (user == null || !VerifyPassword(loginVM.Password, user.PasswordHash)) return false;
 
             // Save logged user //
             _userStore.User = user;
@@ -59,7 +69,10 @@ namespace MeetManagerPrism.Services
 
         public async Task<bool> TryRegister(RegisterViewModel registerVM)
         {
-            if (await _dataService.GetUser(registerVM.Email) != null) return false;
+            if (string.IsNullOrWhiteSpace(registerVM.Email)
+                || string.IsNullOrWhiteSpace(registerVM.PasswordA)
+                || await _dataService.GetUser(registerVM.Email) != null
+                ) return false;
 
             var hash = HashPassword(registerVM.PasswordA);
             var newUser = new User() { Name = registerVM.Email, Email = registerVM.Email, PasswordHash = hash };

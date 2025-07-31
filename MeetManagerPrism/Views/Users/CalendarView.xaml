@@ -32,7 +32,7 @@
                             <Binding Path="DataContext.EventList" RelativeSource="{RelativeSource AncestorType=UserControl}" />
                         </MultiBinding>
                     </DataTrigger.Binding>
-                    <Setter Property="Background" Value="LightCoral" />
+                    <Setter Property="Background" Value="#086CB4" />
                     <Setter Property="ToolTip" Value="Event" />
                 </DataTrigger>
             </Style.Triggers>
