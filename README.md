@@ -1,1 +1,9 @@
-Tato aplikace slouží k efektivnímu plánování a správě událostí s automatickým upozorněním na konfliktní termíny u účastníků a místností. Uživatelé mohou spravovat pozvánky, přidávat komentáře k událostem a získat přehled přes dashboard, který zobrazuje dnešní plán a nevyřízené pozvánky. Aplikace nabízí kalendářové zobrazení akcí, detailní informace o událostech, správu účastníků i prostor a podporuje rolové rozdíly administrace. Používá moderní technologie jako Entity Framework Core a MVVM pattern pro přehledné a uživatelsky příjemné prostředí.
+I developed a notification dashboard that displays today’s events and pending invitations to the user.
+
+The database model includes users, events, invitations, event types, and rooms, roles or recurring events.
+
+The UI features a login screen, an overview of today’s and upcoming events, a calendar with color-coded event types, a list of user-organized events, event details with participant and invitation management, and a dialog for creating and editing events. The administration allows management of rooms and event types.
+
+I used SQL Server Express, Entity Framework Core, the MVVM architecture with the Prism framework, and Material Design in XAML for a modern look.
+
+Additional features include input validation and sample data for easy application startup.
