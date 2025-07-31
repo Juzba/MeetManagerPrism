@@ -79,7 +79,7 @@ public class AdminRoomsViewModel : BindableBase, IRegionAware
     // SAVE CHANGES //
     private async Task SaveChanges()
     {
-        await _dataService.SaveChangesDB();
+        await _dataService.SaveChanges();
     }
 
 
@@ -89,6 +89,7 @@ public class AdminRoomsViewModel : BindableBase, IRegionAware
         if (param is not Room room) return;
 
         await _dataService.DeleteRoom(room);
+        await _dataService.SaveChanges();
         await LoadRoomsList();
     }
 
@@ -102,6 +103,7 @@ public class AdminRoomsViewModel : BindableBase, IRegionAware
         }
 
         await _dataService.AddRoom(NewRoom);
+        await _dataService.SaveChanges();
 
         NewRoom = new();
         ErrorMessage = null;

@@ -197,7 +197,7 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
             return;
         }
 
-        if(MyEvent.StartDate > MyEvent.EndDate)
+        if (MyEvent.StartDate > MyEvent.EndDate)
         {
             ErrorMessage = "Datum začátku je větší než konce";
             return;
@@ -216,14 +216,16 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
                 AutorId = _userStore.User!.Id,
                 InvitedUsers = InvitedUsersList
             };
+
             await _dataService.AddInvitation(invitation);
+            await _dataService.SaveChanges();
         }
         else
         {
             // EDIT EVENT
             MyEvent.Room = null!;
             MyEvent.EventType = null!;
-            await _dataService.UpdateEvent(MyEvent);
+            _dataService.UpdateEvent(MyEvent);
 
 
 
@@ -237,7 +239,8 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
             }
 
             invitation.InvitedUsers = invitedUsersList;
-            await _dataService.UpdateInvitation(invitation);
+            _dataService.UpdateInvitation(invitation);
+            await _dataService.SaveChanges();
 
         }
 
@@ -248,6 +251,7 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
     private async Task DeleteEvent()
     {
         await _dataService.DeleteEvent(MyEvent);
+        await _dataService.SaveChanges();
         _regionManager.RequestNavigate(Const.ManagerRegion, nameof(ManagerEventsPage));
     }
 

@@ -65,6 +65,7 @@ namespace MeetManagerPrism.Services
             var newUser = new User() { Name = registerVM.Email, Email = registerVM.Email, PasswordHash = hash };
 
             await _dataService.AddUser(newUser);
+            await _dataService.SaveChanges();
 
             return true;
         }

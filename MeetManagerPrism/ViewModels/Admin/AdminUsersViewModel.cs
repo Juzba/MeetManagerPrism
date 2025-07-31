@@ -109,7 +109,7 @@ namespace MeetManagerPrism.ViewModels.Admin
         private async Task SaveChanges()
         {
             // There must be at least one admin here. //
-            if (Users.Any(p => p.RoleId.Contains("Admin"))) await _dataService.SaveChangesDB();
+            if (Users.Any(p => p.RoleId.Contains("Admin"))) await _dataService.SaveChanges();
 
             else ErrorMessage = "Musí být aspoň jeden Admin.";
 
@@ -134,6 +134,7 @@ namespace MeetManagerPrism.ViewModels.Admin
             NewUser.PasswordHash = _loginService.HashPassword(NewUser.PasswordHash);
 
             await _dataService.AddUser(NewUser);
+            await _dataService.SaveChanges();
 
             NewUser = new();
             ErrorMessage = null;
@@ -153,6 +154,7 @@ namespace MeetManagerPrism.ViewModels.Admin
             }
 
             await _dataService.DeleteUser(user);
+            await _dataService.SaveChanges();
             await LoadUsersList();
         }
     }

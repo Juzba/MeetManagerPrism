@@ -1,223 +1,292 @@
 ﻿using MeetManagerPrism.Data;
 using MeetManagerPrism.Data.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Xml.Linq;
 
-namespace MeetManagerPrism.Services
+namespace MeetManagerPrism.Services;
+
+public interface IDataService
 {
-    public interface IDataService
+    Task AddUser(User user);
+    Task AddEvent(Event newEvent);
+    Task AddEventType(EventType eventType);
+    Task AddRoom(Room room);
+    Task AddInvitation(Invitation invitation);
+
+
+    void UpdateEvent(Event updEvent);
+    void UpdateInvitedUser(InvitedUser invitedUser);
+    void UpdateInvitation(Invitation invitation);
+
+
+    Task DeleteEvent(Event delEvent);
+    Task DeleteRoom(Room delRoom);
+    Task DeleteEventType(EventType delEventType);
+    Task DeleteUser(User delUser);
+
+    Task<User?> GetUser(string email);
+    Task<InvitedUser?> GetInvitedUser(User user);
+    Task<Invitation?> GetInvitation(Event myEvent);
+
+    Task<IEnumerable<User>> GetUsersList();
+    Task<IEnumerable<InvitedUser>> GetInvitedUsersList_FromEvent(int eventId);
+    Task<IEnumerable<Role>> GetRolesList();
+    Task<IEnumerable<Event>> GetEventsList(User user);
+    Task<IEnumerable<Event>> GetAceptedEventsList_byInvitedUser(User user);
+    Task<IEnumerable<Event>> GetEventsList_byInvitedUser(User user);
+    Task<IEnumerable<Event>> GetTodayEventsList(User user);
+    Task<IEnumerable<Event>> GetUpcomingEventsList(User user);
+    Task<IEnumerable<EventType>> GetEventTypeList();
+    Task<IEnumerable<Room>> GetRoomList();
+
+    Task SaveChanges();
+}
+
+
+
+public class DataService(AppDbContext db) : IDataService
+{
+    private readonly AppDbContext _db = db;
+
+    // *ADD* //
+    // ADD USER //
+    public async Task AddUser(User user)
     {
-        Task AddUser(User user);
-        Task AddEvent(Event newEvent);
-        Task AddEventType(EventType eventType);
-        Task AddRoom(Room room);
-        Task AddInvitation(Invitation invitation);
+        if (user == null) throw new ArgumentNullException(nameof(user), "user cannot be null!");
 
-        Task UpdateEvent(Event updEvent);
-        Task UpdateInvitedUser(InvitedUser invitedUser);
-        Task UpdateInvitation(Invitation invitation);
-
-        Task DeleteEvent(Event delEvent);
-        Task DeleteRoom(Room room);
-        Task DeleteEventType(EventType eventType);
-        Task DeleteUser(User user);
-
-        Task<User?> GetUser(string email);
-        Task<InvitedUser?> GetInvitedUser(User user);
-        Task<Invitation?> GetInvitation(Event myEvent);
-
-        Task<ICollection<User>> GetUsersList();
-        Task<ICollection<InvitedUser>> GetInvitedUsersList_FromEvent(int eventId);
-        Task<ICollection<Role>> GetRolesList();
-        Task<ICollection<Event>> GetEventsList(User user);
-        Task<ICollection<Event>> GetAceptedEventsList_byInvitedUser(User user);
-        Task<ICollection<Event>> GetEventsList_byInvitedUser(User user);
-        Task<ICollection<Event>> GetTodayEventsList(User user);
-        Task<ICollection<Event>> GetUpcomingEventsList(User user);
-        Task<ICollection<EventType>> GetEventTypeList();
-        Task<ICollection<Room>> GetRoomList();
-
-        Task SaveChangesDB();
+        await _db.Users.AddAsync(user);
     }
 
 
-
-    public class DataService(AppDbContext db) : IDataService
+    // ADD EVENT //
+    public async Task AddEvent(Event newEwent)
     {
-        private readonly AppDbContext _db = db;
+        if (newEwent == null) throw new ArgumentNullException(nameof(newEwent), "newEwent cannot be null!");
 
-
-        // ADD USER //
-        public async Task AddUser(User user)
-        {
-            await _db.Users.AddAsync(user);
-            await _db.SaveChangesAsync();
-        }
-
-        // ADD EVENT //
-        public async Task AddEvent(Event newEwent)
-        {
-            await _db.Events.AddAsync(newEwent);
-            await _db.SaveChangesAsync();
-        }
-
-        // ADD EVENT-TYPE //
-        public async Task AddEventType(EventType eventType)
-        {
-            await _db.EventTypes.AddAsync(eventType);
-            await _db.SaveChangesAsync();
-        }
-
-        // ADD ROOM //
-        public async Task AddRoom(Room room)
-        {
-            await _db.Rooms.AddAsync(room);
-            await _db.SaveChangesAsync();
-        }
-
-        // ADD INVITATION //
-        public async Task AddInvitation(Invitation invitation)
-        {
-            await _db.Invitations.AddAsync(invitation);
-            await _db.SaveChangesAsync();
-        }
-
-        // UPDATE EVENT //
-        public async Task UpdateEvent(Event updEvent)
-        {
-            _db.Events.Attach(updEvent);
-            _db.Entry(updEvent).State = EntityState.Modified;
-            await _db.SaveChangesAsync();
-        }
-
-        // UPDATE INVITED USER //
-        public async Task UpdateInvitedUser(InvitedUser invitedUser)
-        {
-            _db.InvitedUsers.Attach(invitedUser);
-            _db.Entry(invitedUser).State = EntityState.Modified;
-            await _db.SaveChangesAsync();
-        }
-
-        // UPDATE INVITATION //
-        public async Task UpdateInvitation(Invitation invitation)
-        {
-            _db.Invitations.Attach(invitation);
-            _db.Entry(invitation).State = EntityState.Modified;
-            await _db.SaveChangesAsync();
-        }
-
-        // DELETE EVENT //
-        public async Task DeleteEvent(Event delEvent)
-        {
-            var dbEvent = await _db.Events.FindAsync(delEvent.Id);
-            if (dbEvent == null) return;
-
-            _db.Events.Remove(dbEvent);
-            await _db.SaveChangesAsync();
-        }
-
-        // DELETE ROOM //
-        public async Task DeleteRoom(Room room)
-        {
-            _db.Rooms.Remove(room);
-            await _db.SaveChangesAsync();
-        }
-
-        // DELETE EVENT-TYPE //
-        public async Task DeleteEventType(EventType eventType)
-        {
-            _db.EventTypes.Remove(eventType);
-            await _db.SaveChangesAsync();
-        }
-
-        // DELETE USER //
-        public async Task DeleteUser(User user)
-        {
-            _db.Users.Remove(user);
-            await _db.SaveChangesAsync();
-        }
-
-
-        // GET USER //
-        public async Task<User?> GetUser(string email) => await _db.Users.Include(p => p.Role).FirstOrDefaultAsync(p => p.Email == email);
-
-        // GET INVITED USER //
-        public async Task<InvitedUser?> GetInvitedUser(User user) => await _db.InvitedUsers.FirstOrDefaultAsync(p => p.User == user);
-
-        // GET INVITATION //
-        public async Task<Invitation?> GetInvitation(Event myEvent) => await _db.Invitations.FirstOrDefaultAsync(p => p.Event == myEvent);
-
-        // GET USERS LIST //
-        public async Task<ICollection<User>> GetUsersList() => await _db.Users.Include(p => p.Role).ToListAsync();
-
-        // GET INVITED-USERS LIST FROM EVENT //
-        public async Task<ICollection<InvitedUser>> GetInvitedUsersList_FromEvent(int eventId) => await _db.InvitedUsers.Where(p => p.Invitation.EventId == eventId).Include(p => p.User).ToListAsync();
-
-
-        // GET ROLES LIST //
-        public async Task<ICollection<Role>> GetRolesList() => await _db.Roles.ToListAsync();
-
-
-        // GET EVENT LIST - USER //
-        public async Task<ICollection<Event>> GetEventsList(User user) => await _db.Events.Where(p => p.AutorId == user.Id).Include(p => p.EventType).Include(p => p.Room).ToListAsync();
-
-        // GET EVENT LIST ALL - BY INVITED-USER //
-        public async Task<ICollection<Event>> GetAceptedEventsList_byInvitedUser(User user)
-        {
-            return await _db.Events.Where(
-                p => p.Invitation
-                .InvitedUsers
-                .Any(p => p.User == user && p.Status == InvStatus.Accepted))
-                .Include(p => p.Autor)
-                .ToListAsync();
-        }
-
-        // GET EVENT LIST - INVITED-USER - Pending or rejected //
-        public async Task<ICollection<Event>> GetEventsList_byInvitedUser(User user)
-        {
-            return await _db.Events.Where(
-                p => p.Invitation
-                .InvitedUsers
-                .Any(p => p.User == user && (p.Status == InvStatus.Pending || p.Status == InvStatus.Rejected)))
-                .Include(p => p.Autor)
-                .ToListAsync();
-        }
-
-        // GET UPCOMING EVENT LIST - USER //
-        public async Task<ICollection<Event>> GetUpcomingEventsList(User user)
-        {
-            return await _db.Events.Where
-                (
-                p => p.Invitation.InvitedUsers.Any(p => p.UserId == user.Id && p.Status == InvStatus.Accepted)
-                && p.StartDate >= DateTime.Now
-                )
-                .Include(p => p.EventType)
-                .Include(p => p.Room)
-                .Include(p => p.Autor)
-                .Take(10)
-                .ToListAsync();
-        }
-
-        // GET TODAY EVENT LIST - USER //
-        public async Task<ICollection<Event>> GetTodayEventsList(User user)
-        {
-            return await _db.Events.Where
-                (
-                p => p.Invitation.InvitedUsers.Any(p => p.UserId == user.Id && p.Status == InvStatus.Accepted)
-                && p.StartDate <= DateTime.Now
-                && p.EndDate >= DateTime.Now
-                )
-                .Include(p => p.EventType).Include(p => p.Room).Include(p => p.Autor).ToListAsync();
-        }
-
-        // GET ROOMS LIST //
-        public async Task<ICollection<Room>> GetRoomList() => await _db.Rooms.ToListAsync();
-
-        // GET EVENT TYPE LIST //
-        public async Task<ICollection<EventType>> GetEventTypeList() => await _db.EventTypes.ToListAsync();
-
-        // SAVE USERS LIST //
-        public async Task SaveChangesDB() => await _db.SaveChangesAsync();
-
-
+        await _db.Events.AddAsync(newEwent);
     }
+
+
+    // ADD EVENT-TYPE //
+    public async Task AddEventType(EventType eventType)
+    {
+        if (eventType == null) throw new ArgumentNullException(nameof(eventType), "eventType cannot be null!");
+
+        await _db.EventTypes.AddAsync(eventType);
+    }
+
+
+    // ADD ROOM //
+    public async Task AddRoom(Room room)
+    {
+        if (room == null) throw new ArgumentNullException(nameof(room), "room cannot be null!");
+
+        await _db.Rooms.AddAsync(room);
+    }
+
+
+    // ADD INVITATION //
+    public async Task AddInvitation(Invitation invitation)
+    {
+        if (invitation == null) throw new ArgumentNullException(nameof(invitation), "invitation cannot be null!");
+
+        await _db.Invitations.AddAsync(invitation);
+    }
+
+
+             
+    // *UPDATE* //
+    // UPDATE EVENT //
+    public void UpdateEvent(Event updEvent)
+    {
+        if (updEvent == null) throw new ArgumentNullException(nameof(updEvent), "updEvent cannot be null!");
+
+        _db.Events.Update(updEvent);
+    }
+
+
+    // UPDATE INVITED USER //
+    public void UpdateInvitedUser(InvitedUser invitedUser)
+    {
+        if (invitedUser == null) throw new ArgumentNullException(nameof(invitedUser), "invitedUser cannot be null!");
+
+        _db.InvitedUsers.Update(invitedUser);
+    }
+
+
+    // UPDATE INVITATION //
+    public void UpdateInvitation(Invitation invitation)
+    {
+        if (invitation == null) throw new ArgumentNullException(nameof(invitation), "invitation cannot be null!");
+
+        _db.Invitations.Update(invitation);
+    }
+
+
+    // *DELETE* //
+    // DELETE EVENT //
+    public async Task DeleteEvent(Event delEvent)
+    {
+        if (delEvent == null) throw new ArgumentNullException(nameof(delEvent), "delEvent cannot be null!");
+
+        var dbEvent = await _db.Events.FindAsync(delEvent.Id);
+        if (dbEvent != null) _db.Events.Remove(dbEvent);
+    }
+
+
+    // DELETE ROOM //
+    public async Task DeleteRoom(Room delRoom)
+    {
+        if (delRoom == null) throw new ArgumentNullException(nameof(delRoom), "delRoom cannot be null!");
+
+        var room = await _db.Rooms.FindAsync(delRoom.ID);
+        if (room != null) _db.Rooms.Remove(room);
+    }
+
+
+    // DELETE EVENT-TYPE //
+    public async Task DeleteEventType(EventType delEventType)
+    {
+        if (delEventType == null) throw new ArgumentNullException(nameof(delEventType), "delEventType cannot be null!");
+
+        var eventType = await _db.EventTypes.FindAsync(delEventType.Id);
+        if (eventType != null) _db.EventTypes.Remove(eventType);
+    }
+
+
+    // DELETE USER //
+    public async Task DeleteUser(User delUser)
+    {
+        if (delUser == null) throw new ArgumentNullException(nameof(delUser), "delUser cannot be null!");
+
+        var user = await _db.Users.FindAsync(delUser.Id);
+        if (user != null) _db.Users.Remove(user);
+    }
+
+
+    // *GET* //
+    // GET USER //
+    public async Task<User?> GetUser(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email)) throw new ArgumentNullException(nameof(email), "email cannot be null or empty!");
+
+        return await _db.Users.Include(p => p.Role).FirstOrDefaultAsync(p => p.Email == email);
+    }
+
+    // GET INVITED USER //
+    public async Task<InvitedUser?> GetInvitedUser(User user)
+    {
+        if (user == null) throw new ArgumentNullException(nameof(user), "user cannot be null!");
+
+        return await _db.InvitedUsers.FirstOrDefaultAsync(p => p.User.Id == user.Id);
+    }
+
+
+    // GET INVITATION //
+    public async Task<Invitation?> GetInvitation(Event myEvent)
+    {
+        if (myEvent == null) throw new ArgumentNullException(nameof(myEvent), "myEvent cannot be null!");
+
+        return await _db.Invitations.FirstOrDefaultAsync(p => p.Event.Id == myEvent.Id);
+    }
+
+
+    // GET USERS LIST //
+    public async Task<IEnumerable<User>> GetUsersList() => await _db.Users.Include(p => p.Role).ToListAsync();
+
+
+    // GET INVITED-USERS LIST FROM EVENT //
+    public async Task<IEnumerable<InvitedUser>> GetInvitedUsersList_FromEvent(int eventId)
+    {
+        if (eventId == 0) throw new ArgumentException("eventId cannot be 0!", nameof(eventId));
+
+        return await _db.InvitedUsers.Where(p => p.Invitation.EventId == eventId).Include(p => p.User).ToListAsync();
+    }
+
+
+    // GET ROLES LIST //
+    public async Task<IEnumerable<Role>> GetRolesList() => await _db.Roles.ToListAsync();
+
+
+    // GET EVENT LIST - USER //
+    public async Task<IEnumerable<Event>> GetEventsList(User user)
+    {
+        if (user == null) throw new ArgumentNullException(nameof(user), "user cannot be null!");
+
+        return await _db.Events.Where(p => p.AutorId == user.Id).Include(p => p.EventType).Include(p => p.Room).ToListAsync();
+    }
+
+    // GET EVENT LIST ALL - BY INVITED-USER //
+    public async Task<IEnumerable<Event>> GetAceptedEventsList_byInvitedUser(User user)
+    {
+        if (user == null) throw new ArgumentNullException(nameof(user), "user cannot be null!");
+
+        return await _db.Events.Where(
+            p => p.Invitation
+            .InvitedUsers
+            .Any(p => p.User.Id == user.Id && p.Status == InvStatus.Accepted))
+            .Include(p => p.Autor)
+            .ToListAsync();
+    }
+
+
+    // GET EVENT LIST - INVITED-USER - Pending or rejected //
+    public async Task<IEnumerable<Event>> GetEventsList_byInvitedUser(User user)
+    {
+        if (user == null) throw new ArgumentNullException(nameof(user), "user cannot be null!");
+
+        return await _db.Events.Where(
+            p => p.Invitation
+            .InvitedUsers
+            .Any(p => p.User.Id == user.Id && (p.Status == InvStatus.Pending || p.Status == InvStatus.Rejected)))
+            .Include(p => p.Autor)
+            .ToListAsync();
+    }
+
+    // GET UPCOMING EVENT LIST - USER //
+    public async Task<IEnumerable<Event>> GetUpcomingEventsList(User user)
+    {
+        if (user == null) throw new ArgumentNullException(nameof(user), "user cannot be null!");
+
+        return await _db.Events.Where
+            (
+            p => p.Invitation.InvitedUsers.Any(p => p.UserId == user.Id && p.Status == InvStatus.Accepted)
+            && p.StartDate >= DateTime.Now
+            )
+            .Include(p => p.EventType)
+            .Include(p => p.Room)
+            .Include(p => p.Autor)
+            .Take(10)
+            .ToListAsync();
+    }
+
+
+    // GET TODAY EVENT LIST - USER //
+    public async Task<IEnumerable<Event>> GetTodayEventsList(User user)
+    {
+        if (user == null) throw new ArgumentNullException(nameof(user), "user cannot be null!");
+
+        return await _db.Events.Where
+            (
+            p => p.Invitation.InvitedUsers.Any(p => p.UserId == user.Id && p.Status == InvStatus.Accepted)
+            && p.StartDate <= DateTime.Now
+            && p.EndDate >= DateTime.Now
+            )
+            .Include(p => p.EventType).Include(p => p.Room).Include(p => p.Autor).ToListAsync();
+    }
+
+
+    // GET ROOMS LIST //
+    public async Task<IEnumerable<Room>> GetRoomList() => await _db.Rooms.ToListAsync();
+
+
+    // GET EVENT TYPE LIST //
+    public async Task<IEnumerable<EventType>> GetEventTypeList() => await _db.EventTypes.ToListAsync();
+
+
+    // *SAVE* //
+    // SAVE USERS LIST //
+    public async Task SaveChanges() => await _db.SaveChangesAsync();
 }

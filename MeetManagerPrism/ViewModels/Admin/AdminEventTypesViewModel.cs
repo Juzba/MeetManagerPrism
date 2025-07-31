@@ -80,7 +80,7 @@ public class AdminEventTypesViewModel : BindableBase, IRegionAware
     // SAVE CHANGES //
     private async Task SaveChanges()
     {
-        await _dataService.SaveChangesDB();
+        await _dataService.SaveChanges();
     }
 
 
@@ -90,6 +90,7 @@ public class AdminEventTypesViewModel : BindableBase, IRegionAware
         if (param is not EventType eventType) return;
 
         await _dataService.DeleteEventType(eventType);
+        await _dataService.SaveChanges();
         await LoadEventTypeList();
     }
 
@@ -103,6 +104,7 @@ public class AdminEventTypesViewModel : BindableBase, IRegionAware
         }
 
         await _dataService.AddEventType(NewEventType);
+        await _dataService.SaveChanges();
 
         NewEventType = new();
         ErrorMessage = null;
