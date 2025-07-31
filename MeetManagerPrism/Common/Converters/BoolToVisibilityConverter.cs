@@ -6,7 +6,6 @@ namespace MeetManagerPrism.Common.Converters
 {
     public class BoolToVisibilityConverter : IValueConverter
     {
-        // Parametr invert definuje, zda převodník vrací opačnou logiku
         public bool Invert { get; set; }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

@@ -2,27 +2,38 @@
     x:Class="MeetManagerPrism.Views.Users.CalendarView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:MeetManagerPrism.Common.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:MeetManagerPrism.Views.Users"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="700"
+    d:DesignWidth="1280"
     prism:ViewModelLocator.AutoWireViewModel="True"
     FontSize="30"
     Foreground="#FFD340"
     mc:Ignorable="d">
 
     <UserControl.Resources>
+        <converters:CalendarDateBoolConverter x:Key="CalendarDateBool" />
+
+
+
         <Style x:Key="MyCalendarDayButtonStyle" TargetType="CalendarDayButton">
             <Setter Property="FontSize" Value="30" />
             <Setter Property="Padding" Value="6" />
             <Setter Property="MinWidth" Value="160" />
             <Setter Property="MinHeight" Value="50" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding DataContext, RelativeSource={RelativeSource Self}}" Value="true">
+                <DataTrigger Value="true">
+                    <DataTrigger.Binding>
+                        <MultiBinding Converter="{StaticResource CalendarDateBool}">
+                            <Binding Path="DataContext" RelativeSource="{RelativeSource Self}" />
+                            <Binding Path="DataContext.EventList" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                        </MultiBinding>
+                    </DataTrigger.Binding>
                     <Setter Property="Background" Value="LightCoral" />
-                    <Setter Property="ToolTip" Value="Speciální datum!" />
+                    <Setter Property="ToolTip" Value="Event" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>

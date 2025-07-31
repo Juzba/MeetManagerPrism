@@ -229,28 +229,28 @@ namespace MeetManagerPrism.Data.Migrations
                             ID = 1,
                             Capacity = 120,
                             Location = "Vysočina",
-                            Name = "chata pod smrkem"
+                            Name = "Chata pod smrkem"
                         },
                         new
                         {
                             ID = 2,
                             Capacity = 120,
                             Location = "Brno",
-                            Name = "jeskyně"
+                            Name = "Jeskyně"
                         },
                         new
                         {
                             ID = 3,
                             Capacity = 120,
                             Location = "Lipník",
-                            Name = "sokolovna"
+                            Name = "Sokolovna"
                         },
                         new
                         {
                             ID = 4,
                             Capacity = 120,
                             Location = "Pardubice",
-                            Name = "areal u smutného psa"
+                            Name = "Areal u smutného psa"
                         });
                 });
 

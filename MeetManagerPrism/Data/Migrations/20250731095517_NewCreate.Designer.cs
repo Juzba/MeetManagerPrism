@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MeetManagerPrism.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250729145924_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250731095517_NewCreate")]
+    partial class NewCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -232,28 +232,28 @@ namespace MeetManagerPrism.Data.Migrations
                             ID = 1,
                             Capacity = 120,
                             Location = "Vysočina",
-                            Name = "chata pod smrkem"
+                            Name = "Chata pod smrkem"
                         },
                         new
                         {
                             ID = 2,
                             Capacity = 120,
                             Location = "Brno",
-                            Name = "jeskyně"
+                            Name = "Jeskyně"
                         },
                         new
                         {
                             ID = 3,
                             Capacity = 120,
                             Location = "Lipník",
-                            Name = "sokolovna"
+                            Name = "Sokolovna"
                         },
                         new
                         {
                             ID = 4,
                             Capacity = 120,
                             Location = "Pardubice",
-                            Name = "areal u smutného psa"
+                            Name = "Areal u smutného psa"
                         });
                 });
 

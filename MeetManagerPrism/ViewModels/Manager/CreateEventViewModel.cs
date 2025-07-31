@@ -197,6 +197,12 @@ public partial class CreateEventViewModel : BindableBase, IRegionAware, INavigat
             return;
         }
 
+        if(MyEvent.StartDate > MyEvent.EndDate)
+        {
+            ErrorMessage = "Datum začátku je větší než konce";
+            return;
+        }
+
         if (EventParametr == null)
         {
             // NEW EVENT

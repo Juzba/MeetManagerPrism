@@ -1,7 +1,4 @@
-﻿automatické upozornění na konfliktní termíny u účastníků/místností
-
-
-Základní notifikační “přehled” – dashboard
+﻿Základní notifikační “přehled” – dashboard
 
 co tě dnes čeká, kolik pozvánek je nevyřízených, atd.
 Návrh databázového modelu (základ):
@@ -20,16 +17,12 @@ Id, Název, Kapacita, Lokalita
 Můžeš rozšiřovat například o:
 
 Role uživatelů, komentáře, nebo opakování.
-Pokud přidáš poskytování feedbacku/řazení podle priority, tak ještě pole "priorita".
-
-
-
 
 Jak může vypadat UI:
 Login/registrace obrazovka
 Dashboard: Přehled dnešních a nadcházejících akcí, nové (nevyřízené) pozvánky
-Kalendář: měsíční/týdenní zobrazení, barevné boxy pro typy akcí
-Seznam akcí: tabulka, kde vidíš své akce (jako organizátor i jako účastník)
+Kalendář: měsíční zobrazení, barevné boxy pro typy akcí
+Seznam akcí: tabulka, kde vidíš své akce (jako organizátor)
 Detail akce: všechny informace, seznam účastníků, možnost spravovat pozvánky, komentáře
 Dialog pro vytvoření/úpravu akce: s výběrem pozvaných uživatelů, místnosti, typu, přidáním popisu
 Seznam místností/typů akcí: pro admina

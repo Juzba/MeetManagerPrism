@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MeetManagerPrism.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class NewCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -195,10 +195,10 @@ namespace MeetManagerPrism.Data.Migrations
                 columns: new[] { "ID", "Capacity", "Location", "Name" },
                 values: new object[,]
                 {
-                    { 1, 120, "Vysočina", "chata pod smrkem" },
-                    { 2, 120, "Brno", "jeskyně" },
-                    { 3, 120, "Lipník", "sokolovna" },
-                    { 4, 120, "Pardubice", "areal u smutného psa" }
+                    { 1, 120, "Vysočina", "Chata pod smrkem" },
+                    { 2, 120, "Brno", "Jeskyně" },
+                    { 3, 120, "Lipník", "Sokolovna" },
+                    { 4, 120, "Pardubice", "Areal u smutného psa" }
                 });
 
             migrationBuilder.InsertData(

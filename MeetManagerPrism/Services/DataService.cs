@@ -29,6 +29,7 @@ namespace MeetManagerPrism.Services
         Task<ICollection<InvitedUser>> GetInvitedUsersList_FromEvent(int eventId);
         Task<ICollection<Role>> GetRolesList();
         Task<ICollection<Event>> GetEventsList(User user);
+        Task<ICollection<Event>> GetAceptedEventsList_byInvitedUser(User user);
         Task<ICollection<Event>> GetEventsList_byInvitedUser(User user);
         Task<ICollection<Event>> GetTodayEventsList(User user);
         Task<ICollection<Event>> GetUpcomingEventsList(User user);
@@ -81,10 +82,10 @@ namespace MeetManagerPrism.Services
         }
 
         // UPDATE EVENT //
-        public async Task UpdateEvent(Event updEwent)
+        public async Task UpdateEvent(Event updEvent)
         {
-            _db.Events.Attach(updEwent);
-            _db.Entry(updEwent).State = EntityState.Modified;
+            _db.Events.Attach(updEvent);
+            _db.Entry(updEvent).State = EntityState.Modified;
             await _db.SaveChangesAsync();
         }
 
@@ -159,7 +160,18 @@ namespace MeetManagerPrism.Services
         // GET EVENT LIST - USER //
         public async Task<ICollection<Event>> GetEventsList(User user) => await _db.Events.Where(p => p.AutorId == user.Id).Include(p => p.EventType).Include(p => p.Room).ToListAsync();
 
-        // GET EVENT LIST - INVITED-USER //
+        // GET EVENT LIST ALL - BY INVITED-USER //
+        public async Task<ICollection<Event>> GetAceptedEventsList_byInvitedUser(User user)
+        {
+            return await _db.Events.Where(
+                p => p.Invitation
+                .InvitedUsers
+                .Any(p => p.User == user && p.Status == InvStatus.Accepted))
+                .Include(p => p.Autor)
+                .ToListAsync();
+        }
+
+        // GET EVENT LIST - INVITED-USER - Pending or rejected //
         public async Task<ICollection<Event>> GetEventsList_byInvitedUser(User user)
         {
             return await _db.Events.Where(
