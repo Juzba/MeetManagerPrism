@@ -97,7 +97,7 @@ public class DataServiceTests
 
 
     [Test]
-    public async Task AddRoom_Should_AddEventTypeToDatabase()
+    public async Task AddRoom_Should_AddRoomToDatabase()
     {
         var room = new Room() { Name = "Pub", Capacity = 125, Location = "Paris" };
 
@@ -114,7 +114,7 @@ public class DataServiceTests
 
 
     [Test]
-    public async Task AddInvitation_Should_AddEventTypeToDatabase()
+    public async Task AddInvitation_Should_AddInvitationToDatabase()
     {
         var newEvent = new Event() { Id = 6, Name = "NewEventTest" };
         var invitation = new Invitation() { Id = 1, Autor = new(), Event = newEvent, SentDate = DateTime.Now, };
@@ -158,6 +158,15 @@ public class DataServiceTests
         Assert.That(resultList2.First().Name, Is.EqualTo("Updated Party Rock"));
         Assert.That(resultList2.First().StartDate, Is.LessThan(DateTime.Now.AddMinutes(1)));
         Assert.That(resultList2.First().StartDate, Is.GreaterThan(DateTime.Now.AddMinutes(-1)));
+    }
+
+
+
+    [Test]
+    public async Task UpdateInvitedUser_Should_UpdateInvitedUserInDatabase()
+    {
+
+        Assert.ThrowsAsync<ArgumentNullException>(async () => await _dataService.AddUser(null!));
     }
 
 

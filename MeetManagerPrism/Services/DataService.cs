@@ -112,6 +112,9 @@ public class DataService(AppDbContext db) : IDataService
     {
         if (invitedUser == null) throw new ArgumentNullException(nameof(invitedUser), "invitedUser cannot be null!");
 
+        var local = _db.InvitedUsers.Local.FirstOrDefault(p => p.Id == invitedUser.Id);
+
+        if (local != null) _db.Entry(local).State = EntityState.Detached;
         _db.InvitedUsers.Update(invitedUser);
     }
 
@@ -121,6 +124,9 @@ public class DataService(AppDbContext db) : IDataService
     {
         if (invitation == null) throw new ArgumentNullException(nameof(invitation), "invitation cannot be null!");
 
+        var local = _db.Invitations.Local.FirstOrDefault(p => p.Id == invitation.Id);
+
+        if (local != null) _db.Entry(local).State = EntityState.Detached;
         _db.Invitations.Update(invitation);
     }
 
@@ -200,8 +206,6 @@ public class DataService(AppDbContext db) : IDataService
     // GET INVITED-USERS LIST FROM EVENT //
     public async Task<IEnumerable<InvitedUser>> GetInvitedUsersList_FromEvent(int eventId)
     {
-        if (eventId == 0) throw new ArgumentException("eventId cannot be 0!", nameof(eventId));
-
         return await _db.InvitedUsers.Where(p => p.Invitation.EventId == eventId).Include(p => p.User).ToListAsync();
     }
 

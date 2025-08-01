@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MeetManagerPrism.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250731095517_NewCreate")]
-    partial class NewCreate
+    [Migration("20250801130039_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
