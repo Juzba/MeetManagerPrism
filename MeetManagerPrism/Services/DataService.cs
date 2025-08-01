@@ -126,7 +126,10 @@ public class DataService(AppDbContext db) : IDataService
 
         var local = _db.Invitations.Local.FirstOrDefault(p => p.Id == invitation.Id);
 
-        if (local != null) _db.Entry(local).State = EntityState.Detached;
+        if (local != null)
+        {
+            _db.Entry(local).State = EntityState.Detached;
+        }
         _db.Invitations.Update(invitation);
     }
 
