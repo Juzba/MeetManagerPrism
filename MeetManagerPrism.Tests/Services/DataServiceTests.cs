@@ -333,28 +333,110 @@ public class DataServiceTests
     }
 
 
-    //[Test]
-    //public async Task GetInvitedUsersList_FromEvent_Should_GetInvitedUsers_FromDatabase()
-    //{
-    //    InvitedUser test1 = new() { Id = 1,    };
-    //    InvitedUser test2 = new() { Id = 2, };
-    //    InvitedUser test3 = new() { Id = 3,  };
+    [Test]
+    public async Task GetInvitedUsersList_FromEvent_Should_GetInvitedUsers_FromDatabase()
+    {
+        InvitedUser test1 = new() { Id = 1, Status = InvStatus.Pending, Invitation = new Invitation() { EventId = 1 }, User = new User() { Name = "Franta" } };
+        InvitedUser test2 = new() { Id = 2, Status = InvStatus.Rejected, Invitation = new Invitation() { EventId = 2 }, User = new() };
+        InvitedUser test3 = new() { Id = 3, Status = InvStatus.Accepted, Invitation = new Invitation() { EventId = 1 }, User = new() };
 
-    //    List<User> tests = [test1, test2, test3];
+        List<InvitedUser> tests = [test1, test2, test3];
 
-    //    await _context.Users.AddRangeAsync(tests);
-    //    await _dataService.SaveChanges();
-
-
-    //    var result = await _dataService.GetUsersList();
+        await _context.InvitedUsers.AddRangeAsync(tests);
+        await _dataService.SaveChanges();
 
 
-    //    Assert.That(result, Is.Not.Null);
-    //    Assert.That(result.First().Role, Is.Not.Null);
-    //    Assert.That(result.First().Role.RoleName, Is.EqualTo("testRole1"));
-    //    Assert.That(result.Count, Is.EqualTo(3));
-    //}
+        var result = await _dataService.GetInvitedUsersList_FromEvent(1);
 
 
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.First().Status, Is.EqualTo(InvStatus.Pending));
+        Assert.That(result.First().User.Name, Is.EqualTo("Franta"));
+        Assert.That(result.Count, Is.EqualTo(2));
+    }
 
+
+    [Test]
+    public async Task GetRolesList_Should_GetRolesList_FromDatabase()
+    {
+        Role test1 = new() { Id = "id1", RoleName = "User" };
+        Role test2 = new() { Id = "id2", RoleName = "Manager" };
+        Role test3 = new() { Id = "id3", RoleName = "Admin" };
+
+        List<Role> tests = [test1, test2, test3];
+
+        await _context.Roles.AddRangeAsync(tests);
+        await _dataService.SaveChanges();
+
+
+        var result = await _dataService.GetRolesList();
+
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.First().RoleName, Is.EqualTo("User"));
+        Assert.That(result.Last().Id, Is.EqualTo("id3"));
+        Assert.That(result.Count, Is.EqualTo(3));
+    }
+
+
+    [Test]
+    public async Task GetAceptedEventsList_byInvitedUser_Should_GetEventsList_FromDatabase()
+    {
+        var autor = new User() { Id = 1, Name = "Václav" };
+        var user = new User() { Id = 2, Name = "Franta" };
+
+
+        Invitation invitationTest1 = new() { Id = 4, InvitedUsers = [new() { Id = 1, Status = InvStatus.Accepted, User = user }], Autor = autor };
+        Invitation invitationTest2 = new() { Id = 2, InvitedUsers = [new() { Id = 2, Status = InvStatus.Rejected, User = user }], Autor = autor };
+        Invitation invitationTest3 = new() { Id = 3, InvitedUsers = [new() { Id = 3, Status = InvStatus.Accepted, User = user }], Autor = autor };
+
+        Event test1 = new() { Id = 4, Name = "EventTest1", Autor = autor, EventType = new(), Invitation = invitationTest1, Room = new() };
+        Event test2 = new() { Id = 2, Name = "EventTest2", Autor = autor, EventType = new(), Invitation = invitationTest2, Room = new() };
+        Event test3 = new() { Id = 3, Name = "EventTest3", Autor = autor, EventType = new(), Invitation = invitationTest3, Room = new() };
+
+        List<Event> tests = [test1, test2, test3];
+
+        await _context.Events.AddRangeAsync(tests);
+        await _dataService.SaveChanges();
+
+        var result = await _dataService.GetAceptedEventsList_byInvitedUser(user);
+
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.First().Autor.Name, Is.EqualTo("Václav"));
+        Assert.That(result.First().Name, Is.EqualTo("EventTest1"));
+        Assert.That(result.Last().Id, Is.EqualTo(3));
+        Assert.That(result.Count, Is.EqualTo(2));
+    }
+
+
+    [Test]
+    public async Task GetEventsList_byInvitedUser_Should_GetRejected_EventsList_FromDatabase()
+    {
+        var autor = new User() { Id = 1, Name = "Václav" };
+        var user = new User() { Id = 2, Name = "Franta" };
+
+
+        Invitation invitationTest1 = new() { Id = 4, InvitedUsers = [new() { Id = 1, Status = InvStatus.Accepted, User = user }], Autor = autor };
+        Invitation invitationTest2 = new() { Id = 2, InvitedUsers = [new() { Id = 2, Status = InvStatus.Rejected, User = user }], Autor = autor };
+        Invitation invitationTest3 = new() { Id = 3, InvitedUsers = [new() { Id = 3, Status = InvStatus.Pending, User = user }], Autor = autor };
+
+        Event test1 = new() { Id = 4, Name = "EventTest1", Autor = autor, EventType = new(), Invitation = invitationTest1, Room = new() };
+        Event test2 = new() { Id = 2, Name = "EventTest2", Autor = autor, EventType = new(), Invitation = invitationTest2, Room = new() };
+        Event test3 = new() { Id = 3, Name = "EventTest3", Autor = autor, EventType = new(), Invitation = invitationTest3, Room = new() };
+
+        List<Event> tests = [test1, test2, test3];
+
+        await _context.Events.AddRangeAsync(tests);
+        await _dataService.SaveChanges();
+
+        var result = await _dataService.GetEventsList_byInvitedUser(user);
+
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.First().Autor.Name, Is.EqualTo("Václav"));
+        Assert.That(result.First().Name, Is.EqualTo("EventTest2"));
+        Assert.That(result.Last().Id, Is.EqualTo(3));
+        Assert.That(result.Count, Is.EqualTo(2));
+    }
 }
