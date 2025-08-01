@@ -34,7 +34,7 @@ public class DataServiceTests
 
 
     [Test]
-    public async Task AddUser_Should_AddUserToDatabase()
+    public async Task AddUser_Should_AddUser_ToDatabase()
     {
 
         var user = new User { Email = "user@gmail.com", Role = new() { Id = "id-1", RoleName = "User" }, RoleId = "id-1" };
@@ -53,7 +53,7 @@ public class DataServiceTests
 
 
     [Test]
-    public async Task AddEvent_Should_AddEventToDatabase()
+    public async Task AddEvent_Should_AddEvent_ToDatabase()
     {
         var room = new Room() { Name = "Pub" };
         var eventType = new EventType() { Name = "Party" };
@@ -81,7 +81,7 @@ public class DataServiceTests
 
 
     [Test]
-    public async Task AddEventType_Should_AddEventTypeToDatabase()
+    public async Task AddEventType_Should_AddEventType_ToDatabase()
     {
         var eventType = new EventType() { Name = "Party", Id = 2 };
 
@@ -97,7 +97,7 @@ public class DataServiceTests
 
 
     [Test]
-    public async Task AddRoom_Should_AddRoomToDatabase()
+    public async Task AddRoom_Should_AddRoom_ToDatabase()
     {
         var room = new Room() { Name = "Pub", Capacity = 125, Location = "Paris" };
 
@@ -114,7 +114,7 @@ public class DataServiceTests
 
 
     [Test]
-    public async Task AddInvitation_Should_AddInvitationToDatabase()
+    public async Task AddInvitation_Should_AddInvitation_ToDatabase()
     {
         var newEvent = new Event() { Id = 6, Name = "NewEventTest" };
         var invitation = new Invitation() { Id = 1, Autor = new(), Event = newEvent, SentDate = DateTime.Now, };
@@ -134,7 +134,7 @@ public class DataServiceTests
 
 
     [Test]
-    public async Task UpdateEvent_Should_UpdateEventInDatabase()
+    public async Task UpdateEvent_Should_UpdateEvent_InDatabase()
     {
         var user = new User { Id = 4, Email = "user@gmail.com", Role = new() { Id = "id-1", RoleName = "User" }, RoleId = "id-1" };
         var newEvent = new Event() { Id = 1, AutorId = 4, EventTypeId = 1, InvitationId = 2, RoomID = 3, Name = "Party Rock", StartDate = new(), EndDate = new(), Description = "DnB Music!", Autor = user, EventType = new(), Room = new() };
@@ -161,7 +161,7 @@ public class DataServiceTests
 
 
     [Test]
-    public async Task UpdateInvitedUser_Should_UpdateInvitedUserInDatabase()
+    public async Task UpdateInvitedUser_Should_UpdateInvitedUser_InDatabase()
     {
         var user = new User { Id = 4, Email = "user@gmail.com", Role = new() { Id = "id-1", RoleName = "User" }, RoleId = "id-1" };
         var invitedUser = new InvitedUser() { Id = 1, User = user, Invitation = new(), Status = InvStatus.Pending };
@@ -184,7 +184,7 @@ public class DataServiceTests
 
 
     [Test]
-    public async Task UpdateInvitation_Should_UpdateInvitationInDatabase()
+    public async Task UpdateInvitation_Should_UpdateInvitation_InDatabase()
     {
         var testEvent = new Event() { Id = 1, Name = "NewEventTest" };
         var invitation = new Invitation() { EventId = 1, Id = 1, AutorId = 1, Event = testEvent, SentDate = new() };
@@ -212,7 +212,7 @@ public class DataServiceTests
 
 
     [Test]
-    public async Task DeleteEvent_Should_DeleteEventInDatabase()
+    public async Task DeleteEvent_Should_DeleteEvent_InDatabase()
     {
         var user = new User() { Id = 1, Name = "Josef" };
         Event testEvent1 = new() { Id = 1, Name = "NewEventTest1", AutorId = 1, Autor = user, EventType = new(), Invitation = new(), Room = new() };
@@ -237,7 +237,7 @@ public class DataServiceTests
 
 
     [Test]
-    public async Task DeleteRoom_Should_DeleteRoomInDatabase()
+    public async Task DeleteRoom_Should_DeleteRoom_InDatabase()
     {
         Room test1 = new() { ID = 1, Name = "NewTest1" };
         Room test2 = new() { ID = 2, Name = "NewTest2" };
@@ -261,7 +261,7 @@ public class DataServiceTests
 
 
     [Test]
-    public async Task DeleteEventType_Should_DeleteEventTypeInDatabase()
+    public async Task DeleteEventType_Should_DeleteEventType_InDatabase()
     {
         EventType test1 = new() { Id = 1, Name = "NewTest1" };
         EventType test2 = new() { Id = 2, Name = "NewTest2" };
@@ -285,7 +285,7 @@ public class DataServiceTests
 
 
     [Test]
-    public async Task DeleteUser_Should_DeleteUserInDatabase()
+    public async Task DeleteUser_Should_DeleteUser_InDatabase()
     {
         User test1 = new() { Id = 1, Name = "NewTest1", Role = new Role() { Id = "1", RoleName = "testRole1" } };
         User test2 = new() { Id = 2, Name = "NewTest2", Role = new Role() { Id = "2", RoleName = "testRole2" } };
@@ -308,6 +308,52 @@ public class DataServiceTests
         Assert.That(result.Count, Is.EqualTo(2));
         Assert.That(result2, Is.Null);
     }
+
+
+    [Test]
+    public async Task GetUsersList_Should_GetUsersList_FromDatabase()
+    {
+        User test1 = new() { Id = 1, Name = "NewTest1", Role = new Role() { Id = "1", RoleName = "testRole1" } };
+        User test2 = new() { Id = 2, Name = "NewTest2", Role = new Role() { Id = "2", RoleName = "testRole2" } };
+        User test3 = new() { Id = 3, Name = "NewTest3", Role = new Role() { Id = "3", RoleName = "testRole3" } };
+
+        List<User> tests = [test1, test2, test3];
+
+        await _context.Users.AddRangeAsync(tests);
+        await _dataService.SaveChanges();
+
+
+        var result = await _dataService.GetUsersList();
+
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.First().Role, Is.Not.Null);
+        Assert.That(result.First().Role.RoleName, Is.EqualTo("testRole1"));
+        Assert.That(result.Count, Is.EqualTo(3));
+    }
+
+
+    //[Test]
+    //public async Task GetInvitedUsersList_FromEvent_Should_GetInvitedUsers_FromDatabase()
+    //{
+    //    InvitedUser test1 = new() { Id = 1,    };
+    //    InvitedUser test2 = new() { Id = 2, };
+    //    InvitedUser test3 = new() { Id = 3,  };
+
+    //    List<User> tests = [test1, test2, test3];
+
+    //    await _context.Users.AddRangeAsync(tests);
+    //    await _dataService.SaveChanges();
+
+
+    //    var result = await _dataService.GetUsersList();
+
+
+    //    Assert.That(result, Is.Not.Null);
+    //    Assert.That(result.First().Role, Is.Not.Null);
+    //    Assert.That(result.First().Role.RoleName, Is.EqualTo("testRole1"));
+    //    Assert.That(result.Count, Is.EqualTo(3));
+    //}
 
 
 
