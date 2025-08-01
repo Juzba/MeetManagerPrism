@@ -1,9 +1,6 @@
 ﻿using MeetManagerPrism.Data;
 using MeetManagerPrism.Data.Model;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Xml.Linq;
 
 namespace MeetManagerPrism.Services;
 
@@ -96,13 +93,16 @@ public class DataService(AppDbContext db) : IDataService
     }
 
 
-             
+
     // *UPDATE* //
     // UPDATE EVENT //
     public void UpdateEvent(Event updEvent)
     {
         if (updEvent == null) throw new ArgumentNullException(nameof(updEvent), "updEvent cannot be null!");
 
+        var local = _db.Events.Local.FirstOrDefault(p => p.Id == updEvent.Id);
+
+        if (local != null) _db.Entry(local).State = EntityState.Detached;
         _db.Events.Update(updEvent);
     }
 
