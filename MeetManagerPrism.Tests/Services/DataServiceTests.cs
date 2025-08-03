@@ -417,11 +417,11 @@ public class DataServiceTests
         var user = new User() { Id = 2, Name = "Franta" };
 
 
-        Invitation invitationTest1 = new() { Id = 4, InvitedUsers = [new() { Id = 1, Status = InvStatus.Accepted, User = user }], Autor = autor };
+        Invitation invitationTest1 = new() { Id = 1, InvitedUsers = [new() { Id = 1, Status = InvStatus.Accepted, User = user }], Autor = autor };
         Invitation invitationTest2 = new() { Id = 2, InvitedUsers = [new() { Id = 2, Status = InvStatus.Rejected, User = user }], Autor = autor };
         Invitation invitationTest3 = new() { Id = 3, InvitedUsers = [new() { Id = 3, Status = InvStatus.Pending, User = user }], Autor = autor };
 
-        Event test1 = new() { Id = 4, Name = "EventTest1", Autor = autor, EventType = new(), Invitation = invitationTest1, Room = new() };
+        Event test1 = new() { Id = 1, Name = "EventTest1", Autor = autor, EventType = new(), Invitation = invitationTest1, Room = new() };
         Event test2 = new() { Id = 2, Name = "EventTest2", Autor = autor, EventType = new(), Invitation = invitationTest2, Room = new() };
         Event test3 = new() { Id = 3, Name = "EventTest3", Autor = autor, EventType = new(), Invitation = invitationTest3, Room = new() };
 
@@ -439,4 +439,139 @@ public class DataServiceTests
         Assert.That(result.Last().Id, Is.EqualTo(3));
         Assert.That(result.Count, Is.EqualTo(2));
     }
+
+
+    [Test]
+    public async Task GetUpcomingEventsList_Should_GetEventsList_FromDatabase()
+    {
+        var autor = new User() { Id = 1, Name = "Václav" };
+        var user = new User() { Id = 2, Name = "Franta" };
+
+
+        Invitation invitationTest1 = new() { Id = 1, InvitedUsers = [new() { Id = 1, Status = InvStatus.Pending, User = user }], Autor = autor };
+        Invitation invitationTest2 = new() { Id = 2, InvitedUsers = [new() { Id = 2, Status = InvStatus.Accepted, User = user }], Autor = autor };
+        Invitation invitationTest3 = new() { Id = 3, InvitedUsers = [new() { Id = 3, Status = InvStatus.Accepted, User = user }], Autor = autor };
+        Invitation invitationTest4 = new() { Id = 4, InvitedUsers = [new() { Id = 4, Status = InvStatus.Accepted, User = user }], Autor = autor };
+
+        Event test1 = new() { Id = 1, Name = "EventTest1", Autor = autor, EventType = new(), Invitation = invitationTest1, Room = new(), StartDate = DateTime.Now.AddDays(1) };
+        Event test2 = new() { Id = 2, Name = "EventTest2", Autor = autor, EventType = new() { Name = "Test Event Type" }, Invitation = invitationTest2, Room = new() { Name = "Test Room" }, StartDate = DateTime.Now.AddDays(1) };
+        Event test3 = new() { Id = 3, Name = "EventTest3", Autor = autor, EventType = new(), Invitation = invitationTest3, Room = new(), StartDate = DateTime.Now.AddDays(1) };
+        Event test4 = new() { Id = 4, Name = "EventTest4", Autor = autor, EventType = new(), Invitation = invitationTest4, Room = new(), StartDate = DateTime.Now.AddDays(-1) };
+
+        List<Event> tests = [test1, test2, test3, test4];
+
+        await _context.Events.AddRangeAsync(tests);
+        await _dataService.SaveChanges();
+
+        var neco = _context.Events.ToList();
+        var result = await _dataService.GetUpcomingEventsList(user);
+
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.First().Autor.Name, Is.EqualTo("Václav"));
+        Assert.That(result.First().Room.Name, Is.EqualTo("Test Room"));
+        Assert.That(result.First().EventType.Name, Is.EqualTo("Test Event Type"));
+        Assert.That(result.First().Name, Is.EqualTo("EventTest2"));
+        Assert.That(result.Last().Id, Is.EqualTo(3));
+        Assert.That(result.Count, Is.EqualTo(2));
+    }
+
+
+
+    [Test]
+    public async Task GetTodayEventsList_Should_GetToday_EventsList_FromDatabase()
+    {
+        var autor = new User() { Id = 1, Name = "Václav" };
+        var user = new User() { Id = 2, Name = "Franta" };
+
+
+        Invitation invitationTest1 = new() { Id = 1, InvitedUsers = [new() { Id = 1, Status = InvStatus.Rejected, User = user }], Autor = autor };
+        Invitation invitationTest2 = new() { Id = 2, InvitedUsers = [new() { Id = 2, Status = InvStatus.Accepted, User = user }], Autor = autor };
+        Invitation invitationTest3 = new() { Id = 3, InvitedUsers = [new() { Id = 3, Status = InvStatus.Accepted, User = user }], Autor = autor };
+        Invitation invitationTest4 = new() { Id = 4, InvitedUsers = [new() { Id = 4, Status = InvStatus.Accepted, User = user }], Autor = autor };
+
+        Event test1 = new() { Id = 1, Name = "EventTest1", Autor = autor, EventType = new(), Invitation = invitationTest1, Room = new(), StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(1) };
+        Event test2 = new() { Id = 2, Name = "EventTest2", Autor = autor, EventType = new() { Name = "Test Event Type" }, Invitation = invitationTest2, Room = new() { Name = "Test Room" }, StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(1) };
+        Event test3 = new() { Id = 3, Name = "EventTest3", Autor = autor, EventType = new(), Invitation = invitationTest3, Room = new(), StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(1) };
+        Event test4 = new() { Id = 4, Name = "EventTest4", Autor = autor, EventType = new(), Invitation = invitationTest4, Room = new(), StartDate = DateTime.Now.AddDays(1), EndDate = DateTime.Now.AddDays(2) };
+
+        List<Event> tests = [test1, test2, test3, test4];
+
+        await _context.Events.AddRangeAsync(tests);
+        await _dataService.SaveChanges();
+
+        var neco = _context.Events.ToList();
+
+
+        var result = await _dataService.GetTodayEventsList(user);
+
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.First().Autor.Name, Is.EqualTo("Václav"));
+        Assert.That(result.First().Room.Name, Is.EqualTo("Test Room"));
+        Assert.That(result.First().EventType.Name, Is.EqualTo("Test Event Type"));
+        Assert.That(result.First().Name, Is.EqualTo("EventTest2"));
+        Assert.That(result.Last().Id, Is.EqualTo(3));
+        Assert.That(result.Count, Is.EqualTo(2));
+    }
+
+
+    [Test]
+    public async Task GetRoomList_Should_GetRoomList_FromDatabase()
+    {
+        Room test1 = new() { ID = 1, Name = "NewTest1" };
+        Room test2 = new() { ID = 2, Name = "NewTest2" };
+        Room test3 = new() { ID = 3, Name = "NewTest3" };
+
+        List<Room> tests = [test1, test2, test3];
+
+        await _context.Rooms.AddRangeAsync(tests);
+        await _dataService.SaveChanges();
+
+
+        var result = await _dataService.GetRoomList();
+
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.First().ID, Is.EqualTo(1));
+        Assert.That(result.Last().Name, Is.EqualTo("NewTest3"));
+        Assert.That(result.Count, Is.EqualTo(3));
+    }
+
+
+    [Test]
+    public async Task GetEventTypeList_Should_GetEventTypeList_FromDatabase()
+    {
+        EventType test1 = new() { Id = 1, Name = "NewTest1" };
+        EventType test2 = new() { Id = 2, Name = "NewTest2" };
+        EventType test3 = new() { Id = 3, Name = "NewTest3" };
+
+        List<EventType> tests = [test1, test2, test3];
+
+        await _context.EventTypes.AddRangeAsync(tests);
+        await _dataService.SaveChanges();
+
+
+        var result = await _dataService.GetEventTypeList();
+
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.First().Id, Is.EqualTo(1));
+        Assert.That(result.Last().Name, Is.EqualTo("NewTest3"));
+        Assert.That(result.Count, Is.EqualTo(3));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

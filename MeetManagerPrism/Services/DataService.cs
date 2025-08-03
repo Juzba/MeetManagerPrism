@@ -276,12 +276,12 @@ public class DataService(AppDbContext db) : IDataService
         if (user == null) throw new ArgumentNullException(nameof(user), "user cannot be null!");
 
         return await _db.Events.Where
-            (
-            p => p.Invitation.InvitedUsers.Any(p => p.UserId == user.Id && p.Status == InvStatus.Accepted)
-            && p.StartDate <= DateTime.Now
-            && p.EndDate >= DateTime.Now
-            )
-            .Include(p => p.EventType).Include(p => p.Room).Include(p => p.Autor).ToListAsync();
+          (
+          p => p.Invitation.InvitedUsers.Any(p => p.UserId == user.Id && p.Status == InvStatus.Accepted)
+          && p.StartDate <= DateTime.Now
+          && p.EndDate >= DateTime.Now
+          )
+          .Include(p => p.EventType).Include(p => p.Room).Include(p => p.Autor).ToListAsync();
     }
 
 
