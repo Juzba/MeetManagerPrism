@@ -94,7 +94,7 @@ namespace MeetManagerPrism.Data
                 .HasOne(i => i.User)
                 .WithMany(u => u.InvitedUsers)
                 .HasForeignKey(i => i.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
         }
