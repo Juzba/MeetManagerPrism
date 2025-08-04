@@ -1,2 +1,1 @@
-﻿1. Predelat prihlasovani na email
-2. Pridat kontrolu jestli email neni obsazen
+﻿1. Dodělat kalendář (ruzne parvy a popisky)
