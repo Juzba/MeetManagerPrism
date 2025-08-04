@@ -10,9 +10,9 @@ namespace MeetManagerPrism.Services
         string HashPassword(string password);
         bool VerifyPassword(string password, string hash);
 
-        Task<bool> TryLogin(LoginViewModel loginVM);
+        Task<bool> TryLogin(string email, string password);
         Task<bool> TryInstaAccess();
-        Task<bool> TryRegister(RegisterViewModel registerVM);
+        Task<bool> TryRegister(string email, string password);
     }
 
 
@@ -34,18 +34,21 @@ namespace MeetManagerPrism.Services
         // VERIFY PASSWORD //
         public bool VerifyPassword(string password, string hash)
         {
-            if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(hash)) return false;
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentNullException(nameof(password), "password is null or empty!");
+            if (string.IsNullOrWhiteSpace(hash)) throw new ArgumentNullException(nameof(hash), "hash is null or empty!");
 
             return Argon2.Verify(hash, password);
         }
 
-        // LOGIN //
-        public async Task<bool> TryLogin(LoginViewModel loginVM)
-        {
-            if (string.IsNullOrWhiteSpace(loginVM.Email) || string.IsNullOrWhiteSpace(loginVM.Password)) return false;
 
-            var user = await _dataService.GetUser(loginVM.Email);
-            if (user == null || !VerifyPassword(loginVM.Password, user.PasswordHash)) return false;
+        // LOGIN //
+        public async Task<bool> TryLogin(string email, string password)
+        {
+            if (string.IsNullOrWhiteSpace(email)) throw new ArgumentNullException(nameof(email), "email is null or empty!");
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentNullException(nameof(password), "password is null or empty!");
+
+            var user = await _dataService.GetUser(email);
+            if (user == null || !VerifyPassword(password, user.PasswordHash)) return false;
 
             // Save logged user //
             _userStore.User = user;
@@ -54,8 +57,8 @@ namespace MeetManagerPrism.Services
             return true;
         }
 
-        // INSTANT ACCESS //
 
+        // INSTANT ACCESS //
         public async Task<bool> TryInstaAccess()
         {
             var user = await _dataService.GetUser("Juzba@gmail.com");
@@ -67,17 +70,18 @@ namespace MeetManagerPrism.Services
             return true;
         }
 
+
         // REGISTER //
-
-        public async Task<bool> TryRegister(RegisterViewModel registerVM)
+        public async Task<bool> TryRegister(string email, string password)
         {
-            if (string.IsNullOrWhiteSpace(registerVM.Email)
-                || string.IsNullOrWhiteSpace(registerVM.PasswordA)
-                || await _dataService.GetUser(registerVM.Email) != null
-                ) return false;
+            if (string.IsNullOrWhiteSpace(email)) throw new ArgumentNullException(nameof(email), "email is null or empty!");
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentNullException(nameof(password), "password is null or empty!");
 
-            var hash = HashPassword(registerVM.PasswordA);
-            var newUser = new User() { Name = registerVM.Email, Email = registerVM.Email, PasswordHash = hash };
+            // user is in db?
+            if (await _dataService.GetUser(email) != null) return false;
+
+            var hash = HashPassword(password);
+            var newUser = new User() { Name = email, Email = email, PasswordHash = hash };
 
             await _dataService.AddUser(newUser);
             await _dataService.SaveChanges();

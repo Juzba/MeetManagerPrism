@@ -76,7 +76,7 @@ public partial class RegisterViewModel : BindableBase, IRegionAware
             return;
         }
 
-        if (await _loginService.TryRegister(this))
+        if (await _loginService.TryRegister(Email, PasswordA))
         {
             // REGISTER SUCCESS //
             _regionManager.RequestNavigate(Const.MainRegion, nameof(LoginPage));

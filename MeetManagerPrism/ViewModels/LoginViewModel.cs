@@ -2,7 +2,6 @@
 using MeetManagerPrism.Common.Events;
 using MeetManagerPrism.Services;
 using MeetManagerPrism.Views;
-using MeetManagerPrism.Views.Admin;
 
 namespace MeetManagerPrism.ViewModels;
 
@@ -16,7 +15,7 @@ public partial class LoginViewModel : BindableBase, INavigationAware
     public AsyncDelegateCommand InstaAccessCommand { get; }
 
 
-    public LoginViewModel( ILoginService loginService, IRegionManager regionManager, IEventAggregator eventAggregator)
+    public LoginViewModel(ILoginService loginService, IRegionManager regionManager, IEventAggregator eventAggregator)
     {
         _loginService = loginService;
         _regionManager = regionManager;
@@ -67,11 +66,14 @@ public partial class LoginViewModel : BindableBase, INavigationAware
     {
         ErrorMessage = "";
 
-        if (await _loginService.TryLogin(this))
+        if (!string.IsNullOrWhiteSpace(Email) || !string.IsNullOrWhiteSpace(Password))
         {
-            // ACCESS GRANTED //
-            _regionManager.RequestNavigate(Const.MainRegion, nameof(HomePage));
-            return;
+            if (await _loginService.TryLogin(Email!, Password!))
+            {
+                // ACCESS GRANTED //
+                _regionManager.RequestNavigate(Const.MainRegion, nameof(HomePage));
+                return;
+            }
         }
 
         // ACCESS DENIED //
